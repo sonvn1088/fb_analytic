@@ -42,7 +42,7 @@ class Import
                     $url = strtok($f_post['link'], '?');
                     $data = [
                         'title' => $f_post['name'],
-                        'url' => $url
+                        'url' => str_replace('https', 'http', $url)
                     ];
 
                     try{
