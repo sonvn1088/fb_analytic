@@ -40,9 +40,10 @@ class Import
                 //save link
                 if($f_post['type'] == 'link'){
                     $url = strtok($f_post['link'], '?');
+                    $url = str_replace('https', 'http', $url);
                     $data = [
                         'title' => $f_post['name'],
-                        'url' => str_replace('https', 'http', $url)
+                        'url' => $url
                     ];
 
                     try{
