@@ -2,7 +2,7 @@
 
 return [
     'graph' => 'https://graph.facebook.com/v3.2/',
-    'token' => 'EAAAAAYsX7TsBACY6AN9qkdZCrVRkFE58u3kFThn9S0MDZCOKBXA6FZA6cNY4poRYQDxcsrvzWaA7pfO8VBqo4xFwpCZA5myZABSojGOzcZBZCUTfkObNiQhZBQkFpG5U95xxQW2u1pY7dDNxuD3trqoSi16gZAJm8r3L6Ijifh6YVKLtWZBLaW4ZCisWv1bEOzxl8lBRliBUxS7dQ7M9YZCXf5is',
+    'token' => env('TOKEN'),
     'pages' => [
         'mantv.vn' =>  2926724,
         'LetsGoVietnam.Page' =>  1811022,
