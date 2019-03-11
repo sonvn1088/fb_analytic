@@ -8,7 +8,7 @@ use App\Models\Page;
 
 class Import
 {
-    public function engagements($time){
+    static public function engagements($time){
         $posts = Post::getPosts($time);
         foreach($posts as $post){
             $engagement = Facebook::getEngagement($post->post_id);
@@ -31,7 +31,7 @@ class Import
         }
     }
 
-    public function posts(){
+    static public function posts(){
         $pages = Page::all();
         foreach($pages as $page){
             $f_posts = Facebook::getPosts($page->fb_id, time() - 12*60);
@@ -72,7 +72,7 @@ class Import
         }
     }
 
-    public function pages(){
+    static public function pages(){
         $pages = config('facebook.pages');
         foreach($pages as $username => $follow){
             $info = Facebook::getPageInfo($username);
