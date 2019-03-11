@@ -24,8 +24,14 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        $schedule->command('import:posts')->everyTenMinutes();
+        $schedule->command('import:engagements15')->everyMinute();
+        $schedule->command('import:engagements30')->everyMinute();
+        $schedule->command('import:engagements45')->everyMinute();
+        $schedule->command('import:engagements60')->everyMinute();
+        $schedule->command('import:engagements90')->everyMinute();
+        $schedule->command('import:engagements120')->everyMinute();
+        $schedule->command('import:engagements180')->everyMinute();
     }
 
     /**
