@@ -7,6 +7,10 @@ use App\Helps\Import;
 
 class PageController extends Controller
 {
+    public function viewLinks(){
+
+    }
+
     public function importEngagements($time){
         Import::engagements($time);
     }

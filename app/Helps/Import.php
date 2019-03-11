@@ -52,10 +52,12 @@ class Import
                             $link->save();
                         }
 
-                        $post = Post::firstOrNew(['post_id' => $f_post['id']]);
+                        $tmp = explode('_', $f_post['id']);
+                        $post = Post::firstOrNew(['post_id' => $tmp[1]]);
 
                         if(!$post->id){
                             $post->link_id = $link->id;
+                            $post->page_id = $tmp[0];
                             $post->message = $f_post['message'];
                             $post->created_at = date('Y-m-d H:i:s', strtotime($f_post['created_time']));
                         }
