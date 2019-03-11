@@ -13,7 +13,7 @@ class Facebook
     }
 
     static public function getPosts($page_id, $since){
-        $fields = 'permalink_url,link,created_time,name,type';
+        $fields = 'permalink_url,link,created_time,name,type,message';
         return self::get($page_id.'/feed', ['fields' => $fields, 'since' => $since]);
     }
 

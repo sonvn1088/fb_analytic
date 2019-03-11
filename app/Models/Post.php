@@ -25,7 +25,7 @@ class Post extends Model
      *
      * @var array
      */
-    protected $fillable = ['link_id', 'post_id', 'created_at', 'data'];
+    protected $fillable = ['link_id', 'post_id', 'message', 'created_at', 'data'];
 
     static public function getPosts($time){
         $from = date('Y-m-d H:i:00', time() - $time*60);
