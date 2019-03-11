@@ -4,6 +4,8 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Helps\Import;
+use App\Helps\Facebook;
+use App\Models\Post;
 
 class ImportPosts extends Command
 {
