@@ -2,49 +2,99 @@
 
 namespace App\Helps;
 
-use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Client;
+use App\Models\Link;
+use App\Models\Post;
+use App\Models\Page;
 
-class Facebook
+class Import
 {
-    static public function getPageInfo($id){
-        $fields = 'name,username,fan_count';
-        return self::get($id, ['fields' => $fields]);
-    }
+    public function engagements($time){
+        $posts = Post::getPosts($time);
+        foreach($posts as $post){
+            $engagement = Facebook::getEngagement($post->post_id);
+            $l = $engagement['likes']['count']??0;
+            $c = $engagement['comments']['count']??0;
+            $s = $engagement['shares']['count']??0;
 
-    static public function getPosts($page_id, $since){
-        $fields = 'permalink_url,link,created_time,name,type';
-        return self::get($page_id.'/feed', ['fields' => $fields, 'since' => $since]);
-    }
+            $property = 'after_'.$time;
+            $post->$property = $l + $c + $s;
 
-    static public function getEngagement($post_id){
-        $fields = 'likes,comments,shares';
-        return self::get($post_id, ['fields' => $fields]);
-    }
+            $data = $post->data;
+            $data[$time] = [$l, $c, $s];
+            $post->data = $data;
 
-    static public function get($uri, $params, $limit = 100){
-        $client = new Client();
-        $query = $params;
-        $query['access_token'] = config('facebook.token');
-        $response = $client->get(config('facebook.graph').$uri, ['query' => $query]);
-        $result =  \GuzzleHttp\json_decode($response->getBody()->getContents(), true);
+            try{
+                $post->save();
+            }catch (Exception $e){
 
-        if(isset($result['data'])){
-            $items = [];
-            foreach ($result['data'] as $item) {
-                $items[$item['id']] = $item;
             }
-
-            while(isset($result['paging']['next']) && count($items) < $limit){
-                $response = $client->get($result['paging']['next']);
-                $result = \GuzzleHttp\json_decode($response->getBody()->getContents(), true);
-
-                foreach ($result['data'] as $item) {
-                    $items[$item['id']] = $item;
-                }
-            }
-            return $items;
         }
-        return $result;
+    }
+
+    public function posts(){
+        $pages = Page::all();
+        foreach($pages as $page){
+            $f_posts = Facebook::getPosts($page->fb_id, time() - 12*60);
+            foreach($f_posts as $f_post){
+
+                //save link
+                if($f_post['type'] == 'link'){
+                    $url = strtok($f_post['link'], '?');
+                    $data = [
+                        'title' => $f_post['name'],
+                        'url' => $url
+                    ];
+
+                    try{
+                        $link = Link::where('url', $url)->first();
+                        if(!$link){
+                            $link = new Link($data);
+                            $link->save();
+                        }
+
+                        $post = Post::firstOrNew(['post_id' => $f_post['id']]);
+
+                        if(!$post->id){
+                            $post->link_id = $link->id;
+                            $post->created_at = date('Y-m-d H:i:s', strtotime($f_post['created_time']));
+                        }
+
+                        $post->save();
+
+                    }catch (Exception $e){
+
+                    }
+                }
+
+                //$engagement = Facebook::getEngagement($post['id']);
+
+            }
+        }
+    }
+
+    public function pages(){
+        $pages = config('facebook.pages');
+        foreach($pages as $username => $follow){
+            $info = Facebook::getPageInfo($username);
+            $data = [
+                'name' => $info['name'],
+                'username' => $info['username']??null,
+                'fb_id' => $info['id'],
+                'likes' => $info['fan_count'],
+                'follow' => $follow
+            ];
+
+            try{
+                $page = Page::where('fb_id', $info['id'])->first();
+                if(!$page){
+                    $page = new Page($data);
+                    $page->save();
+                }
+
+            }catch (Exception $e){
+
+            }
+
+        }
     }
 }
