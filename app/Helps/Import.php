@@ -11,7 +11,7 @@ class Import
     static public function engagements($time){
         $posts = Post::getPosts($time);
         foreach($posts as $post){
-            $engagement = Facebook::getEngagement($post->post_id);
+            $engagement = Facebook::getEngagement($post->page_id.'_'.$post->post_id);
             $l = $engagement['likes']['count']??0;
             $c = $engagement['comments']['count']??0;
             $s = $engagement['shares']['count']??0;
