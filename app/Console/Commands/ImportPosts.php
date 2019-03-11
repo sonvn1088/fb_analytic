@@ -39,5 +39,14 @@ class ImportPosts extends Command
     public function handle()
     {
         Import::posts();
+
+        $posts = Post::all();
+        foreach($posts as $post){
+            if(!$post->message){
+                $f_post = Facebook::getPostInfo($post->post_id);
+                $post->message = $f_post['message'];
+                $post->save();
+            }
+        }
     }
 }

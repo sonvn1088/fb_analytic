@@ -2,7 +2,6 @@
 
 namespace App\Console;
 
-use App\Helps\Facebook;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -33,17 +32,6 @@ class Kernel extends ConsoleKernel
         $schedule->command('import:engagements90')->everyMinute();
         $schedule->command('import:engagements120')->everyMinute();
         $schedule->command('import:engagements180')->everyMinute();
-
-        $schedule->call(function () {
-            $posts = Post::all();
-            foreach($posts as $post){
-                if(!$post->message){
-                    $f_post = Facebook::getPostInfo($post->post_id);
-                    $post->message = $f_post['message'];
-                    $post->save();
-                }
-            }
-        })->everyMinute();
     }
 
     /**
