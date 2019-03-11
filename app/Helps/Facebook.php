@@ -2,6 +2,7 @@
 
 namespace App\Helps;
 
+use App\Models\Token;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
 
@@ -29,8 +30,9 @@ class Facebook
 
     static public function get($uri, $params, $limit = 100){
         $client = new Client();
+        $token = self::getToken();
         $query = $params;
-        $query['access_token'] = config('facebook.token');
+        $query['access_token'] = $token->token;
         $response = $client->get(config('facebook.graph').$uri, ['query' => $query]);
         $result =  \GuzzleHttp\json_decode($response->getBody()->getContents(), true);
 
@@ -49,7 +51,23 @@ class Facebook
                 }
             }
             return $items;
+        }elseif(isset($result['error'])){
+            self::get($uri, $params, $limit);
+            try{
+                $token->status = 0;
+                $token->save();
+            }catch (Exception $e){
+
+            }
         }
+
         return $result;
+    }
+
+    static public function getToken(){
+        $token = Token::where('status', 1)->first();
+        if(!$token)
+            die();
+        return $token;
     }
 }
