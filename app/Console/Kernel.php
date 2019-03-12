@@ -25,6 +25,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('import:posts')->everyTenMinutes();
+        $schedule->command('export:topLinks')->everyFifteenMinutes();
         $schedule->command('import:engagements15')->everyMinute();
         $schedule->command('import:engagements30')->everyMinute();
         $schedule->command('import:engagements45')->everyMinute();
