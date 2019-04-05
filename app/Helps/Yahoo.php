@@ -2,121 +2,175 @@
 
 namespace App\Helps;
 
-use App\Models\Token;
-use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
+use GuzzleHttp\Cookie\FileCookieJar;
 
-class Facebook
+class Yahoo
 {
-    static public function getPageInfo($id){
-        $fields = 'name,username,fan_count';
-        return self::get($id, ['fields' => $fields], self::getToken()->token);
+
+    function register($info){
+        $ch = initCurl();
+        curl_setopt($ch, CURLOPT_URL, YAHOO_LOGIN_URL.'account/create');
+        $content = curl_exec($ch);
+
+        $content = verifyPhone($ch, $info, $content);
+        $content = verifyPhone($ch, $info['phone'], $content);
+        $code = '34242';
+        submitCode($ch, $code, $content);
+
     }
 
-    static public function getPostInfo($id){
-        $fields = 'permalink_url,link,created_time,name,type,message';
-        return self::get($id, ['fields' => $fields], self::getToken()->token);
-    }
+    static private function _submitInfo($ch, $info, $content){
+        $render = round(microtime(true) * 1000);
+        $crumb = self::_getHiddenValue('crumb', $content);
+        $acrumb = self::_getHiddenValue('acrumb', $content);
+        $sessionIndex = self::_getHiddenValue('sessionIndex', $content);
+        $tos0 = self::_getHiddenValue('tos0', $content);
 
-    static public function getPosts($page_id, $since){
-        $fields = 'permalink_url,link,created_time,name,type,message';
-        return self::get($page_id.'/feed', ['fields' => $fields, 'since' => $since], self::getToken()->token);
-    }
+        $regexPattern = "/<form id=\"regform\" action=\"(.*?)\"/";
+        preg_match($regexPattern, $content, $match);
+        $postUrl = $match[1];
 
-    static public function getEngagement($post_id){
-        $fields = 'likes,comments,shares';
-        return self::get($post_id, ['fields' => $fields], self::getToken()->token);
-    }
-
-    static public function getFriendsTaggedPhotos($userId, $token){
-        $friends = self::getFriends($userId, $token);
-
-        foreach($friends as $friend){
-            $photos = self::getUserTaggedPhotos($friend['id'], $token);
-            $imagesData = [];
-            foreach($photos as $photo){
-                $image = end($photo['images']);
-                $imagesData[] = [
-                    'id' => $photo['id'],
-                    'source' => $image['source'],
-                    'created_time' => date('Y-m-d H:i:s')
-                ];
-            }
+        $ts['serve'] =  round(microtime(true) * 1000);
+        sleep(5);
+        $ts['render'] =  $render;
 
 
-            $friendsPhotos[] = [
-                'id' => $friend['id'],
-                'name' => $friend['name'],
-                'data' => $imagesData,
-            ];
-        }
-
-        return $friendsPhotos;
-    }
-
-    static public function getFriends($id, $token){
         $params = [
-            'fields' => 'birthday,email,name,gender',
-            'limit' => 5000
+            'browser-fp-data' => json_encode(array_merge(json_decode(BROWSER_INFO, true), ['ts' => $ts])),
+            'specId' => 'yidReg',
+            'cacheStored' => 'true',
+            'crumb' => $crumb,
+            'acrumb' => $acrumb,
+            'sessionIndex' => $sessionIndex,
+            'done' => 'https://www.yahoo.com',
+            'googleIdToken' => '',
+            'authCode' => '',
+            'attrSetIndex' => 0,
+            'tos0' => $tos0,
         ];
-        return self::get($id.'/friends', $params, $token);
+
+
+        $params = array_merge($params, $info);
+
+        curl_setopt($ch, CURLOPT_URL, $postUrl);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS,  http_build_query($params));
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        $content = curl_exec($ch);
+        return $content;
     }
 
-    function getUser($userId, $token){
+    static private function _verifyPhone($ch, $phone, $content){
+        $render = round(microtime(true) * 1000);
+        $crumb = self::_getHiddenValue('crumb', $content);
+        $acrumb = self::_getHiddenValue('acrumb', $content);
+        $sessionIndex = self::_getHiddenValue('sessionIndex', $content);
+        $locale = self::_getHiddenValue('locale', $content);
+
+        $regexPattern = "/<button type=\"submit\" name=\"sendCode\" class=\".{0,100}\" value=\"(.*?)\"/";
+        preg_match($regexPattern, $content, $match);
+        $sendCode = $match[1];
+
+        $ts['serve'] =  round(microtime(true) * 1000);
+        sleep(5);
+        $ts['render'] =  $render;
+
         $params = [
-            'fields' => 'birthday,email,name,gender',
+            'browser-fp-data' => json_encode(array_merge(json_decode(BROWSER_INFO, true), ['ts' => $ts])),
+            'crumb' => $crumb,
+            'acrumb' => $acrumb,
+            'sessionIndex' => $sessionIndex,
+            'displayName' => '',
+            'context' => 'REGISTRATION',
+            'locale' => $locale,
+            'thirdPartyAuthProvider' => '',
+            'formattedPhone' => $phone,
+            'shortCountryCode' => 'VN',
+            'editedPhoneNumber' => (int)$phone,
+            'sendCode' => $sendCode,
         ];
-        return self::get($userId, $params, $token);
+
+        $verifyUrl = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
+        curl_setopt($ch, CURLOPT_URL, $verifyUrl);
+        curl_setopt($ch, CURLOPT_POSTFIELDS,  http_build_query($params));
+        $content = curl_exec($ch);
+        return $content;
     }
 
-    function getUserTaggedPhotos($userId, $token){
+    static private function _submitCode($ch, $code, $content){
+        $render = round(microtime(true) * 1000);
+        $crumb = self::_getHiddenValue('crumb', $content);
+        $acrumb = self::_getHiddenValue('acrumb', $content);
+        $sessionIndex = self::_getHiddenValue('sessionIndex', $content);
+        $referenceId = self::_getHiddenValue('referenceId', $content);
+        $bearer = self::_getHiddenValue('bearer', $content);
+        $codeDigits = self::_getHiddenValue('codeDigits', $content);
+        $editedPhoneNumber = self::_getHiddenValue('editedPhoneNumber', $content);
+        $numberAttemptsRemaining = self::_getHiddenValue('numberAttemptsRemaining', $content);
+        $lastSentTime = self::_getHiddenValue('lastSentTime', $content);
+        $locale = self::_getHiddenValue('locale', $content);
+
+        $ts['serve'] =  round(microtime(true) * 1000);
+        sleep(5);
+        $ts['render'] =  $render;
+
         $params = [
-            'type' => 'tagged',
-            'fields' => 'name,images',
+            'browser-fp-data' => json_encode(array_merge(json_decode(BROWSER_INFO, true), ['ts' => $ts])),
+            'crumb' => $crumb,
+            'acrumb' => $acrumb,
+            'sessionIndex' => $sessionIndex,
+            'displayName' => '',
+            'referenceId' => $referenceId,
+            'context' => 'REGISTRATION',
+            'bearer' => $bearer,
+            'codeDigits' => $codeDigits,
+            'locale' => $locale,
+            'editedPhoneNumber' => $editedPhoneNumber,
+            'numberAttemptsRemaining' => $numberAttemptsRemaining,
+            'lastSentTime' => $lastSentTime,
+            'code' => $code,
+            'verifyCode' => 'true'
         ];
-        return self::get($userId.'/photos', $params, $token);
+
+        $submitUrl = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
+        curl_setopt($ch, CURLOPT_URL, $submitUrl);
+        curl_setopt($ch, CURLOPT_POSTFIELDS,  http_build_query($params));
+        $content = curl_exec($ch);
+
+    }
+    
+    static public function checkEmail($email){
+        $cookieFile = 'cookie_jar.txt';
+        $cookieJar = new FileCookieJar($cookieFile, TRUE);
+        $client = new Client(['cookies' => $cookieJar]);
+
+        $response = $client->get(config('yahoo.login_url'));
+        $content =  $response->getBody()->getContents();
+
+        $acrumb = self::_getHiddenValue('acrumb', $content);
+        $sessionIndex = self::_getHiddenValue('sessionIndex', $content);
+
+        $params = [
+            'acrumb' => $acrumb,
+            'sessionIndex' => $sessionIndex,
+            'username' => $email,
+            'passwd' => '',
+            'signin' => 'Next',
+            'persistent' => 'y'
+        ];
+
+
+        $response = $client->post(config('yahoo.login_url'), ['form_params' => $params]);
+        $content =  $response->getBody()->getContents();
+
+        if(strpos($content, 'ERROR_INVALID_USERNAME'))
+            return true;
     }
 
-    static public function get($uri, $params, $token){
-        $limit = $params['limit']??100;
-        $client = new Client();
-        $query = $params;
-        $query['access_token'] = $token;
-        $response = $client->get(config('facebook.graph').$uri, ['query' => $query]);
-        $result =  \GuzzleHttp\json_decode($response->getBody()->getContents(), true);
-
-        if(isset($result['data'])){
-            $items = [];
-            foreach ($result['data'] as $item) {
-                $items[$item['id']] = $item;
-            }
-
-            while(isset($result['paging']['next']) && count($items) < $limit){
-                $response = $client->get($result['paging']['next']);
-                $result = \GuzzleHttp\json_decode($response->getBody()->getContents(), true);
-
-                foreach ($result['data'] as $item) {
-                    $items[$item['id']] = $item;
-                }
-            }
-            return $items;
-        }elseif(isset($result['error'])){
-            self::get($uri, $params, $limit);
-            try{
-                $token->status = 0;
-                $token->save();
-            }catch (Exception $e){
-
-            }
-        }
-
-        return $result;
-    }
-
-    static public function getToken(){
-        $token = Token::where('status', 1)->first();
-        if(!$token)
-            die();
-        return $token;
+    private function _getHiddenValue($name, $content){
+        $regexPattern = "/<input type=\"hidden\"( value=\"(.*?)\")? name=\"$name\"( value=\"(.*?)\")?/";
+        preg_match($regexPattern, $content, $match);
+        return isset($match[4])?$match[4]:$match[2];
     }
 }

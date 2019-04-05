@@ -19,3 +19,8 @@ Route::get('/import_pages', 'PageController@importPages');
 Route::get('/import_posts', 'PageController@importPosts');
 Route::get('/import_engagements/{time}', 'PageController@importEngagements');
 Route::get('/view_links', 'PageController@viewTopLinks');
+
+
+Route::get('/import_accounts', 'AccountController@importAccounts');
+Route::get('/generate_token/{id}', 'AccountController@generateToken');
+Route::get('/update_account/{id}', 'AccountController@updateAccount');
