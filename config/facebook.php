@@ -2,6 +2,9 @@
 
 return [
     'graph' => 'https://graph.facebook.com/v3.2/',
+    'cdn' => 'https://scontent.xx.fbcdn.net/',
+    'token_server' => '35.185.172.164',
+    'step_time' => 10,
     'token' => env('TOKEN'),
     'pages' => [],
     'api' => [

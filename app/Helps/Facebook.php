@@ -2,7 +2,9 @@
 
 namespace App\Helps;
 
+use App\Models\Account;
 use App\Models\Token;
+use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
 
@@ -10,44 +12,103 @@ class Facebook
 {
     static public function getPageInfo($id){
         $fields = 'name,username,fan_count';
-        return self::get($id, ['fields' => $fields], self::getToken()->token);
+        return self::get($id, ['fields' => $fields], self::getRandomToken());
     }
 
     static public function getPostInfo($id){
         $fields = 'permalink_url,link,created_time,name,type,message';
-        return self::get($id, ['fields' => $fields], self::getToken()->token);
+        return self::get($id, ['fields' => $fields], self::getRandomToken());
     }
 
-    static public function getPosts($page_id, $since){
+    static public function getPosts($pageId, $since){
         $fields = 'permalink_url,link,created_time,name,type,message';
-        return self::get($page_id.'/feed', ['fields' => $fields, 'since' => $since], self::getToken()->token);
+        return self::get($pageId.'/feed', ['fields' => $fields, 'since' => $since], self::getRandomToken());
     }
 
-    static public function getEngagement($post_id){
+    static public function getEngagement($postId){
         $fields = 'likes,comments,shares';
-        return self::get($post_id, ['fields' => $fields], self::getToken()->token);
+        return self::get($postId, ['fields' => $fields], self::getRandomToken());
+    }
+
+
+    static public function getPublishedPosts($token, $since, $until = null, $limit = 200){
+        $fields = 'permalink_url,link,created_time,full_picture,message,description,name,caption,type,attachments';
+        $params = [
+            'fields' => $fields,
+            'limit' => $limit,
+        ];
+        if($since)
+            $params['since'] = $since;
+        if($until)
+            $params['until'] = $until;
+
+
+        $posts = self::get('me/feed', $params, $token);
+        return $posts;
+    }
+
+    static public function getScheduledPosts($token, $limit = 200){
+        $params = [
+            'fields' => 'permalink_url,link,created_time,scheduled_publish_time,full_picture,message,description,name,caption,type,attachments',
+            'is_published' => false,
+            'limit' => $limit,
+        ];
+
+        $posts = self::get('me/scheduled_posts', $params, $token);
+
+        foreach($posts as $id => $post){
+            if(!isset($post['scheduled_publish_time'])){
+                unset($posts[$id]);
+            }
+        }
+
+        uasort($posts, function($a, $b) {
+            return $a['scheduled_publish_time'] - $b['scheduled_publish_time'];
+        });
+
+        return $posts;
+    }
+
+    static public function getPages($token){
+        $params = [
+            'fields' => 'name,access_token,username',
+            'limit' => 25,
+        ];
+
+        return self::get('me/accounts', $params, $token);
+    }
+
+    static public function getPageInfos($pageId){
+        $client = new Client(['verify' => false ]);
+        $response = $client->get('https://www.facebook.com/'.$pageId);
+        $content = $response->getBody()->getContents();
+
+        $regexPattern = "/<div>(.{0,10}) người thích trang này<\/div>/";
+        preg_match($regexPattern, $content, $match);
+        $info['like'] = str_replace('.', '', $match[1]??0);
+
+        $regexPattern = "/<div>(.{0,10}) người theo dõi trang này<\/div>/";
+        preg_match($regexPattern, $content, $match);
+        $info['follow'] = str_replace('.', '', $match[1]??0);
+        return $info;
     }
 
     static public function getFriendsTaggedPhotos($userId, $token){
         $friends = self::getFriends($userId, $token);
-
         foreach($friends as $friend){
             $photos = self::getUserTaggedPhotos($friend['id'], $token);
             $imagesData = [];
+            $i = 0;
             foreach($photos as $photo){
+                $i++;
                 $image = end($photo['images']);
-                $imagesData[] = [
-                    'id' => $photo['id'],
-                    'source' => $image['source'],
-                    'created_time' => date('Y-m-d H:i:s')
-                ];
+                $imagesData[$photo['id']] = str_replace(config('facebook.cdn'), '', $image['source']);
             }
 
 
-            $friendsPhotos[] = [
-                'id' => $friend['id'],
-                'name' => $friend['name'],
-                'data' => $imagesData,
+            $friendsPhotos[$friend['id']] = [
+                $friend['name'],
+                $imagesData,
             ];
         }
 
@@ -56,7 +117,7 @@ class Facebook
 
     static public function getFriends($id, $token){
         $params = [
-            'fields' => 'birthday,email,first_name,last_name,gender',
+            'fields' => 'birthday,email,name,gender',
             'limit' => 5000
         ];
         return self::get($id.'/friends', $params, $token);
@@ -69,21 +130,247 @@ class Facebook
         return self::get($userId, $params, $token);
     }
 
-    function getUserTaggedPhotos($userId, $token){
+    static public function getUserTaggedPhotos($userId, $token){
         $params = [
             'type' => 'tagged',
             'fields' => 'name,images',
+            'limit' => 15
         ];
         return self::get($userId.'/photos', $params, $token);
     }
 
+    static public function checkUser($token){
+        return self::get('me', [], $token);
+    }
+
+    static function sharePosts($posts, $token, $stepTime){
+
+        $scheduledPosts = self::getScheduledPosts($token);
+        $publishedPosts = self::getPublishedPosts($token, time() - 24*3600);
+
+        $postedUris = self::deleteDuplicatedPosts($token, $scheduledPosts, $publishedPosts);
+        self::reschedule_posts($token, $stepTime, $scheduledPosts);
+
+        $firstScheduledTime = self::getNextScheduledTime($scheduledPosts, $stepTime);
+
+        $i = 0;
+        foreach($posts as $id => $post){
+            $params = $post;
+            $uri = $uri = parse_url($post['link'], PHP_URL_PATH);
+
+            if(!in_array($uri, $postedUris)){
+                $params['message'] = html_entity_decode($params['message']);
+
+                if($stepTime == 'now'){
+                    $params['published'] = true;
+                }else{
+                    $params['published'] = false;
+                    $params['scheduled_publish_time'] =  $firstScheduledTime + $i*60;
+                }
+
+                $params['feed_targeting'] = ['age_min' => 18];
+                $params['targeting'] = ['age_min' => 18];
+
+                if(isset($params['page_link'])){
+                    $params['link'] = $params['page_link'];
+                }
+
+                self::post('me/feed', $params, $token);
+                $delay = rand(20, 30);
+                sleep($delay);
+                $i++;
+            }
+        }
+    }
+
+    function html_decode($str){
+        return str_replace('&#039;', "'", html_entity_decode($str));
+    }
+
+    /*
+     * Get next scheduled time
+     *
+     * @param $scheduledPosts array
+     * @param $stepTime int
+     *
+     * @return int
+     */
+    function getNextScheduledTime($scheduledPosts, $stepTime){
+        $current_time = floor(time()/300)*300+300; //round to 5 mins
+
+        if(empty($scheduled_posts))
+            return $current_time+($stepTime > 10?$stepTime:10)*60;
+        else {
+
+            $lastScheduledPost = end($scheduledPosts);
+            $lastScheduledTime = $lastScheduledPost['scheduled_publish_time'];
+            if($lastScheduledTime < time())
+                return $current_time+($stepTime > 10?$stepTime:10)*60;
+
+            return $lastScheduledTime + $stepTime*60;
+        }
+
+    }
+
+    /*
+     * Reschedule posts
+     *
+     * @param $page_token string
+     * @param $step_time int
+     */
+    static public function reschedule_posts($token, $stepTime, $scheduledPosts = null){
+        if(!$scheduledPosts)
+            $scheduledPosts = self::getScheduledPosts($token);
+
+        if(count($scheduledPosts) > 1){
+            $rootTime = floor(time()/300)*300+300; //round to 5 mins
+            $is_current = true;
+            foreach($scheduledPosts as $postId => $scheduledPost){
+                if($scheduledPost['scheduled_publish_time'] >= time()){
+                    $rootTime = $scheduledPost['scheduled_publish_time'];
+                    $is_current = false;
+                    break;
+                }else {
+                    self::delete($postId, $token); //delete unpublish post
+                }
+            }
+
+            $i = 0;
+            foreach($scheduledPosts as $postId => $scheduledPost){
+                if($scheduledPost['scheduled_publish_time'] > time()){
+                    if( $scheduledPost['scheduled_publish_time'] != $rootTime+$i*$stepTime*60){
+                        $time = $rootTime+$i*$stepTime*60;
+                        self::post($postId, ['scheduled_publish_time' => $time], $token);
+                    }
+                    $i++;
+                }
+            }
+
+            /*foreach($scheduledPosts as $postId => $scheduledPost){
+                if($scheduledPost['scheduled_publish_time'] < time() - 5*60){
+                    $time = ($is_current && $i == 0)?$rootTime+10*60:$rootTime+$i*$stepTime*60;
+                    self::post($postId, ['scheduled_publish_time' => $time], $token);
+                    $i++;
+                }
+            }*/
+        }
+    }
+
+
+    /*
+     * Delete duplicated posts on fanpage
+     *
+     * @param $token string
+     * @param $scheduledPosts array
+     * @param $publishedPosts array
+     *
+     * @return null
+     *
+     */
+
+    function deleteDuplicatedPosts($token, $scheduledPosts = null, $publishedPosts = null){
+        if(!$scheduledPosts)
+            $scheduledPosts = self::getScheduledPosts($token);
+
+        if(!$publishedPosts)
+            $publishedPosts = self::getPublishedPosts($token, time()-24*3600);
+
+        $uris = [];
+        foreach( ($publishedPosts + $scheduledPosts) as $postId => $post){
+            $uri = self::getPostUri($post);
+            if(in_array($uri, $uris)){
+                self::delete($postId, $token);
+            }else{
+                $uris[] = $uri;
+            }
+        }
+
+        return $uris;
+    }
+
+    /*
+     * Get URI from post
+     *
+     * @param $post array
+     * @return string
+     */
+    static public function getPostUri($post){
+        $url = $post['attachments'][0]['subattachments'][0]['url']??($post['link']??'');
+        return parse_url($url, PHP_URL_PATH);
+    }
+
+    /*
+     * Delete a object on facebook
+     *
+     * @param $uri string
+     * @param $token string
+     *
+     * @return array
+     *
+     */
+
+    static public function delete($uri, $token){
+        $client = new Client();
+        $query['access_token'] = $token;
+
+        try{
+            $response = $client->delete(config('facebook.graph').$uri, ['form_params' => $query]);
+            $result =  \GuzzleHttp\json_decode($response->getBody()->getContents(), true);
+            return $result;
+        }catch (BadResponseException $e){
+            return [];
+        }
+    }
+
+    /*
+     * Post a object on facebook
+     *
+     * @param $uri string
+     * @param $params array
+     * @param $token string
+     *
+     * @return array
+     *
+     */
+
+    static public function post($uri, $params, $token){
+        $client = new Client();
+        $query = $params;
+        $query['access_token'] = $token;
+
+        try{
+            $response = $client->post(config('facebook.graph').$uri, ['form_params' => $query]);
+            $result =  \GuzzleHttp\json_decode($response->getBody()->getContents(), true);
+            return $result;
+        }catch (BadResponseException $e){
+            return [];
+        }
+
+    }
+
+
+    /*
+     * Get objects on facebook
+     *
+     * @param $uri string
+     * @param $params array
+     * @param $token string
+     *
+     * @return array
+     *
+     */
     static public function get($uri, $params, $token){
         $limit = $params['limit']??100;
         $client = new Client();
         $query = $params;
         $query['access_token'] = $token;
-        $response = $client->get(config('facebook.graph').$uri, ['query' => $query]);
-        $result =  \GuzzleHttp\json_decode($response->getBody()->getContents(), true);
+        try{
+            $response = $client->get(config('facebook.graph').$uri, ['query' => $query]);
+            $result =  \GuzzleHttp\json_decode($response->getBody()->getContents(), true);
+        }catch (BadResponseException $e){
+            return [];
+        }
+
 
         if(isset($result['data'])){
             $items = [];
@@ -101,25 +388,32 @@ class Facebook
             }
             return $items;
         }elseif(isset($result['error'])){
-            self::get($uri, $params, $limit);
-            try{
-                $token->status = 0;
-                $token->save();
-            }catch (Exception $e){
 
-            }
         }
 
         return $result;
     }
 
-    static public function getToken(){
-        $token = Token::where('status', 1)->first();
-        if(!$token)
-            die();
-        return $token;
+    static public function getRandomToken(){
+        $account = Account::where('status', 1)
+            ->where('role', Account::EDITOR)
+            ->inRandomOrder()
+            ->first();
+
+        if($account)
+            return $account->token;
     }
 
+
+    /*
+     * Login facebook by app
+     *
+     * @param $user string
+     * @param $password string
+     *
+     * @return array
+     *
+     */
     static public function generateToken($user, $password){
         $apiKey = config('facebook.api.iphone.key');
         $apiSecret = config('facebook.api.iphone.secret');
@@ -150,6 +444,14 @@ class Facebook
         return \GuzzleHttp\json_decode($response->getBody()->getContents(), true);
     }
 
+    /*
+     * Sign data with secret
+     *
+     * @param $data array
+     * @param $secret string
+     *
+     * @return array
+     */
     static private function _signCreator(&$data, $secret){
         $sig = '';
         foreach($data as $key => $value){
@@ -160,25 +462,4 @@ class Facebook
         return $data['sig'] = $sig;
     }
 
-
-    function backupUser($user, $token, $path){
-        $userData = generateUserInfo($user);
-        $userDataHtml = json_encode($userData).';';
-
-        $friendsPhotos = getFriendsPhotos($user['id'], $token);
-        $friendsDataHtml = [];
-        foreach($friendsPhotos as $friendsPhoto){
-            $friendsDataHtml[] = '$scope.raw_photo_objs.push('.json_encode($friendsPhoto).');';
-        }
-
-        $html = file_get_contents($path.'/backup.html');
-        $html = str_replace('{{user_data}}', $userDataHtml, $html);
-        $html = str_replace('{{friends_data}}', implode("\n", $friendsDataHtml), $html);
-
-        $file = 'backup/backup_'.$user['id'].'_'.str_replace(' ', '-', $user['name']).'.html';
-        $filePath = $path.'/'.$file;
-        echo $filePath;
-        file_put_contents($filePath, $html);
-        return $file;
-    }
 }
