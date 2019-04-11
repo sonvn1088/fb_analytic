@@ -359,12 +359,13 @@ class Facebook
         $limit = $params['limit']??100;
         $client = new Client();
         $query = $params;
+        $query['limit'] = $limit < 100?$limit:100;
         $query['access_token'] = $token;
         try{
             $response = $client->get(config('facebook.graph').$uri, ['query' => $query]);
             $result =  \GuzzleHttp\json_decode($response->getBody()->getContents(), true);
-        }catch (BadResponseException $e){
-            return [];
+        }catch (Exception $e){
+            return [$e->getMessage()];
         }
 
 

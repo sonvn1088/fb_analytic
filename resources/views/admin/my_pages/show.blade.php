@@ -57,6 +57,20 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
+                                <label for="created_at">Created</label>
+                                <input type="text" name="created_at" class="form-control" value="{{ $myPage->created_at }}" readonly>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="updated_at">Updated</label>
+                                <input type="text" name="updated_at" class="form-control" value="{{ $myPage->updated_at }}" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
                                 <label for="group_id">Group</label>
                                 {!! Form::select('group_id', $groups, $myPage->group_id, ['class' => 'form-control']) !!}
                             </div>
