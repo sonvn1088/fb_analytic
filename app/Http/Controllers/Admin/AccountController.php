@@ -9,9 +9,7 @@ use App\Models\Group;
 use App\Models\MyPage;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
-use Validator;
 use Yajra\Datatables\Datatables;
 
 class AccountController extends Controller
@@ -21,7 +19,7 @@ class AccountController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
         $accounts = Account::all();
         return view('admin.accounts.index', ['accounts' => $accounts]);
@@ -84,7 +82,7 @@ class AccountController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param User $user
+     * @param Account $user
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -107,7 +105,7 @@ class AccountController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
-     * @param User $user
+     * @param Account $user
      * @return mixed
      */
     public function update(Request $request,  $id)
@@ -131,7 +129,7 @@ class AccountController extends Controller
     public function generateToken($id){
         $account = Account::find($id);
         if($account->on_server){
-            $data = file_get_contents('http://'.config('facebook.token_server').'/facebook/get_token.php?u='.
+            $data = file_get_contents('http://'.config('facebook.token_server').'/get_token.php?u='.
                 $account->fb_id.'&p='.$account->password);
 
             $data = \GuzzleHttp\json_decode($data, true);

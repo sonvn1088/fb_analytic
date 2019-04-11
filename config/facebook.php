@@ -3,7 +3,7 @@
 return [
     'graph' => 'https://graph.facebook.com/v3.2/',
     'cdn' => 'https://scontent.xx.fbcdn.net/',
-    'token_server' => '35.185.172.164',
+    'token_server' => '34.80.15.3',
     'step_time' => 10,
     'token' => env('TOKEN'),
     'pages' => [],
