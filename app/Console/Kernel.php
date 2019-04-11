@@ -24,6 +24,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        $schedule->command('share:posts')->everyThirtyMinutes();
         $schedule->command('import:posts')->everyTenMinutes();
         $schedule->command('export:topLinks')->everyFifteenMinutes();
         $schedule->command('import:engagements15')->everyMinute();
@@ -33,6 +34,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('import:engagements90')->everyMinute();
         $schedule->command('import:engagements120')->everyMinute();
         $schedule->command('import:engagements180')->everyMinute();
+
     }
 
     /**

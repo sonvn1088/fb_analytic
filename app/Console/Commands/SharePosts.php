@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Helps\MyPage;
+use App\Models\MyPage;
 
 class SharePosts extends Command
 {
@@ -38,7 +38,7 @@ class SharePosts extends Command
      */
     public function handle()
     {
-        $myPages = MyPages::where('status', 1)->get();
+        $myPages = MyPage::where('status', 1)->get();
         foreach($myPages as $myPage){
             $myPage->sharePosts();
         }
