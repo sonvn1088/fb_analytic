@@ -3,7 +3,7 @@
 @section('title', 'Manage FBAC')
 
 @section('content_header')
-    <h1>Account #{{$account->id}}</h1>
+    <h1>Account #{{$account->first_name}} {{$account->last_name}}</h1>
 @stop
 
 @section('content')
@@ -15,22 +15,13 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label for="first_name">First Name</label>
-                                <input type="text" name="first_name" class="form-control" value="{{ $account->first_name }}" readonly>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="last_name">Last Name</label>
-                                <input type="text" name="last_name" class="form-control" value="{{ $account->last_name }}" readonly>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
                                 <label for="password">Password</label>
-                                <input type="text" name="password" class="form-control" value="{{ $account->password }}" readonly>
+                                <div class="input-group">
+                                    <input type="text" name="password" class="form-control" value="{{ $account->password }}" readonly>
+                                    <span class="input-group-btn">
+                                        <a class="btn btn-info" href="{{route('admin.accounts.change_password', $account->id)}}" type="button">Change</a>
+                                    </span>
+                                </div>
                             </div>
                         </div>
                         <div class="col-sm-6">
@@ -40,6 +31,67 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="token">Token</label>
+                                <div class="input-group">
+                                    <input type="text" name="token" class="form-control" value="{{ $account->token }}">
+                                    <span class="input-group-btn">
+                                        <a class="btn btn-info" href="{{route('admin.accounts.generate_token', $account->id)}}" type="button">Generate</a>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="status">Backup</label>
+                                <div class="input-group">
+                                    <a href="{{route('admin.accounts.view_friends', $account->id)}}" target="_blank"
+                                       class="btn btn-md btn-success btn-block">
+                                        {{$account->backup}}</a>
+                                    <span class="input-group-btn">
+                                        <a class="btn btn-info" href="{{route('admin.accounts.backup_friends', $account->id)}}" type="button">Backup</a>
+                                    </span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="friends">Profile</label>
+                                <a href="javascript:$.ajax('{{route('admin.accounts.profile', $account->profile)}}')"
+                                   target="_blank" class="btn btn-md btn-info btn-block">
+                                    {{$account->profile}}</a>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="fb_id">FB ID</label>
+                                <a href="https://www.facebook.com/{{$account->fb_id}}" target="_blank"
+                                   class="btn btn-md btn-primary btn-block">
+                                    {{$account->fb_id}}</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="status">Status</label>
+                                {!! Form::select('status', $account->statuses, $account->status['value'], ['class' => 'form-control']) !!}
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="on_server">On server</label>
+                                {!! Form::select('on_server', $account->yesNo, $account->on_server['value'], ['class' => 'form-control']) !!}
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
@@ -55,24 +107,7 @@
                         </div>
 
                     </div>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="fb_id">FB ID</label>
-                                <a href="https://www.facebook.com/{{$account->fb_id}}" target="_blank"
-                                   class="btn btn-md btn-primary btn-block">
-                                    {{$account->fb_id}}</a>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="friends">Profile</label>
-                                <a href="javascript:$.ajax('{{route('admin.accounts.profile', $account->profile)}}')"
-                                   target="_blank" class="btn btn-md btn-info btn-block">
-                                    {{$account->profile}}</a>
-                            </div>
-                        </div>
-                    </div>
+
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
@@ -106,38 +141,6 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label for="status">Status</label>
-                                {!! Form::select('status', $account->statuses, $account->status['value'], ['class' => 'form-control']) !!}
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="on_server">On server</label>
-                                {!! Form::select('on_server', $account->yesNo, $account->on_server['value'], ['class' => 'form-control']) !!}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="status">Backup</label>
-                                <a href="{{route('admin.accounts.view_friends', $account->id)}}" target="_blank"
-                                   class="btn btn-md btn-success btn-block">
-                                    {{$account->backup}}</a>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="token">Token</label>
-                                <input type="text" name="token" class="form-control" value="{{ $account->token }}">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
                                 <label for="status">Group</label>
                                 {!! Form::select('group_id', $groups, $account->group_id, ['class' => 'form-control']) !!}
                             </div>
@@ -152,10 +155,7 @@
 
 
                     <button type="submit" class="btn btn-primary btn-flat ">Save</button>
-                    <a class="btn btn-info btn-flat" href="{{route('admin.accounts.change_password', $account->id)}}">Change Password</a>
-                    <a class="btn btn-info btn-flat" href="{{route('admin.accounts.generate_token', $account->id)}}">Generate Token</a>
                     <a class="btn btn-info btn-flat" href="{{route('admin.accounts.update_info', $account->id)}}">Update Info</a>
-                    <a class="btn btn-info btn-flat" href="{{route('admin.accounts.backup_friends', $account->id)}}">Backup Friends</a>
                 </div>
             </div>
         </div>

@@ -21,6 +21,7 @@
                                 <th>Like</th>
                                 <th>Follow</th>
                                 <th>Group</th>
+                                <th>Editor</th>
                                 <th>Country</th>
                                 <th>Status</th>
                                 <th>Edit</th>
@@ -67,6 +68,16 @@
 
                     {
                         data: 'group_id', name: 'group_id',
+
+                    },
+                    {
+                        data: 'editor', name: 'editor',
+                        render: function ( data, type, row, meta ) {
+                            return '<a href="{{route('admin.accounts.show')}}/'+data.id+'" target="_blank">'
+                                    +data.first_name + ' ' + data.last_name + '<a/> ('
+                                    + '<a title="Open profile" href="javascript:$.ajax(\''+ '{{route('admin.accounts.profile')}}/'+data.profile+'\')">Open profile<a/>)'
+                                    ;
+                        }
 
                     },
                     {data: 'country', name: 'country'},

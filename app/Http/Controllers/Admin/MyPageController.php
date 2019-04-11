@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 
 use App\Helps\Facebook;
+use App\Models\Account;
 use App\Models\Group;
 use App\Models\MyPage;
 use App\Models\Site;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Arr;
 use Yajra\Datatables\Datatables;
 
 class MyPageController extends Controller
@@ -37,6 +39,12 @@ class MyPageController extends Controller
             })
             ->editColumn('status', function ($myPage){
                 return $myPage->status['label'];
+            })
+            ->editColumn('editor', function ($myPage){
+                $account = Account::where('group_id', $myPage->group_id)
+                    ->where('role', Account::EDITOR)
+                    ->first();
+                return Arr::only($account->toArray(), ['first_name', 'last_name', 'id', 'profile']);
             })
             ->make(true);
     }

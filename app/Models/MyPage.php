@@ -53,7 +53,7 @@ class MyPage extends Model
     private function _getPosts(){
         $items = [];
         foreach($this->sites() as $site){
-            $posts = file_get_contents($site->path);
+            $posts = json_decode(file_get_contents($site->path), true);
 
             foreach($posts as $post){
                 $message = $this->_getMessageFromPost($post['messages'], $post['name'], $post['description'], $post['content']);

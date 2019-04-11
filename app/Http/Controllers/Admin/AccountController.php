@@ -138,8 +138,22 @@ class AccountController extends Controller
 
         $account->token = $data['access_token']??($data['error']['message']??$data['error_msg']);
         $account->login_info = json_encode($data);
-        if(isset($data['access_token']))
+        if(isset($data['access_token'])){
             $account->status = 1;
+
+            //update token for pages
+            if($account->role['value'] == 2){ //editor
+                $pages = Facebook::getPages($account->token);
+
+                $myPages = MyPage::where('group_id', $account->group->id)
+                    ->get();
+
+                foreach($myPages as $myPage){
+                    $myPage->token = $pages[$myPage->fb_id]['access_token'];
+                    $myPage->save();
+                }
+            }
+        }
         else
             $account->status = 0;
         $account->save();
@@ -161,20 +175,6 @@ class AccountController extends Controller
         if(isset($user['gender']))
             $account->gender = $user['gender'] == 'male'?2:1;
         $account->save();
-
-        //update token for pages
-        if($account->role['value'] == 2){ //editor
-            $pages = Facebook::getPages($account->token);
-
-            $myPages = MyPage::where('group_id', $account->group->id)
-                ->get();
-
-            foreach($myPages as $myPage){
-                $myPage->token = $pages[$myPage->fb_id]['access_token'];
-                $myPage->save();
-            }
-        }
-
 
         return redirect()->intended(route('admin.accounts.show', $id));
     }
