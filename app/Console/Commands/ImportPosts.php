@@ -40,16 +40,6 @@ class ImportPosts extends Command
      */
     public function handle()
     {
-        $posts = Post::all();
-        foreach($posts as $post){
-            if(strpos($post->post_id, '_')){
-                $tmp = explode('_', $post->post_id);
-                $post->post_id = $tmp[1];
-                $post->page_id = $tmp[0];
-                $post->save();
-            }
-        }
-
         Import::posts();
     }
 }

@@ -404,13 +404,19 @@ class Facebook
     }
 
     static public function getRandomToken(){
-        $account = Account::where('status', 1)
+        $accounts = Account::where('status', 1)
             ->where('role', Account::EDITOR)
-            ->inRandomOrder()
-            ->first();
+            ->get();
 
-        if($account)
-            return $account->token;
+        foreach($accounts as $account){
+            $user = self::checkUser($account->token);
+            if(isset($user['id']))
+                return $account->token;
+            else{
+                $account->status = 0;
+                $account->save();
+            }
+        }
     }
 
 
