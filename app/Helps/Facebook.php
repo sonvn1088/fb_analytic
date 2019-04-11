@@ -143,7 +143,7 @@ class Facebook
         return self::get('me', [], $token);
     }
 
-    static function sharePosts($posts, $token, $stepTime){
+    static public function sharePosts($posts, $token, $stepTime){
 
         $scheduledPosts = self::getScheduledPosts($token);
         $publishedPosts = self::getPublishedPosts($token, time() - 24*3600);
@@ -183,10 +183,6 @@ class Facebook
         }
     }
 
-    function html_decode($str){
-        return str_replace('&#039;', "'", html_entity_decode($str));
-    }
-
     /*
      * Get next scheduled time
      *
@@ -195,7 +191,7 @@ class Facebook
      *
      * @return int
      */
-    function getNextScheduledTime($scheduledPosts, $stepTime){
+    static function getNextScheduledTime($scheduledPosts, $stepTime){
         $current_time = floor(time()/300)*300+300; //round to 5 mins
 
         if(empty($scheduled_posts))
@@ -264,11 +260,11 @@ class Facebook
      * @param $scheduledPosts array
      * @param $publishedPosts array
      *
-     * @return null
+     * @return array
      *
      */
 
-    function deleteDuplicatedPosts($token, $scheduledPosts = null, $publishedPosts = null){
+    static public function deleteDuplicatedPosts($token, $scheduledPosts = null, $publishedPosts = null){
         if(!$scheduledPosts)
             $scheduledPosts = self::getScheduledPosts($token);
 
