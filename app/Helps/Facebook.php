@@ -60,6 +60,10 @@ class Facebook
             if(!isset($post['scheduled_publish_time'])){
                 unset($posts[$id]);
             }
+
+            if(!isset($post['message']) || !$post['message']){
+                self::delete($id, $token);
+            }
         }
 
         uasort($posts, function($a, $b) {
@@ -165,7 +169,7 @@ class Facebook
                     $params['published'] = true;
                 }else{
                     $params['published'] = false;
-                    $params['scheduled_publish_time'] =  $firstScheduledTime + $i*60;
+                    $params['scheduled_publish_time'] =  $firstScheduledTime + $i*$stepTime*60;
                 }
 
                 $params['feed_targeting'] = ['age_min' => 18];
@@ -176,8 +180,8 @@ class Facebook
                 }
 
                 self::post('me/feed', $params, $token);
-                $delay = rand(20, 30);
-                sleep($delay);
+               /* $delay = rand(20, 30);
+                sleep($delay);*/
                 $i++;
             }
         }
@@ -194,7 +198,7 @@ class Facebook
     static function getNextScheduledTime($scheduledPosts, $stepTime){
         $current_time = floor(time()/300)*300+300; //round to 5 mins
 
-        if(empty($scheduled_posts))
+        if(empty($scheduledPosts))
             return $current_time+($stepTime > 10?$stepTime:10)*60;
         else {
 
@@ -270,6 +274,7 @@ class Facebook
 
         if(!$publishedPosts)
             $publishedPosts = self::getPublishedPosts($token, time()-24*3600);
+
 
         $uris = [];
         foreach( ($publishedPosts + $scheduledPosts) as $postId => $post){
