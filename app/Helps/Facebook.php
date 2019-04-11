@@ -60,6 +60,16 @@ class Facebook
             if(!isset($post['scheduled_publish_time'])){
                 unset($posts[$id]);
             }
+
+
+            if(!isset($post['message']) || !$post['message']){
+                self::delete($id, $token);
+            }
+
+            //delete post null picture
+            if(!isset($post['full_picture']) || !$post['full_picture']){
+                self::delete($id, $token);
+            }
         }
 
         uasort($posts, function($a, $b) {
@@ -149,9 +159,7 @@ class Facebook
         $publishedPosts = self::getPublishedPosts($token, time() - 24*3600);
 
         $postedUris = self::deleteDuplicatedPosts($token, $scheduledPosts, $publishedPosts);
-        self::reschedule_posts($token, $stepTime, $scheduledPosts);
-
-        $firstScheduledTime = self::getNextScheduledTime($scheduledPosts, $stepTime);
+        $firstScheduledTime = self::getNextScheduledTime($token, $scheduledPosts, $stepTime);
 
         $i = 0;
         foreach($posts as $id => $post){
@@ -165,7 +173,7 @@ class Facebook
                     $params['published'] = true;
                 }else{
                     $params['published'] = false;
-                    $params['scheduled_publish_time'] =  $firstScheduledTime + $i*60;
+                    $params['scheduled_publish_time'] =  $firstScheduledTime + $i*$stepTime*60;
                 }
 
                 $params['feed_targeting'] = ['age_min' => 18];
@@ -176,8 +184,8 @@ class Facebook
                 }
 
                 self::post('me/feed', $params, $token);
-                $delay = rand(20, 30);
-                sleep($delay);
+               /* $delay = rand(20, 30);
+                sleep($delay);*/
                 $i++;
             }
         }
@@ -191,10 +199,12 @@ class Facebook
      *
      * @return int
      */
-    static function getNextScheduledTime($scheduledPosts, $stepTime){
+    static function getNextScheduledTime($token, $scheduledPosts, $stepTime){
+        self::reschedulePosts($token, $scheduledPosts, $stepTime);
+
         $current_time = floor(time()/300)*300+300; //round to 5 mins
 
-        if(empty($scheduled_posts))
+        if(empty($scheduledPosts))
             return $current_time+($stepTime > 10?$stepTime:10)*60;
         else {
 
@@ -214,11 +224,11 @@ class Facebook
      * @param $page_token string
      * @param $step_time int
      */
-    static public function reschedule_posts($token, $stepTime, $scheduledPosts = null){
+    static public function reschedulePosts($token, $scheduledPosts = null, $stepTime){
         if(!$scheduledPosts)
             $scheduledPosts = self::getScheduledPosts($token);
 
-        if(count($scheduledPosts) > 1){
+        if(count($scheduledPosts) > 0){
             $rootTime = floor(time()/300)*300+300; //round to 5 mins
             $is_current = true;
             foreach($scheduledPosts as $postId => $scheduledPost){
@@ -234,14 +244,15 @@ class Facebook
             $i = 0;
             foreach($scheduledPosts as $postId => $scheduledPost){
                 if($scheduledPost['scheduled_publish_time'] > time()){
-                    if( $scheduledPost['scheduled_publish_time'] != $rootTime+$i*$stepTime*60){
-                        $time = $rootTime+$i*$stepTime*60;
+                    $time = $rootTime+$i*$stepTime*60;
+                    if( $scheduledPost['scheduled_publish_time'] != $time){
                         self::post($postId, ['scheduled_publish_time' => $time], $token);
                     }
                     $i++;
                 }
             }
 
+            return $rootTime+$i*$stepTime*60;
             /*foreach($scheduledPosts as $postId => $scheduledPost){
                 if($scheduledPost['scheduled_publish_time'] < time() - 5*60){
                     $time = ($is_current && $i == 0)?$rootTime+10*60:$rootTime+$i*$stepTime*60;
@@ -270,6 +281,7 @@ class Facebook
 
         if(!$publishedPosts)
             $publishedPosts = self::getPublishedPosts($token, time()-24*3600);
+
 
         $uris = [];
         foreach( ($publishedPosts + $scheduledPosts) as $postId => $post){

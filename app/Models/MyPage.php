@@ -56,7 +56,7 @@ class MyPage extends Model
             $posts = json_decode(file_get_contents($site->path), true);
 
             foreach($posts as $post){
-                $message = $this->_getMessageFromPost($post['messages'], $post['name'], $post['description'], $post['content']);
+                $message = $this->_getMessageFromPost($post['messages'], $post['description'], $post['content']);
 
                 $items[] = [
                     'link' => $post['link'],
@@ -79,7 +79,9 @@ class MyPage extends Model
         if(count($messages) >= 2){
             return $messages[array_rand($messages)];
         }
-        $messages[] = $description;
+        $messages = [];
+        if($description)
+            $messages[] = $description;
 
 
         $regexPattern = "/<p class=\"text\">(.*?)<\/p>/";
@@ -90,6 +92,7 @@ class MyPage extends Model
         preg_match_all($regexPattern, $content, $matches);
         $texts = array_merge($texts, $matches[1]);
 
+
         foreach($texts as $part){
             if(strpos($part, 'http') === false){
                 $part = strip_tags($part);
@@ -97,11 +100,12 @@ class MyPage extends Model
                 $part = preg_replace($regexPattern, '||$1', $part);
                 $sentences = explode('||', $part);
                 foreach($sentences as $sentence){
-                    if(strlen($sentence) > 50)
+                    if(strlen(trim($sentence)) > 50)
                         $messages[] = $sentence.'...';
                 }
             }
         }
+
         return $messages[array_rand($messages)];
     }
 }
