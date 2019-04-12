@@ -158,7 +158,7 @@ class Facebook
         return self::get($userId.'/photos', $params, $token);
     }
 
-    static public function checkUser($token){
+    static public function checkToken($token){
         return self::get('me', [], $token);
     }
 
@@ -386,9 +386,9 @@ class Facebook
             $response = $client->get(config('facebook.graph').$uri, ['query' => $query]);
             $result =  \GuzzleHttp\json_decode($response->getBody()->getContents(), true);
         }catch (BadResponseException $e){
-            return [$e->getMessage()];
+            return ['error' => ['message' => $e->getMessage(), 'code' => $e->getCode()]];
         }catch(Exception $e){
-            return [$e->getMessage()];
+            return ['error' => ['message' => $e->getMessage(), 'code' => $e->getCode()]];
         }
 
 
@@ -417,11 +417,12 @@ class Facebook
     static public function getRandomToken(){
         $accounts = Account::where('status', 1)
             ->where('role', Account::EDITOR)
+            ->inRandomOrder()
             ->get();
 
         foreach($accounts as $account){
-            $user = self::checkUser($account->token);
-            if(isset($user['id']))
+            $result = self::checkToken($account->token);
+            if(isset($result['id']))
                 return $account->token;
             else{
                 $account->status = 0;

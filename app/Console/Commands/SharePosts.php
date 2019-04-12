@@ -2,8 +2,11 @@
 
 namespace App\Console\Commands;
 
+use App\Helps\Facebook;
+use App\Helps\General;
 use Illuminate\Console\Command;
 use App\Models\MyPage;
+use Illuminate\Support\Arr;
 
 class SharePosts extends Command
 {
@@ -40,7 +43,19 @@ class SharePosts extends Command
     {
         $myPages = MyPage::where('status', 1)->get();
         foreach($myPages as $myPage){
-            $myPage->sharePosts();
+            $result = Facebook::checkToken($myPage->token);
+           if(isset($result['id']))
+                $myPage->sharePosts();
+           else{
+                $editor = $myPage->editor();
+                if($editor){
+                    $editor->status = 0;
+                    $editor->save();
+                    $editor->error_message = Arr::get($result, 'error.message');
+                    General::sendMail($editor);
+                }
+            }
+
         }
     }
 }

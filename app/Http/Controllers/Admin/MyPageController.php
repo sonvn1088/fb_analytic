@@ -40,12 +40,8 @@ class MyPageController extends Controller
                 return $myPage->status['label'];
             })
             ->editColumn('editor', function ($myPage){
-                $account = Account::where('group_id', $myPage->group_id)
-                    ->where('role', Account::EDITOR)
-                    ->where('status', Account::ENABLED)
-                    ->first();
-                if($account)
-                    return Arr::only($account->toArray(), ['first_name', 'last_name', 'id', 'profile']);
+                if($editor = $myPage->editor())
+                    return Arr::only($editor->toArray(), ['first_name', 'last_name', 'id', 'profile']);
                 else
                     return [];
             })

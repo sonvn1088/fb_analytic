@@ -44,6 +44,13 @@ class MyPage extends Model
             ->get();
     }
 
+    public function editor(){
+        return Account::where('group_id', $this->group_id)
+            ->where('role', Account::EDITOR)
+            ->where('status', Account::ENABLED)
+            ->first();
+    }
+
     public function sharePosts(){
         if($this->status['value'] == 1){
             Facebook::sharePosts($this->_getPosts(), $this->token, config('facebook.step_time'));
