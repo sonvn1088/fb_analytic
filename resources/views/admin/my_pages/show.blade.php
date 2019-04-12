@@ -21,8 +21,8 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label for="name">Name</label>
-                                <input type="text" name="name" class="form-control" value="{{ $myPage->name }}">
+                                <label for="username">Username</label>
+                                <input type="text" name="username" class="form-control" value="{{ $myPage->username }}">
                             </div>
                         </div>
                     </div>
@@ -30,13 +30,13 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="like">Like</label>
-                                <input type="text" name="like" class="form-control" value="{{ $myPage->like }}">
+                                <input type="text" name="like" class="form-control" value="{{ $myPage->like?:0 }}">
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="follow">Follow</label>
-                                <input type="text" name="follow" class="form-control" value="{{ $myPage->follow }}">
+                                <input type="text" name="follow" class="form-control" value="{{ $myPage->follow?:0 }}">
                             </div>
                         </div>
                     </div>
@@ -54,6 +54,8 @@
                             </div>
                         </div>
                     </div>
+
+                    @if($myPage->id)
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
@@ -68,6 +70,7 @@
                             </div>
                         </div>
                     </div>
+                    @endif
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
@@ -92,9 +95,6 @@
                     </div>
 
                     <button type="submit" class="btn btn-primary btn-flat ">Save</button>
-                    @if($myPage->id)
-                    <a class="btn btn-info btn-flat" href="{{route('admin.my_pages.update_info', $myPage->id)}}">Update Info</a>
-                    @endif
                 </div>
             </div>
         </div>

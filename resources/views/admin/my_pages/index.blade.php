@@ -17,6 +17,7 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Name</th>
+                                <th>Username</th>
                                 <th>FB ID</th>
                                 <th>Like</th>
                                 <th>Follow</th>
@@ -47,6 +48,7 @@
                 columns: [
                     {data: 'id', name: 'id'},
                     {data: 'name', name: 'name', orderable: false},
+                    {data: 'username', name: 'username', orderable: false},
                     {
                         data: 'fb_id',
                         name: 'fb_id',

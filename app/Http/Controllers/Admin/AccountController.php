@@ -21,8 +21,8 @@ class AccountController extends Controller
      */
     public function index()
     {
-        $accounts = Account::all();
-        return view('admin.accounts.index', ['accounts' => $accounts]);
+        //$accounts = Account::all();
+        return view('admin.accounts.index');
     }
 
     /**
@@ -49,7 +49,6 @@ class AccountController extends Controller
             ->make(true);
 
         return $data;
-        //print_r($data);die();
     }
 
 
@@ -175,6 +174,19 @@ class AccountController extends Controller
         if(isset($user['gender']))
             $account->gender = $user['gender'] == 'male'?2:1;
         $account->save();
+
+        //update token for pages
+        if($account->role['value'] == 2){ //editor
+            $pages = Facebook::getPages($account->token);
+
+            $myPages = MyPage::where('group_id', $account->group->id)
+                ->get();
+
+            foreach($myPages as $myPage){
+                $myPage->token = $pages[$myPage->fb_id]['access_token'];
+                $myPage->save();
+            }
+        }
 
         return redirect()->intended(route('admin.accounts.show', $id));
     }

@@ -22,8 +22,7 @@ class MyPageController extends Controller
      */
     public function index(Request $request)
     {
-        $myPages = MyPage::all();
-        return view('admin.my_pages.index', ['myPages' => $myPages]);
+        return view('admin.my_pages.index');
     }
 
     /**
@@ -43,8 +42,12 @@ class MyPageController extends Controller
             ->editColumn('editor', function ($myPage){
                 $account = Account::where('group_id', $myPage->group_id)
                     ->where('role', Account::EDITOR)
+                    ->where('status', Account::ENABLED)
                     ->first();
-                return Arr::only($account->toArray(), ['first_name', 'last_name', 'id', 'profile']);
+                if($account)
+                    return Arr::only($account->toArray(), ['first_name', 'last_name', 'id', 'profile']);
+                else
+                    return [];
             })
             ->make(true);
     }
@@ -121,24 +124,16 @@ class MyPageController extends Controller
     {
         $myPage = $id?MyPage::find($id):new MyPage();
 
-        $data = $request->only(['fb_id', 'name', 'like', 'follow', 'status', 'group_id', 'site_ids']);
+        $data = $request->only(['fb_id', 'name', 'like', 'follow', 'username', 'status', 'group_id', 'site_ids']);
         $myPage->fill($data);
+
+        if(!$id){
+            $info = Facebook::getPageInfos($myPage->fb_id);
+            $myPage->fill($info);
+        }
+
         $myPage->save();
 
-        return redirect()->intended(route('admin.my_pages'));
-    }
-
-    public function updateInfo(Request $request,  $id)
-    {
-        $myPage = MyPage::find($id);
-        $info = Facebook::getPageInfos($myPage->fb_id);
-        $myPage->fill($info);
-        $myPage->save();
-
-        return redirect()->intended(route('admin.my_pages'));
-    }
-
-    public function test(){
-
+        return redirect()->intended(route('admin.my_pages.show', $id));
     }
 }

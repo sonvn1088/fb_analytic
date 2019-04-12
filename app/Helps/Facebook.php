@@ -93,13 +93,22 @@ class Facebook
         $response = $client->get('https://www.facebook.com/'.$pageId);
         $content = $response->getBody()->getContents();
 
-        $regexPattern = "/<div>(.{0,10}) ng??i th�ch trang n�y<\/div>/";
+        $regexPattern = "/<div>(.{0,10}) người thích trang này<\/div>/";
         preg_match($regexPattern, $content, $match);
         $info['like'] = str_replace('.', '', $match[1]??0);
 
-        $regexPattern = "/<div>(.{0,10}) ng??i theo d�i trang n�y<\/div>/";
+        $regexPattern = "/<div>(.{0,10}) người theo dõi trang này<\/div>/";
         preg_match($regexPattern, $content, $match);
         $info['follow'] = str_replace('.', '', $match[1]??0);
+
+        $regexPattern = "/<title id=\"pageTitle\">(.*?) -.*?<\/title>/";
+        preg_match($regexPattern, $content, $match);
+        $info['name'] = str_replace('&#039;', "'", $match[1]??'');
+
+        $regexPattern = "/\"username\":\"(.*?)\"/";
+        preg_match($regexPattern, $content, $match);
+        $info['username'] = $match[1]??'';
+
         return $info;
     }
 
@@ -167,7 +176,7 @@ class Facebook
             $uri = $uri = parse_url($post['link'], PHP_URL_PATH);
 
             if(!in_array($uri, $postedUris)){
-                $params['message'] = html_entity_decode($params['message']);
+                $params['message'] = str_replace('&#039;', "'", html_entity_decode($params['message']));
 
                 if($stepTime == 'now'){
                     $params['published'] = true;
@@ -376,7 +385,9 @@ class Facebook
         try{
             $response = $client->get(config('facebook.graph').$uri, ['query' => $query]);
             $result =  \GuzzleHttp\json_decode($response->getBody()->getContents(), true);
-        }catch (Exception $e){
+        }catch (BadResponseException $e){
+            return [$e->getMessage()];
+        }catch(Exception $e){
             return [$e->getMessage()];
         }
 
