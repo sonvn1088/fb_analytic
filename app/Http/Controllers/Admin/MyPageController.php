@@ -37,13 +37,13 @@ class MyPageController extends Controller
                 return $myPage->group?$myPage->group->name:'';
             })
             ->editColumn('status', function ($myPage){
-                return $myPage->status['label'];
+                return $myPage->status;
             })
-            ->editColumn('editor', function ($myPage){
-                if($editor = $myPage->editor())
-                    return Arr::only($editor->toArray(), ['first_name', 'last_name', 'id', 'profile']);
-                else
-                    return [];
+            ->editColumn('accounts', function ($myPage){
+                $accounts = $myPage->group->accounts;
+                return $accounts->map(function ($item, $key) {
+                    return Arr::only($item->toArray(), ['first_name', 'last_name', 'id', 'profile', 'role']);
+                })->toArray();
             })
             ->editColumn('scheduled_posts', function ($myPage){
                 $result = Facebook::get($myPage->fb_id, ['fields' => 'scheduled_posts'], $myPage->token);
@@ -52,7 +52,14 @@ class MyPageController extends Controller
                 elseif(isset($result['error']))
                     return 0;
                 else
-                    return 'x';
+                    return 0;
+            })
+            ->editColumn('published_posts', function ($myPage){
+                $result = Facebook::getPublishedPosts($myPage->token, time() - 3600);
+                if(!isset($result['error']))
+                    return count($result);
+                else
+                    return 0;
             })
             ->make(true);
     }

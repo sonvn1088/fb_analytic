@@ -167,6 +167,17 @@ class Facebook
         $scheduledPosts = self::getScheduledPosts($token);
         $publishedPosts = self::getPublishedPosts($token, time() - 24*3600);
 
+        //check block reach
+        $count = 0;
+        foreach($publishedPosts as $publishedPost){
+            if($publishedPost['created_time'] >= time() - 3600)
+                $count++;
+        }
+
+        if(count($scheduledPosts) < 2 && $count > 60/config('facebook.step_time')*3){
+            return;
+        }
+
         $postedUris = self::deleteDuplicatedPosts($token, $scheduledPosts, $publishedPosts);
         $firstScheduledTime = self::getNextScheduledTime($token, $scheduledPosts, $stepTime);
 

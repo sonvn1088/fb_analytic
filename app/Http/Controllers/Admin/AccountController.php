@@ -36,13 +36,13 @@ class AccountController extends Controller
 
         $data = Datatables::of(Account::query())
             ->editColumn('status', function ($account){
-                return $account->status['label'];
+                return $account->status;
             })
             ->editColumn('on_server', function ($account){
-                return $account->on_server['label'];
+                return $account->on_server;
             })
             ->editColumn('role', function ($account){
-                return $account->role['label'];
+                return $account->role;
             })
             ->editColumn('group_id', function ($account){
                 return $account->group?$account->group->name:'';

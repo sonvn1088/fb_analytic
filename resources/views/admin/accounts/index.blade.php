@@ -15,11 +15,9 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>First Name</th>
-                                <th>Last Name</th>
+                                <th>Name</th>
                                 <th>Profile</th>
                                 <th>Friends</th>
-                                <th>FB ID</th>
                                 <th>Group</th>
                                 <th>Role</th>
                                 <th>Status</th>
@@ -47,8 +45,12 @@
                 ajax: "{{ route('admin.accounts.list') }}",
                 columns: [
                     {data: 'id', name: 'id'},
-                    {data: 'first_name', name: 'first_name', orderable: false},
-                    {data: 'last_name', name: 'last_name', orderable: false},
+                    {
+                        data: 'first_name', name: 'name', orderable: false,
+                        render: function ( data, type, row, meta ) {
+                            return '<a href="https://www.facebook.com/'+row.fb_id+'" target="_bank" title="View on Facebook">'+data + ' ' + row.middle_name + ' ' + row.last_name+'</a>';
+                        }
+                    },
                     {
                         data: 'profile',
                         name: 'profile',
@@ -57,22 +59,27 @@
                         }
                     },
                     {data: 'friends', name: 'friends'},
-                    {
-                        data: 'fb_id',
-                        name: 'fb_id',
-                        orderable: false,
-                        render: function ( data, type, row, meta ) {
-                            return '<a href="https://www.facebook.com/'+data+'" target="_bank" title="View on Facebook" class="btn btn-xs btn-info"><i class="glyphicon glyphicon-eye-open"></i> '+data+'</a>';
-                        }
-                    },
+
                     {
                         data: 'group_id', name: 'group_id',
                     },
                     {
                         data: 'role', name: 'role',
+                        render: function ( data, type, row, meta ) {
+                            return data.label;
+                        }
                     },
-                    {data: 'status', name:'status'},
-                    {data: 'on_server', name:'on_server'},
+                    {
+                        data: 'status', name:'status',
+                        render: function ( data, type, row, meta ) {
+                            return data.label;
+                        }
+                    },
+                    {
+                        data: 'on_server', name:'on_server',
+                        render: function ( data, type, row, meta ) {
+                            return data.label;
+                        }},
                     {data: 'backup', name:'backup'},
                     {
                         data: 'action', name: 'action', orderable: false, searchable: false,

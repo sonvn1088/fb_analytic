@@ -109,11 +109,11 @@ return [
 
     'menu' => [
         'MANAGE',
-        [
+        /*[
             'text' => 'Groups',
             'url'  => 'admin/groups',
             'icon' => 'newspaper-o',
-        ],
+        ],*/
         [
             'text' => 'Accounts',
             'url'  => 'admin/accounts',
