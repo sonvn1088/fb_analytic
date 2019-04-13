@@ -2,12 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d8024b66-6e1f-4c4d-985f-b1692a60915d" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Models/Account.php" afterPath="$PROJECT_DIR$/app/Models/Account.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/AccountController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/AccountController.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Models/Browser.php" afterPath="$PROJECT_DIR$/app/Models/Browser.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Helps/Facebook.php" afterPath="$PROJECT_DIR$/app/Helps/Facebook.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/MyPageController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/MyPageController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/adminlte.php" afterPath="$PROJECT_DIR$/config/adminlte.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/admin/accounts/index.blade.php" afterPath="$PROJECT_DIR$/resources/views/admin/accounts/index.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/admin/my_pages/index.blade.php" afterPath="$PROJECT_DIR$/resources/views/admin/my_pages/index.blade.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Console/Commands/SharePosts.php" afterPath="$PROJECT_DIR$/app/Console/Commands/SharePosts.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/facebook.php" afterPath="$PROJECT_DIR$/config/facebook.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/general.php" afterPath="$PROJECT_DIR$/config/general.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/admin/accounts/show.blade.php" afterPath="$PROJECT_DIR$/resources/views/admin/accounts/show.blade.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/web.php" afterPath="$PROJECT_DIR$/routes/web.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="fb_analytic.iws" />
@@ -33,10 +37,32 @@
       <file leaf-file-name="Facebook.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Helps/Facebook.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.43074325">
-              <caret line="169" column="27" selection-start-line="169" selection-start-column="27" selection-end-line="169" selection-end-column="27" />
+            <state vertical-scroll-proportion="0.45293072">
+              <caret line="48" column="40" selection-start-line="48" selection-start-column="40" selection-end-line="48" selection-end-column="40" />
               <folding>
                 <element signature="e#29#52#0#PHP" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="facebook.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/config/facebook.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="11" column="54" selection-start-line="11" selection-start-column="22" selection-end-line="11" selection-end-column="54" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MyPageController.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/MyPageController.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-17.538462">
+              <caret line="136" column="53" selection-start-line="136" selection-start-column="53" selection-end-line="136" selection-end-column="53" />
+              <folding>
+                <element signature="e#47#70#0#PHP" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -45,8 +71,8 @@
       <file leaf-file-name="AccountController.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/AccountController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="44" column="37" selection-start-line="44" selection-start-column="37" selection-end-line="44" selection-end-column="37" />
+            <state vertical-scroll-proportion="-3.2692308">
+              <caret line="130" column="48" selection-start-line="130" selection-start-column="48" selection-end-line="130" selection-end-column="48" />
               <folding>
                 <element signature="e#47#70#0#PHP" expanded="true" />
               </folding>
@@ -54,45 +80,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MyPageController.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/MyPageController.php">
+      <file leaf-file-name="show.blade.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/resources/views/admin/accounts/show.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.0">
-              <caret line="39" column="38" selection-start-line="39" selection-start-column="38" selection-end-line="39" selection-end-column="38" />
-              <folding>
-                <element signature="e#47#70#0#PHP" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="index.blade.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/views/admin/my_pages/index.blade.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-13.076923">
-              <caret line="48" column="31" selection-start-line="48" selection-start-column="31" selection-end-line="48" selection-end-column="31" />
+            <state vertical-scroll-proportion="-11.769231">
+              <caret line="108" column="94" selection-start-line="108" selection-start-column="94" selection-end-line="108" selection-end-column="100" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MyPage.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Models/MyPage.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-13.192307">
-              <caret line="55" column="27" selection-start-line="55" selection-start-column="27" selection-end-line="55" selection-end-column="27" />
-              <folding>
-                <element signature="e#30#53#0#PHP" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="index.blade.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/views/admin/accounts/index.blade.php">
+      <file leaf-file-name="web.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/routes/web.php">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="50" column="177" selection-start-line="50" selection-start-column="177" selection-end-line="50" selection-end-column="177" />
+              <caret line="29" column="89" selection-start-line="29" selection-start-column="89" selection-end-line="29" selection-end-column="89" />
               <folding />
             </state>
           </provider>
@@ -101,8 +103,8 @@
       <file leaf-file-name="SharePosts.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Console/Commands/SharePosts.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="15.692307">
-              <caret line="8" column="27" selection-start-line="8" selection-start-column="27" selection-end-line="8" selection-end-column="27" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="94" column="47" selection-start-line="94" selection-start-column="47" selection-end-line="94" selection-end-column="47" />
               <folding />
             </state>
           </provider>
@@ -118,10 +120,8 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$USER_HOME$/AppData/Local/Temp/fz3temp-2/config.inc.php" />
         <option value="$USER_HOME$/AppData/Local/Temp/fz3temp-2/get_token.php" />
         <option value="$PROJECT_DIR$/../vnzon/facebook/_token_config.php" />
-        <option value="$PROJECT_DIR$/app/Models/Browser.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/BrowserController.php" />
         <option value="$USER_HOME$/AppData/Local/Temp/fz3temp-2/browser_agent.txt" />
         <option value="$PROJECT_DIR$/resources/views/admin/browsers/index.blade.php" />
@@ -141,10 +141,8 @@
         <option value="$PROJECT_DIR$/app/Models/Site.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/SiteController.php" />
         <option value="$PROJECT_DIR$/resources/views/admin/groups/index.blade.php" />
-        <option value="$PROJECT_DIR$/routes/web.php" />
         <option value="$PROJECT_DIR$/app/Console/Commands/SharePostsToPage1.php" />
         <option value="$PROJECT_DIR$/app/Console/Kernel.php" />
-        <option value="$PROJECT_DIR$/config/facebook.php" />
         <option value="$USER_HOME$/AppData/Local/Temp/fz3temp-2/get_token 2.php" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$USER_HOME$/AppData/Local/Temp/fz3temp-3/.env" />
@@ -153,21 +151,25 @@
         <option value="$PROJECT_DIR$/.env" />
         <option value="C:/Windows/System32/drivers/etc/hosts" />
         <option value="$PROJECT_DIR$/../../apache/conf/extra/httpd-vhosts.conf" />
-        <option value="$PROJECT_DIR$/app/Console/Commands/SharePosts.php" />
-        <option value="$PROJECT_DIR$/resources/views/admin/accounts/show.blade.php" />
-        <option value="$PROJECT_DIR$/app/Models/Account.php" />
         <option value="$PROJECT_DIR$/resources/views/vendor/adminlte/master.blade.php" />
         <option value="$PROJECT_DIR$/app/Models/Page.php" />
         <option value="$PROJECT_DIR$/app/Models/MyPage.php" />
         <option value="$PROJECT_DIR$/resources/views/admin/my_pages/show.blade.php" />
-        <option value="$PROJECT_DIR$/config/general.php" />
         <option value="$PROJECT_DIR$/app/Models/Format.php" />
         <option value="$PROJECT_DIR$/app/Helps/Links.php" />
         <option value="$PROJECT_DIR$/config/adminlte.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/MyPageController.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/AccountController.php" />
         <option value="$PROJECT_DIR$/resources/views/admin/accounts/index.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/admin/my_pages/index.blade.php" />
+        <option value="$PROJECT_DIR$/app/Models/Account.php" />
+        <option value="$USER_HOME$/Downloads/browsers (1).sql" />
+        <option value="$PROJECT_DIR$/app/Models/Browser.php" />
+        <option value="$PROJECT_DIR$/app/Console/Commands/SharePosts.php" />
+        <option value="$PROJECT_DIR$/config/facebook.php" />
+        <option value="$PROJECT_DIR$/routes/web.php" />
+        <option value="$PROJECT_DIR$/config/general.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/MyPageController.php" />
+        <option value="$PROJECT_DIR$/resources/views/admin/accounts/show.blade.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/AccountController.php" />
         <option value="$PROJECT_DIR$/app/Helps/Facebook.php" />
       </list>
     </option>
@@ -212,8 +214,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scratches" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -242,7 +242,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="vendor" />
+              <option name="myItemId" value="routes" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -598,6 +598,8 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -760,7 +762,13 @@
       <option name="project" value="LOCAL" />
       <updated>1555121613022</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="manage accounts &amp; pages">
+      <created>1555133335558</created>
+      <option name="number" value="00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1555133335558</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -809,34 +817,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/resources/views/admin/accounts/friends.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6993243">
-          <caret line="235" column="0" selection-start-line="235" selection-start-column="0" selection-end-line="235" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../vnzon/facebook/_token_config.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="339" column="31" selection-start-line="339" selection-start-column="18" selection-end-line="339" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config/database.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.5743243">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/admin/groups/show.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.63670415">
-          <caret line="20" column="30" selection-start-line="20" selection-start-column="30" selection-end-line="20" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/vendor/guzzlehttp/guzzle/src/Client.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.3158784">
@@ -872,13 +852,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="8.615385">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/routes/web.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4695946">
-          <caret line="23" column="4" selection-start-line="23" selection-start-column="4" selection-end-line="23" selection-end-column="4" />
         </state>
       </provider>
     </entry>
@@ -1027,14 +1000,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/admin/accounts/show.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5456081">
-          <caret line="23" column="38" selection-start-line="18" selection-start-column="32" selection-end-line="23" selection-end-column="38" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/vendor/adminlte/master.blade.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.6554054">
@@ -1047,7 +1012,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.660473">
           <caret line="23" column="73" selection-start-line="23" selection-start-column="73" selection-end-line="23" selection-end-column="73" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1078,7 +1042,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.7128378">
           <caret line="41" column="31" selection-start-line="41" selection-start-column="31" selection-end-line="41" selection-end-column="31" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1094,7 +1057,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.6131757">
           <caret line="55" column="25" selection-start-line="47" selection-start-column="24" selection-end-line="55" selection-end-column="25" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1106,52 +1068,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/config/general.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.08614865">
-          <caret line="3" column="16" selection-start-line="3" selection-start-column="5" selection-end-line="3" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/config/adminlte.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.6841216">
           <caret line="115" column="12" selection-start-line="111" selection-start-column="8" selection-end-line="115" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Models/Account.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="35" column="60" selection-start-line="35" selection-start-column="60" selection-end-line="35" selection-end-column="60" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/AccountController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="44" column="37" selection-start-line="44" selection-start-column="37" selection-end-line="44" selection-end-column="37" />
-          <folding>
-            <element signature="e#47#70#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/admin/accounts/index.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="50" column="177" selection-start-line="50" selection-start-column="177" selection-end-line="50" selection-end-column="177" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Console/Commands/SharePosts.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="15.692307">
-          <caret line="8" column="27" selection-start-line="8" selection-start-column="27" selection-end-line="8" selection-end-column="27" />
           <folding />
         </state>
       </provider>
@@ -1174,28 +1094,116 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/MyPageController.php">
+    <entry file="file://$USER_HOME$/Downloads/browsers.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.30141845">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Downloads/browsers (1).sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.572695">
+          <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Models/Browser.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3158784">
+          <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Models/Account.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3158784">
+          <caret line="35" column="71" selection-start-line="35" selection-start-column="71" selection-end-line="35" selection-end-column="71" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Console/Commands/SharePosts.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="39" column="38" selection-start-line="39" selection-start-column="38" selection-end-line="39" selection-end-column="38" />
+          <caret line="94" column="47" selection-start-line="94" selection-start-column="47" selection-end-line="94" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/admin/accounts/index.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="50" column="177" selection-start-line="50" selection-start-column="177" selection-end-line="50" selection-end-column="177" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/BrowserController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/facebook.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="11" column="54" selection-start-line="11" selection-start-column="22" selection-end-line="11" selection-end-column="54" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/routes/web.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="29" column="89" selection-start-line="29" selection-start-column="89" selection-end-line="29" selection-end-column="89" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/general.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.08614865">
+          <caret line="3" column="31" selection-start-line="3" selection-start-column="31" selection-end-line="3" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/MyPageController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-17.538462">
+          <caret line="136" column="53" selection-start-line="136" selection-start-column="53" selection-end-line="136" selection-end-column="53" />
           <folding>
             <element signature="e#47#70#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/config/facebook.php">
+    <entry file="file://$PROJECT_DIR$/resources/views/admin/accounts/show.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.1722973">
-          <caret line="6" column="14" selection-start-line="6" selection-start-column="5" selection-end-line="6" selection-end-column="14" />
+        <state vertical-scroll-proportion="-11.769231">
+          <caret line="108" column="94" selection-start-line="108" selection-start-column="94" selection-end-line="108" selection-end-column="100" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/AccountController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-3.2692308">
+          <caret line="130" column="48" selection-start-line="130" selection-start-column="48" selection-end-line="130" selection-end-column="48" />
+          <folding>
+            <element signature="e#47#70#0#PHP" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Helps/Facebook.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.43074325">
-          <caret line="169" column="27" selection-start-line="169" selection-start-column="27" selection-end-line="169" selection-end-column="27" />
+        <state vertical-scroll-proportion="0.45293072">
+          <caret line="48" column="40" selection-start-line="48" selection-start-column="40" selection-end-line="48" selection-end-column="40" />
           <folding>
             <element signature="e#29#52#0#PHP" expanded="true" />
           </folding>

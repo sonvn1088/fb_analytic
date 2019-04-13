@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'format_time' => 'H:i d/m/y',
+    'format_time' => 'H:i d/m/Y',
 
 ];
 

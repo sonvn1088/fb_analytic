@@ -49,7 +49,7 @@
                                 <div class="input-group">
                                     <a href="{{route('admin.accounts.view_friends', $account->id)}}" target="_blank"
                                        class="btn btn-md btn-success btn-block">
-                                        {{$account->backup}}</a>
+                                        {{$account->backup?:'Not yet'}}</a>
                                     <span class="input-group-btn">
                                         <a class="btn btn-info" href="{{route('admin.accounts.backup_friends', $account->id)}}" type="button">Backup</a>
                                     </span>
@@ -62,9 +62,16 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="friends">Profile</label>
-                                <a href="javascript:$.ajax('{{route('admin.accounts.profile', $account->profile)}}')"
-                                   target="_blank" class="btn btn-md btn-info btn-block">
-                                    {{$account->profile}}</a>
+                                <div class="input-group">
+                                    <input type="number" name="profile" class="form-control" value="{{$account->profile}}">
+                                    @if($account->profile)
+                                    <span class="input-group-btn">
+                                        <a href="javascript:$.ajax('{{route('admin.accounts.profile', $account->profile)}}')"
+                                           target="_blank" class="btn btn-md btn-info btn-block">
+                                            Profile {{$account->profile}}</a>
+                                    </span>
+                                    @endif
+                                </div>
                             </div>
                         </div>
                         <div class="col-sm-6">
@@ -96,7 +103,12 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="email">Email</label>
-                                <input type="text" name="email" class="form-control" value="{{ $account->email .'|'. $account->password_email}}" readonly>
+                                <div class="input-group">
+                                    <input type="text" name="email" class="form-control" value="{{ $account->email .'|'. $account->email_password}}" readonly>
+                                    <span class="input-group-btn">
+                                        <a class="btn btn-info" href="{{route('admin.accounts.change_email_password', $account->id)}}" type="button">Generate Password</a>
+                                    </span>
+                                </div>
                             </div>
                         </div>
                         <div class="col-sm-6">

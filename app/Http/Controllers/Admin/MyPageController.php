@@ -135,7 +135,6 @@ class MyPageController extends Controller
     public function save(Request $request,  $id)
     {
         $myPage = $id?MyPage::find($id):new MyPage();
-
         if($request->get('blocked_at'))
             $blockedAt = \DateTime::createFromFormat(config('general.format_time'), $request->get('blocked_at'))
                 ->format('Y-m-d H:i:s');

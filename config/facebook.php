@@ -17,8 +17,8 @@ return [
             'secret' => '7c036d47372dd5f2df27bfe76d4ae0c4',
         ],
         'android' => [
-            'key' => '62f8ce9f74b12f84c123cc23437a4a32',
-            'secret' => '882a8490361da98702bf97a021ddc14d',
+            'key' => '882a8490361da98702bf97a021ddc14d',
+            'secret' => '62f8ce9f74b12f84c123cc23437a4a32',
         ],
 
         'base_url' => 'https://api.facebook.com/restserver.php',

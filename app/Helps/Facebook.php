@@ -3,6 +3,7 @@
 namespace App\Helps;
 
 use App\Models\Account;
+use App\Models\Browser;
 use App\Models\Token;
 use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Exception\GuzzleException;
@@ -44,6 +45,18 @@ class Facebook
 
 
         $posts = self::get('me/feed', $params, $token);
+
+        foreach($posts as $id => $post){
+            if(!isset($post['message']) || !$post['message']){
+                self::delete($id, $token);
+            }
+
+            //delete post null picture
+            if(!isset($post['full_picture']) || !$post['full_picture']){
+                self::delete($id, $token);
+            }
+        }
+
         return $posts;
     }
 
@@ -452,20 +465,44 @@ class Facebook
      * @return array
      *
      */
-    static public function generateToken($user, $password){
-        $apiKey = config('facebook.api.iphone.key');
-        $apiSecret = config('facebook.api.iphone.secret');
+    static public function generateToken($account){
+        if($account->browser_id)
+            $browser = Browser::find($account->browser_id);
+        else
+            $browser = new Browser(['name' => config('facebook.api.agent'), 'type' => Browser::IPHONE]);
+
+        if($browser->type == Browser::IPAD){
+            $browser = Browser::where('type', [Browser::IPHONE, Browser::ANDROID])
+                ->inRandomOrder()->first();
+            $account->browser_id = $browser->id;
+            $account->save();
+        }
+
+        switch ($browser->type) {
+            case Browser::IPHONE:
+                $apiKey = config('facebook.api.iphone.key');
+                $apiSecret = config('facebook.api.iphone.secret');
+        break;
+            case Browser::ANDROID:
+                $apiKey = config('facebook.api.android.key');
+                $apiSecret = config('facebook.api.android.secret');
+        break;
+            case Browser::IPAD:
+                $apiKey = config('facebook.api.ipad.key');
+                $apiSecret = config('facebook.api.ipad.secret');
+
+        }
 
         $data = array(
             'api_key' => $apiKey,
             'credentials_type' => 'password',
-            'email' => $user,
+            'email' => $account->fb_id?:$account->username,
             'format' => 'JSON',
             'generate_machine_id' => '1',
             'generate_session_cookies' => '1',
             'locale' => 'en_US',
             'method' => 'auth.login',
-            'password' => $password,
+            'password' => $account->password,
             'return_ssl_resources' => '0',
             'v' => '1.0'
         );
@@ -475,7 +512,7 @@ class Facebook
         $client = new Client(['verify' => false ]);
         $response = $client->get(config('facebook.api.base_url').'?'.http_build_query($data), [
             'headers'   =>  [
-                'User-Agent' => config('facebook.api.agent'),
+                'User-Agent' => $browser->name,
             ]
         ]);
 

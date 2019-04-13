@@ -27,6 +27,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::get('accounts/list', 'AccountController@all')->name('accounts.list');
     Route::get('accounts/{account?}', 'AccountController@show')->name('accounts.show');
     Route::get('accounts/{account}/change_password', 'AccountController@changePassword')->name('accounts.change_password');
+    Route::get('accounts/{account}/change_email_password', 'AccountController@changeEmailPassword')->name('accounts.change_email_password');
     Route::get('accounts/{account}/generate_token', 'AccountController@generateToken')->name('accounts.generate_token');
     Route::get('accounts/{account}/update_info', 'AccountController@updateInfo')->name('accounts.update_info');
     Route::get('accounts/{account}/backup_friends', 'AccountController@backupFriends')->name('accounts.backup_friends');

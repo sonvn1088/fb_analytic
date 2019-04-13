@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Browser extends Model
 {
+    const ANDROID = 1;
+    const IPHONE = 2;
+    const IPAD = 3;
+
     /**
      * The table associated with the model.
      *

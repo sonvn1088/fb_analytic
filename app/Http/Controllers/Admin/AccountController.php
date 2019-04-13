@@ -111,7 +111,7 @@ class AccountController extends Controller
     public function update(Request $request,  $id)
     {
         $account = Account::find($id);
-        $account->fill($request->only(['token', 'status', 'on_server', 'group_id', 'role']));
+        $account->fill($request->only(['token', 'status', 'on_server', 'group_id', 'role', 'profile']));
         $account->save();
 
         return redirect()->intended(route('admin.accounts.show', $id));
@@ -126,15 +126,22 @@ class AccountController extends Controller
         return redirect()->intended(route('admin.accounts.show', $id));
     }
 
+    public function changeEmailPassword($id){
+        $account = Account::find($id);
+        $account->email_password = str_random(10);
+        $account->save();
+        return redirect()->intended(route('admin.accounts.show', $id));
+    }
+
     public function generateToken($id){
         $account = Account::find($id);
-        if($account->on_server){
+        if($account->on_server['value']){
             $data = file_get_contents('http://'.config('facebook.token_server').'/get_token.php?u='.
                 $account->fb_id.'&p='.$account->password);
 
             $data = \GuzzleHttp\json_decode($data, true);
         }else
-            $data = Facebook::generateToken($account->fb_id?:$account->username, $account->password);
+            $data = Facebook::generateToken($account);
 
         $account->token = $data['access_token']??($data['error']['message']??$data['error_msg']);
         $account->login_info = json_encode($data);
