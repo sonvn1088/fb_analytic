@@ -3,7 +3,7 @@
 @section('title', 'Manage FBAC')
 
 @section('content_header')
-    <h1>Account #{{$account->first_name}} {{$account->last_name}}</h1>
+    <h1>Account #{{$account->first_name}} {{$account->middle_name}} {{$account->last_name}}</h1>
 @stop
 
 @section('content')

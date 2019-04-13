@@ -18,7 +18,7 @@ class Links
                 "sum(after_45)/sum(follow)*100000 as rate_45"))
             ->groupBy('posts.link_id')
             ->havingRaw(DB::raw("count(*) > 2 AND sum(follow) > 1000000 AND  sum(after_15)/sum(follow)*100000 > 1".
-                " AND sum(after_45)/sum(follow)*100000 > 3z"))
+                " AND sum(after_45)/sum(follow)*100000 > 3"))
             ->where('created_at', '>', date('Y-m-d H:i:s', time()-24*3600))
             ->get();
 

@@ -32,7 +32,8 @@ class Account extends Model
      *
      * @var array
      */
-    protected $fillable = ['first_name', 'last_name', 'username', 'email', 'birthday', 'fb_id', 'gender', 'token', 'password', 'group_id', 'role', 'status'];
+    protected $fillable = ['first_name', 'last_name', 'username', 'email', 'birthday', 'fb_id', 'gender', 'token',
+        'password', 'group_id', 'role', 'status', 'on_server'];
 
 
     public $roles = [1 => 'Admin', 2 => 'Editor', 3 => 'BM'];

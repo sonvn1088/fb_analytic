@@ -45,6 +45,15 @@ class MyPageController extends Controller
                 else
                     return [];
             })
+            ->editColumn('scheduled_posts', function ($myPage){
+                $result = Facebook::get($myPage->fb_id, ['fields' => 'scheduled_posts'], $myPage->token);
+                if(isset($result['scheduled_posts']['data']))
+                    return count($result['scheduled_posts']['data']);
+                elseif(isset($result['error']))
+                    return 0;
+                else
+                    return 'x';
+            })
             ->make(true);
     }
 
@@ -120,8 +129,16 @@ class MyPageController extends Controller
     {
         $myPage = $id?MyPage::find($id):new MyPage();
 
+        if($request->get('blocked_at'))
+            $blockedAt = \DateTime::createFromFormat(config('general.format_time'), $request->get('blocked_at'))
+                ->format('Y-m-d H:i:s');
+        else
+            $blockedAt = null;
+
         $data = $request->only(['fb_id', 'name', 'like', 'follow', 'username', 'status', 'group_id', 'site_ids']);
+        $data['blocked_at'] = $blockedAt;
         $myPage->fill($data);
+
 
         if(!$id){
             $info = Facebook::getPageInfos($myPage->fb_id);
@@ -132,4 +149,19 @@ class MyPageController extends Controller
 
         return redirect()->intended(route('admin.my_pages.show', $id));
     }
+
+    public function check(){
+        return Datatables::of(MyPage::query()->where('status, 1'))
+            ->editColumn('scheduled_posts', function ($myPage){
+                $result = Facebook::get($myPage->fb_id, ['fields' => 'scheduled_posts'], $myPage->token);
+                return Arr::get($result, 'scheduled_posts.data');
+            })
+
+            ->make(true);
+
+    }
+
+
+
+
 }

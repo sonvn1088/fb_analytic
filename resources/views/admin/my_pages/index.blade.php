@@ -23,7 +23,7 @@
                                 <th>Follow</th>
                                 <th>Group</th>
                                 <th>Editor</th>
-                                <th>Country</th>
+                                <th>In Scheduled</th>
                                 <th>Status</th>
                                 <th>Edit</th>
                             </tr>
@@ -82,7 +82,9 @@
                         }
 
                     },
-                    {data: 'country', name: 'country'},
+                    {
+                        data: 'scheduled_posts', name: 'scheduled_posts',
+                    },
                     {data: 'status', name: 'status'},
                     {
                         data: 'action', name: 'action', orderable: false, searchable: false,

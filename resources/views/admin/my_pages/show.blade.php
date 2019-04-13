@@ -49,10 +49,17 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label for="country">Country</label>
-                                {!! Form::select('country', ['vn' => 'Vietnam', 'th' => 'Thailand', 'tw' => 'Taiwan', 'id' => 'Indonesia', 'ot' => 'Other'], $myPage->country, ['class' => 'form-control']) !!}
+                                <label for="blocked_at">Blocked</label>
+                                <div class="input-group">
+                                    <input type="text" name="blocked_at" class="form-control datetimepicker" value="{{ $myPage->blocked_at }}">
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+
                             </div>
                         </div>
+
                     </div>
 
                     @if($myPage->id)
@@ -92,6 +99,12 @@
                                 {!! Form::select('site_ids[]', $sites, $myPage->site_ids, ['multiple'=>'multiple', 'class' => 'form-control']) !!}
                             </div>
                         </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="country">Country</label>
+                                {!! Form::select('country', ['vn' => 'Vietnam', 'th' => 'Thailand', 'tw' => 'Taiwan', 'id' => 'Indonesia', 'ot' => 'Other'], $myPage->country, ['class' => 'form-control']) !!}
+                            </div>
+                        </div>
                     </div>
 
                     <button type="submit" class="btn btn-primary btn-flat ">Save</button>
@@ -107,6 +120,9 @@
 @section('js')
     <script type="text/javascript">
         $(document).ready(function() {
+            $('.datetimepicker').datetimepicker({
+                format:'HH:mm DD/MM/YYYY ',
+            });
         });
     </script>
 @stop

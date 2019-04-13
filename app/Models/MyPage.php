@@ -22,7 +22,7 @@ class MyPage extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'fb_id', 'like', 'follow', 'status', 'group_id', 'site_ids', 'username'];
+    protected $fillable = ['name', 'fb_id', 'like', 'follow', 'status', 'group_id', 'site_ids', 'username', 'blocked_at'];
 
 
     protected $casts = [

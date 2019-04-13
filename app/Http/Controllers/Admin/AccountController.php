@@ -9,6 +9,7 @@ use App\Models\Group;
 use App\Models\MyPage;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 use Yajra\Datatables\Datatables;
 
@@ -162,31 +163,40 @@ class AccountController extends Controller
     public function updateInfo($id){
         $account = Account::find($id);
         $user = Facebook::getUser('me', $account->token);
-        $account->email = $user['email'];
-        $account->first_name = $user['first_name'];
-        $account->last_name = $user['last_name'];
-        $account->middle_name = $user['middle_name']??null;
-        $account->friends = $user['friends']['summary']['total_count'];
-        $account->fb_id = $user['id'];
-        $tmp = explode('/', $user['birthday']);
-        $account->birthday = $tmp[2].'-'.$tmp[0].'-'.$tmp[1];
-        $account->country = $user['location']['location']['country']??null;
-        if(isset($user['gender']))
-            $account->gender = $user['gender'] == 'male'?2:1;
-        $account->save();
+        if(isset($user['id'])){
+            $account->email = $user['email'];
+            $account->first_name = $user['first_name'];
+            $account->last_name = $user['last_name'];
+            $account->middle_name = $user['middle_name']??null;
+            $account->friends = $user['friends']['summary']['total_count'];
+            $account->fb_id = $user['id'];
+            $tmp = explode('/', $user['birthday']);
+            $account->birthday = $tmp[2].'-'.$tmp[0].'-'.$tmp[1];
+            $account->country = $user['location']['location']['country']??null;
+            if(isset($user['gender']))
+                $account->gender = $user['gender'] == 'male'?2:1;
 
-        //update token for pages
-        if($account->role['value'] == 2){ //editor
-            $pages = Facebook::getPages($account->token);
+            $account->status = 1;
+            $account->save();
 
-            $myPages = MyPage::where('group_id', $account->group->id)
-                ->get();
+            //update token for pages
+            if($account->role['value'] == 2){ //editor
+                $pages = Facebook::getPages($account->token);
 
-            foreach($myPages as $myPage){
-                $myPage->token = $pages[$myPage->fb_id]['access_token'];
-                $myPage->save();
+                $myPages = MyPage::where('group_id', $account->group->id)
+                    ->get();
+
+                foreach($myPages as $myPage){
+                    $myPage->token = $pages[$myPage->fb_id]['access_token'];
+                    $myPage->save();
+                }
             }
+        }else{
+            $account->status = 0;
+            $account->token = Arr::get($user, 'error.message');
+            $account->save();
         }
+
 
         return redirect()->intended(route('admin.accounts.show', $id));
     }
