@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Site extends Model
 {
-    use Format;
+    use FormatTime, FormatStatus;
     /**
      * The table associated with the model.
      *

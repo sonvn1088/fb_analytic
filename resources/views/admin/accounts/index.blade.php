@@ -40,6 +40,7 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $('#accounts-table').DataTable({
+                order: [[ 6, 'desc']],
                 serverSide: true,
                 responsive: true,
                 ajax: "{{ route('admin.accounts.list') }}",
