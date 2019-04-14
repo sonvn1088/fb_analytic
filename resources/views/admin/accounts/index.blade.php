@@ -46,41 +46,40 @@
                 columns: [
                     {data: 'id', name: 'id'},
                     {
-                        data: 'first_name', name: 'name', orderable: false,
+                        data: 'first_name', name: 'name', orderable: false, searchable : false,
                         render: function ( data, type, row, meta ) {
                             return '<a href="https://www.facebook.com/'+row.fb_id+'" target="_bank" title="View on Facebook">'+data + ' ' + row.middle_name + ' ' + row.last_name+'</a>';
                         }
                     },
                     {
-                        data: 'profile',
-                        name: 'profile',
+                        data: 'profile', name: 'profile', searchable : false,
                         render: function ( data, type, row, meta ) {
                             return '<a href="javascript:$.ajax(\'{{ route('admin.accounts.profile') }}/'+data+'\')"  title="Open profile" class="btn btn-xs btn-success btn-block"><i class="glyphicon glyphicon-eye-open"></i> '+data+'</a>';
                         }
                     },
-                    {data: 'friends', name: 'friends'},
-
+                    {data: 'friends', name: 'friends',  searchable : false},
                     {
-                        data: 'group_id', name: 'group_id',
+                        data: 'group_id', name: 'group_id',  searchable : false
                     },
                     {
-                        data: 'role', name: 'role',
+                        data: 'role', name: 'role',  searchable : false,
                         render: function ( data, type, row, meta ) {
                             return data.label;
                         }
                     },
                     {
-                        data: 'status', name:'status',
+                        data: 'status', name:'status',  searchable : false,
                         render: function ( data, type, row, meta ) {
-                            return '<span class="text-'+(data.value?'success':'danger')+'">'+data.label+'</span>'
+                            return '<span class="text-'+(data.value=={{\App\Models\Account::ACTIVE}}?'success':(data.value=={{\App\Models\Account::DISABlED}}?'muted':'danger'))+'">'
+                                    +data.label+'</span>'
                         }
                     },
                     {
-                        data: 'on_server', name:'on_server',
+                        data: 'on_server', name:'on_server',  searchable : false,
                         render: function ( data, type, row, meta ) {
                             return data.label;
                         }},
-                    {data: 'backup', name:'backup'},
+                    {data: 'backup', name:'backup',  searchable : false},
                     {
                         data: 'action', name: 'action', orderable: false, searchable: false,
                         render: function ( data, type, row, meta ) {

@@ -46,7 +46,7 @@ class MyPageController extends Controller
                 })->toArray();
             })
             ->editColumn('scheduled_posts', function ($myPage){
-                $result = Facebook::get($myPage->fb_id, ['fields' => 'scheduled_posts'], $myPage->token);
+               $result = Facebook::get($myPage->fb_id, ['fields' => 'scheduled_posts'], $myPage->token);
                 if(isset($result['scheduled_posts']['data']))
                     return count($result['scheduled_posts']['data']);
                 elseif(isset($result['error']))

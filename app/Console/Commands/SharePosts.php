@@ -43,7 +43,7 @@ class SharePosts extends Command
      */
     public function handle()
     {
-        $myPages = MyPage::where('status', 1)->get();
+        $myPages = MyPage::where('status', MyPage::ENABLED)->get();
         foreach($myPages as $myPage){
             $result = Facebook::checkToken($myPage->token);
            if(isset($result['id']))
@@ -51,7 +51,7 @@ class SharePosts extends Command
            else{
                 $editor = $myPage->editor();
                 if($editor){
-                    $editor->status = 0;
+                    $editor->status = Account::INACTIVE;
                     $editor->save();
                     $editor->error_message = Arr::get($result, 'error.message');
                     General::sendMail($editor);

@@ -449,7 +449,7 @@ class Facebook
             if(isset($result['id']))
                 return $account->token;
             else{
-                $account->status = 0;
+                $account->status = Account::INACTIVE;
                 $account->save();
             }
         }

@@ -7,7 +7,7 @@ use Illuminate\Support\Arr;
 
 class Account extends Model
 {
-    use Format;
+    use FormatTime;
 
     const ADMIN = 1;
     const EDITOR = 2;
@@ -16,7 +16,8 @@ class Account extends Model
     const YES = 1;
     const NO = 0;
 
-    const ENABLED = 1;
+    const ACTIVE = 1;
+    const INACTIVE = 2;
     const DISABlED = 0;
 
     /**
@@ -41,6 +42,8 @@ class Account extends Model
 
     public $yesNo = [1 => 'Yes', 0 => 'No'];
 
+    public $statuses = [1 => 'Active', 0 => 'Disabled', 2 => 'Inactive'];
+
     /**
      * Get the group that owns the account.
      */
@@ -57,6 +60,12 @@ class Account extends Model
         return $this->belongsTo('App\Models\Browser');
     }
 
+    public function getStatusAttribute(){
+        if(isset($this->attributes['status']))
+            return  ['value' => $this->attributes['status'], 'label' => Arr::get($this->statuses, $this->attributes['status'])];
+        else
+            return  ['value' => null, 'label' => null];
+    }
 
     public function getRoleAttribute(){
         if($this->attributes['role'])

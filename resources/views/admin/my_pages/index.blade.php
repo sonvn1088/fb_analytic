@@ -15,11 +15,11 @@
                     <table id="pages-table" class="table display table-bordered table-hover">
                         <thead>
                             <tr>
+                                <th>Group</th>
                                 <th>ID</th>
                                 <th>Name</th>
                                 <th>Like</th>
                                 <th>Follow</th>
-                                <th>Group</th>
                                 <th>Accounts</th>
                                 <th>In Scheduled</th>
                                 <th>In Published</th>
@@ -46,11 +46,15 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $('#pages-table').DataTable({
-                pageLength: 10,
+                order: [[ 0, 'asc']],
+                pageLength: 50,
                 serverSide: true,
                 responsive: true,
                 ajax: "{{ route('admin.my_pages.list') }}",
                 columns: [
+                    {
+                        data: 'group_id', name: 'group_id',  searchable : false, className: "text-center"
+                    },
                     {data: 'id', name: 'id', className: "text-center"},
                     {
                         data: 'name', name: 'name', orderable: false,
@@ -68,10 +72,6 @@
                         render: $.fn.dataTable.render.number(',')
                     },
 
-                    {
-                        data: 'group_id', name: 'group_id', className: "text-center"
-
-                    },
                     {
                         data: 'group_id', name: 'accounts', className: "text-center", orderable: false, seachable: false,
                         render: function ( data, type, row, meta ) {

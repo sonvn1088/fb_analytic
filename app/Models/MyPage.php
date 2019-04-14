@@ -8,7 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class MyPage extends Model
 {
-    use Format;
+    use FormatTime, FormatStatus;
+
+
+    const ENABLED = 1;
+    const DISABlED = 0;
+
     /**
      * The table associated with the model.
      *
@@ -48,7 +53,7 @@ class MyPage extends Model
     public function editor(){
         return Account::where('group_id', $this->group_id)
             ->where('role', Account::EDITOR)
-            ->where('status', Account::ENABLED)
+            ->where('status', Account::ACTIVE)
             ->first();
     }
 
