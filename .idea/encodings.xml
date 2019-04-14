@@ -8,5 +8,6 @@
     <file url="file://$PROJECT_DIR$/app/Http/Controllers/Admin/GroupController.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Http/Controllers/Admin/MyPageController.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Http/Controllers/Admin/SiteController.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/resources/views/admin/accounts/friends.php" charset="UTF-8" />
   </component>
 </project>

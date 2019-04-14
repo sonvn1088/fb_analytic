@@ -45,7 +45,7 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label for="status">Backup</label>
+                                <label for="backup">Backup</label>
                                 <div class="input-group">
                                     <a href="{{route('admin.accounts.view_friends', $account->id)}}" target="_blank"
                                        class="btn btn-md btn-success btn-block">
@@ -153,7 +153,7 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label for="status">Group</label>
+                                <label for="group">Group</label>
                                 {!! Form::select('group_id', $groups, $account->group_id, ['class' => 'form-control']) !!}
                             </div>
                         </div>

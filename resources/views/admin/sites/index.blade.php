@@ -19,6 +19,7 @@
                                 <th>Name</th>
                                 <th>Domain</th>
                                 <th>Path</th>
+                                <th>Status</th>
                                 <th>Edit</th>
                             </tr>
                         </thead>
@@ -50,6 +51,12 @@
                         }
                     },
                     {data: 'path', name: 'path', orderable: false},
+                    {
+                        data: 'status', name: 'status',
+                        render: function ( data, type, row, meta ) {
+                            return '<span class="text-'+(data.value?'success':'danger')+'">'+data.label+'</span>'
+                        }
+                    },
                     {
                         data: 'action', name: 'action', orderable: false, searchable: false,
                         render: function ( data, type, row, meta ) {

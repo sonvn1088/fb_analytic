@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Site extends Model
 {
+    use Format;
     /**
      * The table associated with the model.
      *
@@ -19,5 +20,5 @@ class Site extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'domain', 'path'];
+    protected $fillable = ['name', 'domain', 'path', 'status'];
 }

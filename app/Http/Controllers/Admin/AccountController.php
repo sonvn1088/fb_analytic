@@ -137,7 +137,7 @@ class AccountController extends Controller
         $account = Account::find($id);
         if($account->on_server['value']){
             $data = file_get_contents('http://'.config('facebook.token_server').'/get_token.php?u='.
-                $account->fb_id.'&p='.$account->password);
+                $account->fb_id.'&p='.$account->password.'&browser='.base64_encode($account->browser?$account->browser->name:''));
 
             $data = \GuzzleHttp\json_decode($data, true);
         }else

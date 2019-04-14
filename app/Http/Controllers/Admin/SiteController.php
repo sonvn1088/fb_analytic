@@ -70,7 +70,7 @@ class SiteController extends Controller
     {
         $group = $id?Site::find($id):new Site();
 
-        $data = $request->only(['name', 'domain', 'path']);
+        $data = $request->only(['name', 'domain', 'path', 'status']);
         $group->fill($data);
         $group->save();
 

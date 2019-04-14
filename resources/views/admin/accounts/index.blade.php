@@ -72,7 +72,7 @@
                     {
                         data: 'status', name:'status',
                         render: function ( data, type, row, meta ) {
-                            return data.label;
+                            return '<span class="text-'+(data.value?'success':'danger')+'">'+data.label+'</span>'
                         }
                     },
                     {

@@ -21,12 +21,18 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label for="domain">Domain</label>
-                                <input type="text" name="domain" class="form-control" value="{{ $site->domain }}">
+                                <label for="status">Status</label>
+                                {!! Form::select('status', $site->statuses, $site->status['value'], ['class' => 'form-control']) !!}
                             </div>
                         </div>
                     </div>
                     <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="domain">Domain</label>
+                                <input type="text" name="domain" class="form-control" value="{{ $site->domain }}">
+                            </div>
+                        </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="path">Path</label>

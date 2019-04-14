@@ -49,6 +49,14 @@ class Account extends Model
         return $this->belongsTo('App\Models\Group');
     }
 
+    /**
+     * Get the browser that owns the account.
+     */
+    public function browser()
+    {
+        return $this->belongsTo('App\Models\Browser');
+    }
+
 
     public function getRoleAttribute(){
         if($this->attributes['role'])

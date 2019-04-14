@@ -466,9 +466,7 @@ class Facebook
      *
      */
     static public function generateToken($account){
-        if($account->browser_id)
-            $browser = Browser::find($account->browser_id);
-        else
+        if(!$browser = $account->browser)
             $browser = new Browser(['name' => config('facebook.api.agent'), 'type' => Browser::IPHONE]);
 
         if($browser->type == Browser::IPAD){

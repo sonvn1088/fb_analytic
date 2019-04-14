@@ -46,7 +46,7 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $('#pages-table').DataTable({
-                pageLength: 100,
+                pageLength: 10,
                 serverSide: true,
                 responsive: true,
                 ajax: "{{ route('admin.my_pages.list') }}",
@@ -73,7 +73,7 @@
 
                     },
                     {
-                        data: 'group_id', name: 'accounts', className: "text-center",
+                        data: 'group_id', name: 'accounts', className: "text-center", orderable: false, seachable: false,
                         render: function ( data, type, row, meta ) {
                             return $.map( row.accounts, function ( item ) {
                                 return '<a href="{{route('admin.accounts.show')}}/'+item.id+'" target="_blank">'

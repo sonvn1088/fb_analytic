@@ -41,6 +41,7 @@ class MyPage extends Model
 
     public function sites(){
         return Site::whereIn('id', $this->site_ids)
+            ->where('status', 1)
             ->get();
     }
 

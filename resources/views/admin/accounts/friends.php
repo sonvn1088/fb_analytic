@@ -80,7 +80,7 @@
     app.controller('myCtrl', function($scope){
         $scope.super_unicode_char = function(str){
             if(str){
-                var from = "��??��???????????��???�?????��???��??��???????????��??????????�????��??��???????????��???�?????��???��??��???????????��??????????�????�/_,:;";
+                var from = "àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ·/_,:;";
                 var to   = "aaaaaaaaaaaaaaaaaeeeeeeeeeeeiiiiiooooooooooooooooouuuuuuuuuuuyyyyydAAAAAAAAAAAAAAAAAEEEEEEEEEEEIIIIIOOOOOOOOOOOOOOOOOUUUUUUUUUUUYYYYYD------";
                 for(var i = 0, l = from.length ; i<l ; i++){
                     str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
