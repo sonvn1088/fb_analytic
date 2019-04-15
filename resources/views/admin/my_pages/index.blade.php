@@ -16,10 +16,9 @@
                         <thead>
                             <tr>
                                 <th>Group</th>
-                                <th>ID</th>
                                 <th>Name</th>
-                                <th>Like</th>
                                 <th>Follow</th>
+                                <th>Blocked At</th>
                                 <th>Accounts</th>
                                 <th>In Scheduled</th>
                                 <th>In Published</th>
@@ -55,7 +54,6 @@
                     {
                         data: 'group_id', name: 'group_id',  searchable : false, className: "text-center"
                     },
-                    {data: 'id', name: 'id', className: "text-center"},
                     {
                         data: 'name', name: 'name', orderable: false,
                         render: function ( data, type, row, meta ) {
@@ -64,12 +62,11 @@
                         }
                     },
                     {
-                        data: 'like', name: 'like', className: "text-center",
+                        data: 'follow', name: 'follow', className: "text-center",
                         render: $.fn.dataTable.render.number(',')
                     },
                     {
-                        data: 'follow', name: 'follow', className: "text-center",
-                        render: $.fn.dataTable.render.number(',')
+                        data: 'blocked_at', name: 'blocked_at', className: "text-center",
                     },
 
                     {

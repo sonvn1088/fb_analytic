@@ -171,6 +171,15 @@ class Facebook
         return self::get($userId.'/photos', $params, $token);
     }
 
+    static public function getUserProfilePhotos($userId, $token){
+        $params = [
+            'type' => 'tagged',
+            'fields' => 'name,images',
+            'limit' => 15
+        ];
+        return self::get($userId.'/photos', $params, $token);
+    }
+
     static public function checkToken($token){
         return self::get('me', [], $token);
     }
@@ -439,7 +448,7 @@ class Facebook
     }
 
     static public function getRandomToken(){
-        $accounts = Account::where('status', 1)
+        $accounts = Account::where('status', Account::ACTIVE)
             ->where('role', Account::EDITOR)
             ->inRandomOrder()
             ->get();

@@ -146,10 +146,10 @@ class AccountController extends Controller
         $account->token = $data['access_token']??($data['error']['message']??$data['error_msg']);
         $account->login_info = json_encode($data);
         if(isset($data['access_token'])){
-            $account->status = 1;
+            $account->status = Account::ACTIVE;
 
             //update token for pages
-            if($account->role['value'] == 2){ //editor
+            if($account->role['value'] == Account::EDITOR){ //editor
                 $pages = Facebook::getPages($account->token);
 
                 $myPages = MyPage::where('group_id', $account->group->id)
@@ -162,7 +162,7 @@ class AccountController extends Controller
             }
         }
         else
-            $account->status = 0;
+            $account->status = Account::INACTIVE;
         $account->save();
         return redirect()->intended(route('admin.accounts.show', $id));
     }
@@ -183,11 +183,11 @@ class AccountController extends Controller
             if(isset($user['gender']))
                 $account->gender = $user['gender'] == 'male'?2:1;
 
-            $account->status = 1;
+            $account->status = Account::ACTIVE;
             $account->save();
 
             //update token for pages
-            if($account->role['value'] == 2){ //editor
+            if($account->role['value'] == Account::EDITOR){ //editor
                 $pages = Facebook::getPages($account->token);
 
                 $myPages = MyPage::where('group_id', $account->group->id)
@@ -199,7 +199,7 @@ class AccountController extends Controller
                 }
             }
         }else{
-            $account->status = 0;
+            $account->status = Account::INACTIVE;
             $account->token = Arr::get($user, 'error.message');
             $account->save();
         }
@@ -217,19 +217,7 @@ class AccountController extends Controller
         return redirect()->intended(route('admin.accounts.show', $id));
     }
 
-    public function backupAllFriends(){
-        $accounts = Account::where('status', 1)
-            ->whereNull('backup')
-            ->where('on_server', 0)
-            ->where('id', '>', 69)
-            ->get();
-        foreach($accounts as $account){
-            $photos = Facebook::getFriendsTaggedPhotos('me', $account->token);
-            Storage::disk('local')->put('backup/'.$account->fb_id.'.txt', json_encode($photos));
-            $account->backup = date('Y-m-d H:i:s');
-            $account->save();
-        }
-    }
+
 
     public function viewFriends($id){
         $account = Account::find($id);

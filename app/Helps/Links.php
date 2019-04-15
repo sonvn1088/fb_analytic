@@ -22,6 +22,7 @@ class Links
             ->where('created_at', '>', date('Y-m-d H:i:s', time()-24*3600))
             ->get();
 
+
         $link_ids = [];
         $messages = [];
         foreach($posts as $post){
@@ -32,7 +33,7 @@ class Links
         $links = Link::whereIn('id', $link_ids)->get();
         $result = [];
         foreach($links as $link){
-            $result[$link->url] = $messages[$link->id];
+            $result[$link->url] = ['title' => $link->title, 'message' => $messages[$link->id]];
         }
 
         return $result;
