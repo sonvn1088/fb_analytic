@@ -17,6 +17,7 @@
                                 <th>ID</th>
                                 <th>Title</th>
                                 <th>Url</th>
+                                <th>Created At</th>
                             </tr>
                         </thead>
                     </table>
@@ -49,6 +50,7 @@
                             return '<a href="'+data+'" target="_bank" title="View">' + data+'</a>';
                         }
                     },
+                    {data: 'created_at', name: 'created_at'},
                 ]
             });
 

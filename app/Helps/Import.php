@@ -33,6 +33,7 @@ class Import
 
     static public function posts(){
         $pages = Page::all();
+
         foreach($pages as $page){
             $f_posts = Facebook::getPosts($page->fb_id, time() - 12*60);
             foreach($f_posts as $f_post){
@@ -66,7 +67,7 @@ class Import
                         $post->save();
 
                     }catch (Exception $e){
-
+                        echo $e->getMessage();
                     }
                 }
 
