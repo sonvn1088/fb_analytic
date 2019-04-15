@@ -135,6 +135,11 @@ return [
             'url'  => 'admin/links',
             'icon' => 'newspaper-o',
         ],
+        [
+            'text' => 'Pages',
+            'url'  => 'admin/pages',
+            'icon' => 'paypal',
+        ],
 
         /*[
             'text'    => 'Multilevel',

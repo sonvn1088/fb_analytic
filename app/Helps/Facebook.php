@@ -106,11 +106,11 @@ class Facebook
         $response = $client->get('https://www.facebook.com/'.$pageId);
         $content = $response->getBody()->getContents();
 
-        $regexPattern = "/<div>(.{0,10}) người thích trang này<\/div>/";
+        $regexPattern = "/<div>(.{0,12}) người thích trang này<\/div>/";
         preg_match($regexPattern, $content, $match);
         $info['like'] = str_replace('.', '', $match[1]??0);
 
-        $regexPattern = "/<div>(.{0,10}) người theo dõi trang này<\/div>/";
+        $regexPattern = "/<div>(.{0,12}) người theo dõi trang này<\/div>/";
         preg_match($regexPattern, $content, $match);
         $info['follow'] = str_replace('.', '', $match[1]??0);
 
@@ -121,6 +121,10 @@ class Facebook
         $regexPattern = "/\"username\":\"(.*?)\"/";
         preg_match($regexPattern, $content, $match);
         $info['username'] = $match[1]??'';
+
+        $regexPattern = "/content=\"fb:\/\/page\/\?id=(.*?)\"/";
+        preg_match($regexPattern, $content, $match);
+        $info['fb_id'] = $match[1]??'';
 
         return $info;
     }

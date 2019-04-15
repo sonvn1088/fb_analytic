@@ -65,6 +65,14 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     //Links
     Route::get('links', 'LinkController@index')->name('links');
     Route::get('links/list', 'LinkController@all')->name('links.list');
+
+    //Pages
+    Route::get('pages/import', 'PageController@import')->name('pages.import');
+    Route::get('pages/create', 'PageController@create')->name('pages.create');
+    Route::post('pages/{page}/save', 'PageController@save')->name('pages.save');
+    Route::get('pages', 'PageController@index')->name('pages');
+    Route::get('pages/list', 'PageController@all')->name('pages.list');
+    Route::get('pages/{page?}', 'PageController@show')->name('pages.show');
 });
 
 Auth::routes();
