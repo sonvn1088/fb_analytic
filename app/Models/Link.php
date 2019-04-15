@@ -14,7 +14,7 @@ class Link extends Model
     protected $table = 'links';
 
 
-    public $timestamps = false;
+    const UPDATE_AT = null;
     /**
      * The attributes that are mass assignable.
      *

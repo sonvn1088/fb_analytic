@@ -60,7 +60,7 @@ class Import
                             $post->link_id = $link->id;
                             $post->page_id = $tmp[0];
                             $post->message = $f_post['message'];
-                            $post->created_at = date('Y-m-d H:i:s', strtotime($f_post['created_time']));
+                            //$post->created_at = date('Y-m-d H:i:s', strtotime($f_post['created_time']));
                         }
 
                         $post->save();

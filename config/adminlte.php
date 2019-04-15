@@ -109,11 +109,7 @@ return [
 
     'menu' => [
         'MANAGE',
-        /*[
-            'text' => 'Groups',
-            'url'  => 'admin/groups',
-            'icon' => 'newspaper-o',
-        ],*/
+
         [
             'text' => 'Accounts',
             'url'  => 'admin/accounts',
@@ -133,6 +129,11 @@ return [
             'text' => 'Browsers',
             'url'  => 'admin/browsers',
             'icon' => 'chrome',
+        ],
+        [
+            'text' => 'Links',
+            'url'  => 'admin/links',
+            'icon' => 'newspaper-o',
         ],
 
         /*[

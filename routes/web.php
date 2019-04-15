@@ -61,6 +61,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::get('sites', 'SiteController@index')->name('sites');
     Route::get('sites/list', 'SiteController@all')->name('sites.list');
     Route::get('sites/{site}', 'SiteController@show')->name('sites.show');
+
+    //Links
+    Route::get('links', 'LinkController@index')->name('links');
+    Route::get('links/list', 'LinkController@all')->name('links.list');
 });
 
 Auth::routes();
