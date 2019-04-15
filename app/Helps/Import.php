@@ -5,6 +5,7 @@ namespace App\Helps;
 use App\Models\Link;
 use App\Models\Post;
 use App\Models\Page;
+use Illuminate\Support\Arr;
 
 class Import
 {
@@ -39,11 +40,11 @@ class Import
             foreach($f_posts as $f_post){
 
                 //save link
-                if($f_post['type'] == 'link'){
-                    $url = strtok($f_post['link'], '?');
+                if(Arr::get($f_post, 'type') == 'link'){
+                    $url = strtok(Arr::get($f_post, 'link'), '?');
                     $url = str_replace('https', 'http', $url);
                     $data = [
-                        'title' => $f_post['name'],
+                        'title' => Arr::get($f_post, 'name'),
                         'url' => $url
                     ];
 
@@ -60,7 +61,7 @@ class Import
                         if(!$post->id){
                             $post->link_id = $link->id;
                             $post->page_id = $tmp[0];
-                            $post->message = $f_post['message'];
+                            $post->message = Arr::get($f_post, 'message');
                             //$post->created_at = date('Y-m-d H:i:s', strtotime($f_post['created_time']));
                         }
 
