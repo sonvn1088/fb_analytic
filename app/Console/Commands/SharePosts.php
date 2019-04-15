@@ -44,6 +44,7 @@ class SharePosts extends Command
     public function handle()
     {
         $myPages = MyPage::where('status', MyPage::ENABLED)->get();
+        //$myPages = MyPage::whereIn('id', [14])->get();
         foreach($myPages as $myPage){
             $result = Facebook::checkToken($myPage->token);
            if(isset($result['id']))

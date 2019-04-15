@@ -38,6 +38,7 @@
             $('#pages-table').DataTable({
                 serverSide: true,
                 responsive: true,
+                processing: true,
                 order: [[0, 'desc']],
                 ajax: "{{ route('admin.pages.list') }}",
                 columns: [

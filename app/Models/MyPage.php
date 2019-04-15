@@ -67,15 +67,15 @@ class MyPage extends Model
         $items = [];
         foreach($this->sites() as $site){
             $posts = json_decode(file_get_contents($site->path), true);
+            if(is_array($posts))
+                foreach($posts as $post){
+                    $message = $this->_getMessageFromPost($post['messages'], $post['description'], $post['content']);
 
-            foreach($posts as $post){
-                $message = $this->_getMessageFromPost($post['messages'], $post['description'], $post['content']);
-
-                $items[] = [
-                    'link' => $post['link'],
-                    'message' => $message,
-                ];
-            }
+                    $items[] = [
+                        'link' => $post['link'],
+                        'message' => $message,
+                    ];
+                }
         }
 
         $shuffled_items = [];

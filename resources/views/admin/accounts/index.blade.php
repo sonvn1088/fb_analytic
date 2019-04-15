@@ -43,6 +43,7 @@
                 order: [[ 6, 'desc']],
                 serverSide: true,
                 responsive: true,
+                processing: true,
                 ajax: "{{ route('admin.accounts.list') }}",
                 columns: [
                     {data: 'id', name: 'id'},

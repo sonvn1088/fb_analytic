@@ -279,7 +279,8 @@ class Facebook
             $is_current = true;
             foreach($scheduledPosts as $postId => $scheduledPost){
                 if($scheduledPost['scheduled_publish_time'] >= time()){
-                    $rootTime = $scheduledPost['scheduled_publish_time'];
+                    $rootTime = $scheduledPost['scheduled_publish_time'] > $rootTime + 10*60?
+                        $rootTime + 10*60:$scheduledPost['scheduled_publish_time'];
                     $is_current = false;
                     break;
                 }else {
