@@ -44,12 +44,12 @@ class SharePosts extends Command
     public function handle()
     {
         $myPages = MyPage::where('status', MyPage::ENABLED)->get();
-        //$myPages = MyPage::whereIn('id', [14])->get();
+        //$myPages = MyPage::whereIn('id', [12])->get();
         foreach($myPages as $myPage){
             $result = Facebook::checkToken($myPage->token);
-           if(isset($result['id']))
+            if(isset($result['id']))
                 $myPage->sharePosts();
-           else{
+            else{
                 $editor = $myPage->editor();
                 if($editor){
                     $editor->status = Account::INACTIVE;

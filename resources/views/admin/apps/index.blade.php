@@ -1,10 +1,10 @@
 @extends('adminlte::page')
 
-@section('title', 'Manage pages')
+@section('title', 'Manage Apps')
 
 @section('content_header')
-    <a class="btn btn-info btn-flat pull-right" href="{{route('admin.pages.create')}}">Add Page</a>
-    <h1>Pages</h1>
+    <a class="btn btn-info btn-flat pull-right" href="{{route('admin.apps.create')}}">Add App</a>
+    <h1>Apps</h1>
 @stop
 
 @section('content')
@@ -12,14 +12,14 @@
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-body">
-                    <table id="pages-table" class="table display table-bordered table-hover">
+                    <table id="apps-table" class="table display table-bordered table-hover">
                         <thead>
                             <tr>
                                 <th>ID</th>
                                 <th>Name</th>
-                                <th>Username</th>
-                                <th>Like</th>
-                                <th>Follow</th>
+                                <th>Key</th>
+                                <th>Secret</th>
+                                <th>Edit</th>
                             </tr>
                         </thead>
                     </table>
@@ -35,12 +35,12 @@
 @section('js')
     <script type="text/javascript">
         $(document).ready(function() {
-            $('#pages-table').DataTable({
+            $('#apps-table').DataTable({
                 serverSide: true,
                 responsive: true,
                 processing: true,
                 order: [[0, 'desc']],
-                ajax: "{{ route('admin.pages.list') }}",
+                ajax: "{{ route('admin.apps.list') }}",
                 columns: [
                     {
                         data: 'id',
@@ -48,21 +48,18 @@
                     },
                     {
                         data: 'name', name: 'name',
+                    },
+                    {
+                        data: 'key', name: 'key',
+                    },
+                    {
+                        data: 'secret', name: 'secret'
+                    },
+                    {
+                        data: 'action', name: 'action', orderable: false, searchable: false,
                         render: function ( data, type, row, meta ) {
-                            return '<a href="https://www.facebook.com/'+(row.username?row.username:row.fb_id)+
-                                '" target="_bank" title="View">' + data+'</a>';
+                            return '<a href="{{ route('admin.apps.show') }}/'+row.id+ '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>';
                         }
-                    },
-                    {
-                        data: 'username', name: 'username',
-                    },
-                    {
-                        data: 'likes', name: 'likes', className: "text-center",
-                        render: $.fn.dataTable.render.number(',')
-                    },
-                    {
-                        data: 'follow', name: 'follow', className: "text-center",
-                        render: $.fn.dataTable.render.number(',')
                     },
                 ]
             });

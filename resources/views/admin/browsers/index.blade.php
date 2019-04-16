@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Manage FBAC')
+@section('title', 'Manage browsers')
 
 @section('content_header')
     <h1>Browsers - <a href="{{route('admin.browsers.import')}}">Import</a></h1>

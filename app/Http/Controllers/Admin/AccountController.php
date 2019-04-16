@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Helps\Facebook;
 use App\Models\Account;
+use App\Models\App;
 use App\Models\Group;
 use App\Models\MyPage;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Arr;
@@ -15,6 +17,16 @@ use Yajra\Datatables\Datatables;
 
 class AccountController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth', ['except' => ['generateAppToken']]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -94,7 +106,13 @@ class AccountController extends Controller
             foreach($groups as $group){
                 $groupsData[$group->id] = $group->name;
             }
-            return view('admin.accounts.show', ['account' => $account, 'groups' => $groupsData]);
+
+            $apps = App::all();
+            $appsData = ['' => '--'];
+            foreach($apps as $app){
+                $appsData[$app->id] = $app->name;
+            }
+            return view('admin.accounts.show', ['account' => $account, 'groups' => $groupsData, 'apps' => $appsData]);
         }
 
         else
@@ -111,7 +129,7 @@ class AccountController extends Controller
     public function update(Request $request,  $id)
     {
         $account = Account::find($id);
-        $account->fill($request->only(['token', 'status', 'on_server', 'group_id', 'role', 'profile']));
+        $account->fill($request->only(['token', 'status', 'on_server', 'group_id', 'role', 'profile', 'app_id']));
         $account->save();
 
         return redirect()->intended(route('admin.accounts.show', $id));
@@ -122,6 +140,7 @@ class AccountController extends Controller
         $account->old_password = $account->password;
         $account->password = str_random(16);
         $account->token = null;
+        $account->app_token = null;
         $account->save();
         return redirect()->intended(route('admin.accounts.show', $id));
     }
@@ -150,15 +169,7 @@ class AccountController extends Controller
 
             //update token for pages
             if($account->role['value'] == Account::EDITOR){ //editor
-                $pages = Facebook::getPages($account->token);
-
-                $myPages = MyPage::where('group_id', $account->group->id)
-                    ->get();
-
-                foreach($myPages as $myPage){
-                    $myPage->token = $pages[$myPage->fb_id]['access_token'];
-                    $myPage->save();
-                }
+                $account->setPagesToken(true);
             }
         }
         else
@@ -169,34 +180,29 @@ class AccountController extends Controller
 
     public function updateInfo($id){
         $account = Account::find($id);
-        $user = Facebook::getUser('me', $account->token);
+        $user = Facebook::getUser('me', $account->token?:$account->app_token);
+
         if(isset($user['id'])){
-            $account->email = $user['email'];
-            $account->first_name = $user['first_name'];
-            $account->last_name = $user['last_name'];
-            $account->middle_name = $user['middle_name']??null;
-            $account->friends = $user['friends']['summary']['total_count'];
-            $account->fb_id = $user['id'];
-            $tmp = explode('/', $user['birthday']);
-            $account->birthday = $tmp[2].'-'.$tmp[0].'-'.$tmp[1];
-            $account->country = $user['location']['location']['country']??null;
-            if(isset($user['gender']))
-                $account->gender = $user['gender'] == 'male'?2:1;
+            if(isset($user['friends'])){
+                $account->email = $user['email'];
+                $account->first_name = $user['first_name'];
+                $account->last_name = $user['last_name'];
+                $account->middle_name = $user['middle_name']??null;
+                $account->friends = $user['friends']['summary']['total_count'];
+                $account->fb_id = $user['id'];
+                $tmp = explode('/', $user['birthday']);
+                $account->birthday = $tmp[2].'-'.$tmp[0].'-'.$tmp[1];
+                $account->country = $user['location']['location']['country']??null;
+                if(isset($user['gender']))
+                    $account->gender = $user['gender'] == 'male'?2:1;
+            }
 
             $account->status = Account::ACTIVE;
             $account->save();
 
             //update token for pages
             if($account->role['value'] == Account::EDITOR){ //editor
-                $pages = Facebook::getPages($account->token);
-
-                $myPages = MyPage::where('group_id', $account->group->id)
-                    ->get();
-
-                foreach($myPages as $myPage){
-                    $myPage->token = $pages[$myPage->fb_id]['access_token'];
-                    $myPage->save();
-                }
+                $account->setPagesToken($account->app_token?false:true);
             }
         }else{
             $account->status = Account::INACTIVE;
@@ -217,11 +223,27 @@ class AccountController extends Controller
         return redirect()->intended(route('admin.accounts.show', $id));
     }
 
-
-
     public function viewFriends($id){
         $account = Account::find($id);
         $friendsData = $account->backup?json_decode(Storage::get('backup/'.$account->fb_id.'.txt'), true):[];
         return view('admin.accounts.friends', ['account' => $account, 'friendsData' => $friendsData]);
+    }
+
+
+
+    public function openAppToGetToken($accountId){
+        $account = Account::find($accountId);
+        $app = $account->app;
+
+        $params = [
+            'client_secret' => $app->secret,
+            'account_id' => $accountId,
+            'client_id' => $app->key,
+        ];
+
+        $data = base64_encode(http_build_query($params));
+
+        exec('"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --profile-directory="Profile '.$account->profile.
+            '" '.config('facebook.app_token_url').'?data='.$data);
     }
 }

@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Manage FBAC')
+@section('title', 'Account #'.$account->first_name.' '.$account->middle_name.' '.$account->last_name)
 
 @section('content_header')
     <h1>Account #{{$account->first_name}} {{$account->middle_name}} {{$account->last_name}}</h1>
@@ -34,7 +34,7 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label for="token">Token</label>
+                                <label for="token">Full Token</label>
                                 <div class="input-group">
                                     <input type="text" name="token" class="form-control" value="{{ $account->token }}">
                                     <span class="input-group-btn">
@@ -55,6 +55,25 @@
                                     </span>
                                 </div>
 
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="app_token">App Token</label>
+                                <div class="input-group">
+                                    <input type="text" name="app_token" class="form-control" value="{{ $account->app_token }}">
+                                    <span class="input-group-btn">
+                                        <a class="btn btn-info" href="javascript:$.ajax('{{route('admin.accounts.token_app', $account->id)}}')" target="_blank" type="button">Generate</a>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="backup">App</label>
+                                {!! Form::select('app_id', $apps, $account->app_id, ['class' => 'form-control']) !!}
                             </div>
                         </div>
                     </div>

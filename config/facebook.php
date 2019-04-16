@@ -4,6 +4,8 @@ return [
     'graph' => 'https://graph.facebook.com/v3.2/',
     'cdn' => 'https://scontent.xx.fbcdn.net/',
     'token_server' => '34.80.15.3',
+    'exchange_token_url' => 'https://graph.facebook.com/oauth/access_token',
+    'app_token_url' => 'http://cuocsong.site/get_app_token.php',
     'step_time' => 10,
     'token' => env('TOKEN'),
     'pages' => [],

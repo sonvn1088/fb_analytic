@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Manage FBAC')
+@section('title', 'Manage Pages')
 
 @section('content_header')
     <a class="btn btn-info btn-flat pull-right" href="{{route('admin.my_pages.create')}}">Add Page</a>
@@ -18,10 +18,10 @@
                                 <th>Group</th>
                                 <th>Name</th>
                                 <th>Follow</th>
-                                <th>Blocked At</th>
                                 <th>Accounts</th>
                                 <th>In Scheduled</th>
                                 <th>In Published</th>
+                                <th>Blocked At</th>
                                 <th>Status</th>
                                 <th>Edit</th>
                             </tr>
@@ -46,7 +46,7 @@
         $(document).ready(function() {
             $('#pages-table').DataTable({
                 order: [[ 0, 'asc']],
-                pageLength: 50,
+                pageLength: 35,
                 serverSide: true,
                 responsive: true,
                 ajax: "{{ route('admin.my_pages.list') }}",
@@ -65,9 +65,7 @@
                         data: 'follow', name: 'follow', className: "text-center",
                         render: $.fn.dataTable.render.number(',')
                     },
-                    {
-                        data: 'blocked_at', name: 'blocked_at', className: "text-center",
-                    },
+
 
                     {
                         data: 'group_id', name: 'accounts', className: "text-center", orderable: false, seachable: false,
@@ -87,6 +85,9 @@
                     },
                     {
                         data: 'published_posts', name: 'published_posts',
+                    },
+                    {
+                        data: 'blocked_at', name: 'blocked_at', className: "text-center",
                     },
                     {
                         data: 'status', name: 'status', className: "text-center",

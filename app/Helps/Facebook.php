@@ -459,7 +459,7 @@ class Facebook
             ->get();
 
         foreach($accounts as $account){
-            $result = self::checkToken($account->token);
+            $result = self::checkToken($account->app_token?:$account->token);
             if(isset($result['id']))
                 return $account->token;
             else{

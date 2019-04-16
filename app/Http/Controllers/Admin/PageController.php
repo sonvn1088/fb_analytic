@@ -55,7 +55,7 @@ class PageController extends Controller
         }
 
         else
-            return redirect()->intended(route('admin.my_pages'));
+            return redirect()->intended(route('admin.pages'));
     }
 
     /**

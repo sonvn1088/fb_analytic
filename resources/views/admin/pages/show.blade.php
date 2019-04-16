@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Manage FBAC')
+@section('title', 'Page # '.$page->name)
 
 @section('content_header')
     <h1>@if ($page->id) {{'Page #'.$page->name}} @else New page @endif</h1>

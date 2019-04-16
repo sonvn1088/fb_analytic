@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helps\Facebook;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 
@@ -34,7 +35,7 @@ class Account extends Model
      * @var array
      */
     protected $fillable = ['first_name', 'last_name', 'username', 'email', 'birthday', 'fb_id', 'gender', 'token',
-        'password', 'group_id', 'role', 'status', 'on_server', 'profile'];
+        'password', 'group_id', 'role', 'status', 'on_server', 'profile', 'app_id', 'app_token'];
 
 
     public $roles = [1 => 'Admin', 2 => 'Editor', 3 => 'BM'];
@@ -60,6 +61,14 @@ class Account extends Model
         return $this->belongsTo('App\Models\Browser');
     }
 
+    /**
+     * Get the app that owns the account.
+     */
+    public function app()
+    {
+        return $this->belongsTo('App\Models\App');
+    }
+
     public function getStatusAttribute(){
         if(isset($this->attributes['status']))
             return  ['value' => $this->attributes['status'], 'label' => Arr::get($this->statuses, $this->attributes['status'])];
@@ -80,4 +89,16 @@ class Account extends Model
     }
 
 
+    public function setPagesToken($isFullToken = true){
+        $pages = Facebook::getPages($isFullToken?$this->token:$this->app_token);
+
+        $myPages = MyPage::where('group_id', $this->group->id)
+            ->get();
+
+        foreach($myPages as $myPage){
+            $myPage->token = Arr::get($pages, $myPage->fb_id.'.access_token');
+            $myPage->save();
+        }
+        return;
+    }
 }

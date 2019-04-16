@@ -29,6 +29,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::get('accounts/{account}/change_password', 'AccountController@changePassword')->name('accounts.change_password');
     Route::get('accounts/{account}/change_email_password', 'AccountController@changeEmailPassword')->name('accounts.change_email_password');
     Route::get('accounts/{account}/generate_token', 'AccountController@generateToken')->name('accounts.generate_token');
+    Route::get('accounts/{account}/token_app', 'AccountController@openAppToGetToken')->name('accounts.token_app');
+
     Route::get('accounts/{account}/update_info', 'AccountController@updateInfo')->name('accounts.update_info');
     Route::get('accounts/{account}/backup_friends', 'AccountController@backupFriends')->name('accounts.backup_friends');
     Route::get('accounts/{account}/view_friends', 'AccountController@viewFriends')->name('accounts.view_friends');
@@ -73,8 +75,16 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::get('pages', 'PageController@index')->name('pages');
     Route::get('pages/list', 'PageController@all')->name('pages.list');
     Route::get('pages/{page?}', 'PageController@show')->name('pages.show');
+
+    //Apps
+    Route::get('apps/create', 'AppController@create')->name('apps.create');
+    Route::post('apps/{app}/save', 'AppController@save')->name('apps.save');
+    Route::get('apps', 'AppController@index')->name('apps');
+    Route::get('apps/list', 'AppController@all')->name('apps.list');
+    Route::get('apps/{app?}', 'AppController@show')->name('apps.show');
 });
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('accounts/{account}/generate_app_token', 'AccountController@generateAppToken')->name('accounts.generate_app_token');

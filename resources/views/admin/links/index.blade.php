@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Manage FBAC')
+@section('title', 'Manage links')
 
 @section('content_header')
     <h1>Links</h1>

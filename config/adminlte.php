@@ -133,12 +133,17 @@ return [
         [
             'text' => 'Links',
             'url'  => 'admin/links',
-            'icon' => 'newspaper-o',
+            'icon' => 'link',
         ],
         [
             'text' => 'Pages',
             'url'  => 'admin/pages',
             'icon' => 'paypal',
+        ],
+        [
+            'text' => 'Apps',
+            'url'  => 'admin/apps',
+            'icon' => 'asterisk',
         ],
 
         /*[

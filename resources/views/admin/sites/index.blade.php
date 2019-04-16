@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Manage FBAC')
+@section('title', 'Manage sites')
 
 @section('content_header')
     <a class="btn btn-info btn-flat pull-right" href="{{route('admin.sites.create')}}">Add Site</a>
