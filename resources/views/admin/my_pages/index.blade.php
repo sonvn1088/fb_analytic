@@ -46,6 +46,7 @@
         $(document).ready(function() {
             $('#pages-table').DataTable({
                 order: [[ 0, 'asc']],
+                processing: true,
                 pageLength: 35,
                 serverSide: true,
                 responsive: true,
@@ -68,7 +69,7 @@
 
 
                     {
-                        data: 'group_id', name: 'accounts', className: "text-center", orderable: false, seachable: false,
+                        data: 'group_id', name: 'accounts', className: "text-center", orderable: false, searchable: false,
                         render: function ( data, type, row, meta ) {
                             return $.map( row.accounts, function ( item ) {
                                 return '<a href="{{route('admin.accounts.show')}}/'+item.id+'" target="_blank">'
@@ -81,10 +82,10 @@
 
                     },
                     {
-                        data: 'scheduled_posts', name: 'scheduled_posts',
+                        data: 'scheduled_posts', name: 'scheduled_posts', orderable: false, searchable: false,
                     },
                     {
-                        data: 'published_posts', name: 'published_posts',
+                        data: 'published_posts', name: 'published_posts', orderable: false, searchable: false,
                     },
                     {
                         data: 'blocked_at', name: 'blocked_at', className: "text-center",

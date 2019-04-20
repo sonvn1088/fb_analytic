@@ -45,7 +45,8 @@ class Import
                     $url = str_replace('https', 'http', $url);
                     $data = [
                         'title' => Arr::get($f_post, 'name'),
-                        'url' => $url
+                        'url' => $url,
+                        'thumbnail' => Arr::get($f_post, 'full_picture'),
                     ];
 
                     try{

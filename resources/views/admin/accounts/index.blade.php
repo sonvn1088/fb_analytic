@@ -15,7 +15,8 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Name</th>
+                                <th>FirstName</th>
+                                <th>LastName</th>
                                 <th>Profile</th>
                                 <th>Friends</th>
                                 <th>Group</th>
@@ -40,7 +41,7 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $('#accounts-table').DataTable({
-                order: [[ 6, 'desc']],
+                order: [[ 7, 'desc']],
                 serverSide: true,
                 responsive: true,
                 processing: true,
@@ -48,9 +49,15 @@
                 columns: [
                     {data: 'id', name: 'id'},
                     {
-                        data: 'first_name', name: 'name', orderable: false, searchable : false,
+                        data: 'first_name', name: 'first_name', orderable: false,
                         render: function ( data, type, row, meta ) {
-                            return '<a href="https://www.facebook.com/'+row.fb_id+'" target="_bank" title="View on Facebook">'+data + ' ' + row.middle_name + ' ' + row.last_name+'</a>';
+                            return '<a href="https://www.facebook.com/'+row.fb_id+'" target="_bank" title="View on Facebook">'+data +'</a>';
+                        }
+                    },
+                    {
+                        data: 'last_name', name: 'last_name', orderable: false,
+                        render: function ( data, type, row, meta ) {
+                            return '<a href="https://www.facebook.com/'+row.fb_id+'" target="_bank" title="View on Facebook">'+data+'</a>';
                         }
                     },
                     {

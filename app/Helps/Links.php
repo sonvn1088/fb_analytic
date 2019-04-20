@@ -33,7 +33,21 @@ class Links
         $links = Link::whereIn('id', $link_ids)->get();
         $result = [];
         foreach($links as $link){
-            $result[$link->url] = ['title' => $link->title, 'message' => $messages[$link->id]];
+            if(!$link->content){
+                $result = General::parseArticle($link->url);
+                $link->title = $result['title'];
+                $link->excerpt = $result['excerpt'];
+                $link->content = $result['content'];
+                $link->save();
+            }
+
+            $result[$link->url] = [
+                'title' => $link->title,
+                'thumbnail' => $link->thumbnail,
+                'excerpt' => $link->excerpt,
+                'content' => $link->content,
+                'message' => $messages[$link->id]
+            ];
         }
 
         return $result;

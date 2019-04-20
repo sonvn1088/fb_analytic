@@ -8,6 +8,7 @@ use App\Models\Token;
 use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
+use Illuminate\Support\Arr;
 
 class Facebook
 {
@@ -22,7 +23,7 @@ class Facebook
     }
 
     static public function getPosts($pageId, $since){
-        $fields = 'permalink_url,link,created_time,name,type,message';
+        $fields = 'permalink_url,link,created_time,name,type,message,full_picture';
         return self::get($pageId.'/feed', ['fields' => $fields, 'since' => $since], self::getRandomToken());
     }
 
@@ -137,8 +138,10 @@ class Facebook
             $i = 0;
             foreach($photos as $photo){
                 $i++;
-                $image = end($photo['images']);
-                $imagesData[$photo['id']] = str_replace(config('facebook.cdn'), '', $image['source']);
+                $images = Arr::get($photo, 'images', []);
+                $image = end($images);
+                if(!empty($image))
+                    $imagesData[$photo['id']] = str_replace(config('facebook.cdn'), '', $image['source']);
             }
 
 
@@ -398,7 +401,7 @@ class Facebook
             $result =  \GuzzleHttp\json_decode($response->getBody()->getContents(), true);
             return $result;
         }catch (BadResponseException $e){
-            return [];
+            return ['error' => ['message' => $e->getMessage()]];
         }
 
     }

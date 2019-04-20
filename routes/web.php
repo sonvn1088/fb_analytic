@@ -87,4 +87,5 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/test', 'TestController@test')->name('test');
 Route::get('accounts/{account}/generate_app_token', 'AccountController@generateAppToken')->name('accounts.generate_app_token');
