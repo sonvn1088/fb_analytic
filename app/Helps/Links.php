@@ -31,13 +31,13 @@ class Links
         }
 
         $links = Link::whereIn('id', $link_ids)->get();
-        $result = [];
+
         foreach($links as $link){
             if(!$link->content){
-                $result = General::parseArticle($link->url);
-                $link->title = $result['title'];
-                $link->excerpt = $result['excerpt'];
-                $link->content = $result['content'];
+                $article = General::parseArticle($link->url);
+                $link->title = $article['title'];
+                $link->excerpt = $article['excerpt'];
+                $link->content = $article['content'];
                 $link->save();
             }
 
