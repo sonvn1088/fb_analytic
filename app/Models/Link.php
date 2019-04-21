@@ -19,5 +19,5 @@ class Link extends Model
      *
      * @var array
      */
-    protected $fillable = ['title', 'url'];
+    protected $fillable = ['title', 'url', 'thumbnail', 'excerpt', 'content'];
 }
