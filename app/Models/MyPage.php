@@ -89,7 +89,7 @@ class MyPage extends Model
     }
 
     private function _getMessageFromPost($messages, $description, $content){
-        if(count($messages) >= 2){
+        if(is_array($messages) && count($messages) >= 2){
             return $messages[array_rand($messages)];
         }
         $messages = [];
