@@ -5,6 +5,7 @@ namespace App\Helps;
 
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\BadResponseException;
 use Illuminate\Support\Facades\Mail;
 
 class General
@@ -115,9 +116,16 @@ class General
     }
 
     static  public function parseArticle($url){
-        $client = new Client();
-        $response = $client->get($url);
-        $content = $response->getBody()->getContents();
+        try {
+            $client = new Client();
+            $response = $client->get($url);
+            $content = $response->getBody()->getContents();
+
+        }catch (BadResponseException $e){
+            return [];
+        }catch (Exception $e){
+            return [];
+        }
         $content = str_replace(["\t"], '', $content);
         $content = str_replace(["\n"], self::SEPARATE, $content);
 

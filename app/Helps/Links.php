@@ -4,6 +4,7 @@ namespace App\Helps;
 
 use App\Models\Link;
 use App\Models\Post;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
 class Links
@@ -35,9 +36,9 @@ class Links
         foreach($links as $link){
             if(!$link->content){
                 $article = General::parseArticle($link->url);
-                $link->title = $article['title'];
-                $link->excerpt = $article['excerpt'];
-                $link->content = $article['content'];
+                $link->title = Arr::get($article, 'title');
+                $link->excerpt = Arr::get($article, 'excerpt');
+                $link->content = Arr::get($article, 'content');
                 $link->save();
             }
 
