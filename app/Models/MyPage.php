@@ -27,7 +27,7 @@ class MyPage extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'fb_id', 'like', 'follow', 'status', 'group_id', 'site_ids', 'username', 'blocked_at'];
+    protected $fillable = ['name', 'fb_id', 'like', 'follow', 'status', 'group_id', 'site_ids', 'username', 'blocked_at', 'query_track'];
 
 
     protected $casts = [
@@ -72,7 +72,7 @@ class MyPage extends Model
                     $message = $this->_getMessageFromPost($post['messages'], $post['description'], $post['content']);
 
                     $items[] = [
-                        'link' => $post['link'],
+                        'link' => $this->query_track?$post['link'].'?'.$this->query_track:$post['link'],
                         'message' => $message,
                     ];
                 }

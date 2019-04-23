@@ -16,7 +16,12 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="fb_id">FB ID</label>
-                                <input type="text" name="fb_id" class="form-control" value="{{ $myPage->fb_id }}">
+                                <div class="input-group">
+                                    <input type="text" name="fb_id" class="form-control" value="{{ $myPage->fb_id }}">
+                                    <span class="input-group-btn">
+                                        <a class="btn btn-info" href="https://www.facebook.com/{{$myPage->fb_id}}" target="_blank" type="button">View</a>
+                                    </span>
+                                </div>
                             </div>
                         </div>
                         <div class="col-sm-6">
@@ -101,12 +106,19 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
+                                <label for="query_track">Query Track</label>
+                                <input type="query_track" name="query_track" class="form-control" value="{{ $myPage->query_track }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
                                 <label for="country">Country</label>
                                 {!! Form::select('country', ['vn' => 'Vietnam', 'th' => 'Thailand', 'tw' => 'Taiwan', 'id' => 'Indonesia', 'ot' => 'Other'], $myPage->country, ['class' => 'form-control']) !!}
                             </div>
                         </div>
                     </div>
-
                     <button type="submit" class="btn btn-primary btn-flat ">Save</button>
                 </div>
             </div>
