@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d8024b66-6e1f-4c4d-985f-b1692a60915d" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Console/Commands/SharePosts.php" afterPath="$PROJECT_DIR$/app/Console/Commands/SharePosts.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Helps/General.php" afterPath="$PROJECT_DIR$/app/Helps/General.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Helps/Links.php" afterPath="$PROJECT_DIR$/app/Helps/Links.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="fb_analytic.iws" />
@@ -25,16 +26,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Facebook.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Helps/Facebook.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.0">
-              <caret line="25" column="81" selection-start-line="25" selection-start-column="81" selection-end-line="25" selection-end-column="81" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="Account.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Models/Account.php">
           <provider selected="true" editor-type-id="text-editor">
@@ -80,11 +71,31 @@
       <file leaf-file-name="General.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Helps/General.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="124" column="20" selection-start-line="124" selection-start-column="20" selection-end-line="124" selection-end-column="20" />
+            <state vertical-scroll-proportion="72.69231">
+              <caret line="76" column="26" selection-start-line="76" selection-start-column="17" selection-end-line="76" selection-end-column="26" />
               <folding>
                 <element signature="e#31#53#0#PHP" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ExportTopLinks.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Console/Commands/ExportTopLinks.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-18.0">
+              <caret line="41" column="29" selection-start-line="41" selection-start-column="29" selection-end-line="41" selection-end-column="29" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Links.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/Helps/Links.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.5456081">
+              <caret line="37" column="61" selection-start-line="37" selection-start-column="61" selection-end-line="37" selection-end-column="61" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -109,10 +120,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SharePosts.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="SharePosts.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Console/Commands/SharePosts.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.45945945">
+            <state vertical-scroll-proportion="-10.461538">
               <caret line="46" column="10" selection-start-line="46" selection-start-column="10" selection-end-line="46" selection-end-column="10" />
               <folding>
                 <element signature="e#40#63#0#PHP" expanded="true" />
@@ -176,12 +187,12 @@
         <option value="$PROJECT_DIR$/app/Helps/Facebook.php" />
         <option value="$PROJECT_DIR$/app/Helps/Import.php" />
         <option value="$PROJECT_DIR$/app/Models/Link.php" />
-        <option value="$PROJECT_DIR$/app/Helps/General.php" />
-        <option value="$PROJECT_DIR$/app/Helps/Links.php" />
         <option value="$PROJECT_DIR$/resources/views/admin/my_pages/show.blade.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/MyPageController.php" />
         <option value="$PROJECT_DIR$/app/Models/MyPage.php" />
         <option value="$PROJECT_DIR$/app/Console/Commands/SharePosts.php" />
+        <option value="$PROJECT_DIR$/app/Helps/General.php" />
+        <option value="$PROJECT_DIR$/app/Helps/Links.php" />
       </list>
     </option>
   </component>
@@ -899,7 +910,13 @@
       <option name="project" value="LOCAL" />
       <updated>1555980707224</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="manage accounts &amp; pages">
+      <created>1555980734128</created>
+      <option name="number" value="00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1555980734128</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -1246,31 +1263,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Helps/General.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="124" column="20" selection-start-line="124" selection-start-column="20" selection-end-line="124" selection-end-column="20" />
-          <folding>
-            <element signature="e#31#53#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Console/Commands/ExportTopLinks.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7567568">
-          <caret line="41" column="31" selection-start-line="41" selection-start-column="31" selection-end-line="41" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Helps/Links.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.60746">
-          <caret line="39" column="63" selection-start-line="39" selection-start-column="63" selection-end-line="39" selection-end-column="63" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Console/Commands/ImportPosts.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1331,11 +1323,37 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Console/Commands/SharePosts.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.45945945">
+        <state vertical-scroll-proportion="-10.461538">
           <caret line="46" column="10" selection-start-line="46" selection-start-column="10" selection-end-line="46" selection-end-column="10" />
           <folding>
             <element signature="e#40#63#0#PHP" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Helps/General.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="72.69231">
+          <caret line="76" column="26" selection-start-line="76" selection-start-column="17" selection-end-line="76" selection-end-column="26" />
+          <folding>
+            <element signature="e#31#53#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Console/Commands/ExportTopLinks.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-18.0">
+          <caret line="41" column="29" selection-start-line="41" selection-start-column="29" selection-end-line="41" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Helps/Links.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5456081">
+          <caret line="37" column="61" selection-start-line="37" selection-start-column="61" selection-end-line="37" selection-end-column="61" />
+          <folding />
         </state>
       </provider>
     </entry>

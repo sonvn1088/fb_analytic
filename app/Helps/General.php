@@ -6,6 +6,7 @@ namespace App\Helps;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Mail;
 
 class General
@@ -73,15 +74,15 @@ class General
     static private function _getMeta($content){
         $regexPattern = "/<title>(.*?)<\/title>/";
         preg_match($regexPattern, $content, $match);
-        $title = $match[1];
+        $title = Arr::get($match, 1);
 
         $regexPattern = "/<meta property=\"og:description\" content=\"(.*?)\" ?\/>/";
         preg_match($regexPattern, $content, $match);
-        $excerpt = $match[1];
+        $excerpt = Arr::get($match, 1);
 
         $regexPattern = "/<meta property=\"og:image\" content=\"(.*?)\" ?\/>/";
         preg_match($regexPattern, $content, $match);
-        $thumbnail = $match[1];
+        $thumbnail = Arr::get($match, 1);
 
         return [
             'title' => $title,
@@ -126,6 +127,7 @@ class General
         }catch (Exception $e){
             return [];
         }
+
         $content = str_replace(["\t"], '', $content);
         $content = str_replace(["\n"], self::SEPARATE, $content);
 
