@@ -168,7 +168,7 @@ class Yahoo
             return true;
     }
 
-    private function _getHiddenValue($name, $content){
+    static private function _getHiddenValue($name, $content){
         $regexPattern = "/<input type=\"hidden\"( value=\"(.*?)\")? name=\"$name\"( value=\"(.*?)\")?/";
         preg_match($regexPattern, $content, $match);
         return isset($match[4])?$match[4]:$match[2];

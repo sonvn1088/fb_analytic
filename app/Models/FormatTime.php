@@ -26,6 +26,12 @@ trait FormatTime
             return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format(config('general.format_time'));
     }
 
+    public function getScannedAttribute($date)
+    {
+        if($date)
+            return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format(config('general.format_time'));
+    }
+
     public function getBlockedAtAttribute($date)
     {
         if($date)

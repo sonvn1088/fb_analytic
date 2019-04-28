@@ -33,8 +33,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
 
     Route::get('accounts/{account}/update_info', 'AccountController@updateInfo')->name('accounts.update_info');
     Route::get('accounts/{account}/backup_friends', 'AccountController@backupFriends')->name('accounts.backup_friends');
+    Route::get('accounts/{account}/scan_accounts', 'AccountController@scanAccounts')->name('accounts.scan_accounts');
     Route::get('accounts/{account}/view_friends', 'AccountController@viewFriends')->name('accounts.view_friends');
     Route::post('accounts/{account}', 'AccountController@update')->name('accounts.update');
+    Route::get('accounts/{account}/delete', 'AccountController@delete')->name('accounts.delete');
 
     //Browsers
     Route::get('browsers', 'BrowserController@index')->name('browsers');

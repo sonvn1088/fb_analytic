@@ -4,14 +4,17 @@ namespace App\Http\Controllers\Admin;
 
 
 use App\Helps\Facebook;
+use App\Helps\Yahoo;
 use App\Models\Account;
 use App\Models\App;
+use App\Models\Browser;
 use App\Models\Group;
 use App\Models\MyPage;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Yajra\Datatables\Datatables;
 
@@ -216,7 +219,14 @@ class AccountController extends Controller
 
     public function backupFriends($id){
         $account = Account::find($id);
-        $photos = Facebook::getFriendsTaggedPhotos('me', $account->token);
+        $photos = [];
+        if($account->token)
+            $photos = Facebook::getFriendsTaggedPhotos('me', $account->token);
+        elseif($account->friend_with){
+            $friendAccount = Account::find($account->friend_with);
+            $photos = Facebook::getFriendsTaggedPhotos($account->fb_id, $friendAccount->token);
+        }
+
         Storage::disk('local')->put('backup/'.$account->fb_id.'.txt', json_encode($photos));
         $account->backup = date('Y-m-d H:i:s');
         $account->save();
@@ -228,8 +238,6 @@ class AccountController extends Controller
         $friendsData = $account->backup?json_decode(Storage::get('backup/'.$account->fb_id.'.txt'), true):[];
         return view('admin.accounts.friends', ['account' => $account, 'friendsData' => $friendsData]);
     }
-
-
 
     public function openAppToGetToken($accountId){
         $account = Account::find($accountId);
@@ -245,5 +253,41 @@ class AccountController extends Controller
 
         exec('"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --profile-directory="Profile '.$account->profile.
             '" '.config('facebook.app_token_url').'?data='.$data);
+    }
+
+    public function scanAccounts($id){
+        $account = Account::find($id);
+        $friends = Facebook::getFriends('me', $account->token);
+
+        foreach($friends as $friend) {
+            if (isset($friend['email']) && strpos($friend['email'], 'yahoo') && !strpos($friend['email'], 'yahoo.com.vn')) {
+                $notExits = Yahoo::checkEmail($friend['email']);
+                if($notExits) {
+                    $birthday = Arr::get($friend, 'birthday', '01/01/1970');
+                    if(strlen($birthday) < 6){
+                        $birthday .= '/1970';
+                    }
+                    $friend['birthday'] = Carbon::createFromFormat('m/d/Y', $birthday)->format('Y-m-d');
+                    $friend['gender'] = Arr::get($friend, 'gender') == 'male'?2:1;
+                    $friend['fb_id'] = $friend['id'];
+                    $friend['friend_with'] = $id;
+                    $friend['browser_id'] = Browser::inRandomOrder()->first()->id;
+                    $newAccount = Account::firstOrNew(['fb_id' => $friend['id']]);
+                    $newAccount->fill($friend);
+                    $newAccount->save();
+                }
+            }
+        }
+
+        $account->scanned_at = date('Y-m-d H:i:s');
+        $account->save();
+
+        return redirect()->intended(route('admin.accounts.show', $id));
+    }
+
+    public function delete($id){
+        $account = Account::find($id);
+        $account->delete();
+        return redirect()->intended(route('admin.accounts'));
     }
 }

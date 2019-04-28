@@ -32,7 +32,6 @@ class Facebook
         return self::get($postId, ['fields' => $fields], self::getRandomToken());
     }
 
-
     static public function getPublishedPosts($token, $since, $until = null, $limit = 200){
         $fields = 'permalink_url,link,created_time,full_picture,message,description,name,caption,type,attachments';
         $params = [
@@ -134,6 +133,9 @@ class Facebook
         $friends = self::getFriends($userId, $token);
         foreach($friends as $friend){
             $photos = self::getUserTaggedPhotos($friend['id'], $token);
+            if(count($photos) < 1){
+                $photos = self::getUserProfilePhotos($friend['id'], $token);
+            }
             $imagesData = [];
             $i = 0;
             foreach($photos as $photo){
@@ -156,7 +158,7 @@ class Facebook
 
     static public function getFriends($id, $token){
         $params = [
-            'fields' => 'birthday,email,name,gender',
+            'fields' => 'birthday,email,name,first_name,last_name,middle_name,gender',
             'limit' => 5000
         ];
         return self::get($id.'/friends', $params, $token);
@@ -179,12 +181,14 @@ class Facebook
     }
 
     static public function getUserProfilePhotos($userId, $token){
-        $params = [
-            'type' => 'tagged',
-            'fields' => 'name,images',
-            'limit' => 15
-        ];
-        return self::get($userId.'/photos', $params, $token);
+        $albums = self::get($userId.'/albums', ['fields' => 'name'], $token);
+        foreach($albums as $album) {
+            if ($album['name'] == 'Profile Pictures') {
+                $photos = self::get($album['id'].'/photos', ['fields' => 'name,images', 'limit' => 15], $token);
+                return $photos;
+            }
+        }
+        return [];
     }
 
     static public function checkToken($token){
@@ -192,7 +196,6 @@ class Facebook
     }
 
     static public function sharePosts($posts, $token, $stepTime){
-
         $scheduledPosts = self::getScheduledPosts($token);
         $publishedPosts = self::getPublishedPosts($token, time() - 24*3600);
 
@@ -203,7 +206,7 @@ class Facebook
                 $count++;
         }
 
-        if(count($scheduledPosts) < 2 && $count > 60/config('facebook.step_time')*3){
+        if(count($scheduledPosts) < 2 && $count > 60/config('facebook.step_time')){
             return;
         }
 

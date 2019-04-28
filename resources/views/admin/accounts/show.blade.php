@@ -17,7 +17,7 @@
                             <div class="form-group">
                                 <label for="password">Password</label>
                                 <div class="input-group">
-                                    <input type="text" name="password" class="form-control" value="{{ $account->password }}" readonly>
+                                    <input type="text" name="password" class="form-control" value="{{ $account->password }}|{{ $account->old_password }}" readonly>
                                     <span class="input-group-btn">
                                         <a class="btn btn-info" href="{{route('admin.accounts.change_password', $account->id)}}" type="button">Change</a>
                                     </span>
@@ -26,8 +26,14 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label for="ol_password">Old Password</label>
-                                <input type="text" name="ol_password" class="form-control" value="{{ $account->old_password }}" readonly>
+                                <label for="scanned_at">Scan</label>
+                                <div class="input-group">
+                                    <input type="text" name="scanned_at" class="form-control" value="{{ $account->scanned_at }}" readonly>
+                                    <span class="input-group-btn">
+                                        <a class="btn btn-info" href="{{route('admin.accounts.scan_accounts', $account->id)}}" type="button">Scan</a>
+                                    </span>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -187,6 +193,7 @@
 
                     <button type="submit" class="btn btn-primary btn-flat ">Save</button>
                     <a class="btn btn-info btn-flat" href="{{route('admin.accounts.update_info', $account->id)}}">Update Info</a>
+                    <a class="btn btn-danger btn-flat" href="{{route('admin.accounts.delete', $account->id)}}">Delete</a>
                 </div>
             </div>
         </div>

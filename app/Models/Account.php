@@ -5,10 +5,12 @@ namespace App\Models;
 use App\Helps\Facebook;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Account extends Model
 {
     use FormatTime;
+    use SoftDeletes;
 
     const ADMIN = 1;
     const EDITOR = 2;
@@ -35,7 +37,7 @@ class Account extends Model
      * @var array
      */
     protected $fillable = ['first_name', 'last_name', 'username', 'email', 'birthday', 'fb_id', 'gender', 'token',
-        'password', 'group_id', 'role', 'status', 'on_server', 'profile', 'app_id', 'app_token'];
+        'password', 'group_id', 'role', 'status', 'on_server', 'profile', 'app_id', 'app_token', 'friend_with', 'browser_id'];
 
 
     public $roles = [1 => 'Admin', 2 => 'Editor', 3 => 'BM'];
