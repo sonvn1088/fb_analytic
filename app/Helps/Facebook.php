@@ -60,6 +60,11 @@ class Facebook
         return $posts;
     }
 
+    static public function getScheduledPosts2($token){
+        $result = Facebook::get('me', ['fields' => 'scheduled_posts'], $token);
+        return Arr::get($result, 'scheduled_posts.data');
+    }
+
     static public function getScheduledPosts($token, $limit = 200){
         $params = [
             'fields' => 'permalink_url,link,created_time,scheduled_publish_time,full_picture,message,description,name,caption,type,attachments',
@@ -67,13 +72,21 @@ class Facebook
             'limit' => $limit,
         ];
 
+        /*$posts = self::get('me/scheduled_posts', $params, $token);
+        if(Arr::has($posts, 'error')){
+            $result = Facebook::get('me', ['fields' => 'scheduled_posts'], $token);
+            $nextUrl = Arr::get($result, 'scheduled_posts.paging.next');
+            if($nextUrl){
+                $parts = parse_url($nextUrl);
+                $token = $parts['access_token'];
+            }
+        }*/
         $posts = self::get('me/scheduled_posts', $params, $token);
 
         foreach($posts as $id => $post){
             if(!isset($post['scheduled_publish_time'])){
                 unset($posts[$id]);
             }
-
 
             if(!isset($post['message']) || !$post['message']){
                 self::delete($id, $token);
@@ -197,14 +210,22 @@ class Facebook
 
     static public function sharePosts($posts, $token, $stepTime){
         $scheduledPosts = self::getScheduledPosts($token);
+        /*print_r($scheduledPosts);die();
+        if(empty($scheduledPosts)){
+            $scheduledPosts = self::getScheduledPosts2($token);
+            print_r($scheduledPosts);die('xxxx');
+        }*/
+
         $publishedPosts = self::getPublishedPosts($token, time() - 24*3600);
+
 
         //check block reach
         $count = 0;
         foreach($publishedPosts as $publishedPost){
-            if($publishedPost['created_time'] >= time() - 3600)
+            if($publishedPost['created_time'] >= gmdate('Y-m-d', time() - 3600).'T'.gmdate('H:i:s', time() - 3600))
                 $count++;
         }
+
 
         if(count($scheduledPosts) < 2 && $count > 60/config('facebook.step_time')){
             return;
@@ -329,13 +350,6 @@ class Facebook
      */
 
     static public function deleteDuplicatedPosts($token, $scheduledPosts = null, $publishedPosts = null){
-        if(!$scheduledPosts)
-            $scheduledPosts = self::getScheduledPosts($token);
-
-        if(!$publishedPosts)
-            $publishedPosts = self::getPublishedPosts($token, time()-24*3600);
-
-
         $uris = [];
         foreach( ($publishedPosts + $scheduledPosts) as $postId => $post){
             $uri = self::getPostUri($post);
