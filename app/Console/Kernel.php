@@ -24,7 +24,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('share:posts')->everyThirtyMinutes();
+        for($i = 1; $i <= 11; $i++ ){
+            $command = 'share:posts'.($i<10?'0'.$i:$i);
+            $schedule->command($command)->everyThirtyMinutes();
+        }
+
         $schedule->command('import:posts')->everyTenMinutes();
         $schedule->command('export:topLinks')->everyFifteenMinutes();
         $schedule->command('import:engagements15')->everyMinute();
