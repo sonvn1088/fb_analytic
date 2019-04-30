@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Helps\General;
+use Illuminate\Console\Command;
 
 class SharePosts extends Command
 {
@@ -37,6 +38,6 @@ class SharePosts extends Command
      */
     public function handle()
     {
-        General::sharePosts(0, 0);
+        General::sharePosts(71, 72);
     }
 }

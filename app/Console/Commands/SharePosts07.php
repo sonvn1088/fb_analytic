@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use Illuminate\Console\Command;
 use App\Helps\General;
 
 class SharePosts07 extends Command
