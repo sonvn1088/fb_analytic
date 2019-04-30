@@ -62,7 +62,7 @@ class Facebook
 
     static public function getScheduledPosts2($token){
         $result = Facebook::get('me', ['fields' => 'scheduled_posts'], $token);
-        return Arr::get($result, 'scheduled_posts.data');
+        return Arr::get($result, 'scheduled_posts.data', []);
     }
 
     static public function getScheduledPosts($token, $limit = 200){
@@ -210,10 +210,13 @@ class Facebook
 
     static public function sharePosts($posts, $token, $stepTime){
         $scheduledPosts = self::getScheduledPosts($token);
-        /*print_r($scheduledPosts);die();
-        if(empty($scheduledPosts)){
+        /*if(empty($scheduledPosts)){
             $scheduledPosts = self::getScheduledPosts2($token);
-            print_r($scheduledPosts);die('xxxx');
+
+            foreach($scheduledPosts as $scheduledPost){
+                $result = self::delete($scheduledPost['id'], $token);
+                print_r($result);
+            }
         }*/
 
         $publishedPosts = self::getPublishedPosts($token, time() - 24*3600);

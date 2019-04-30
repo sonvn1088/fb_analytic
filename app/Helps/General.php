@@ -2,16 +2,38 @@
 
 namespace App\Helps;
 
-
-
+use App\Models\Account;
+use App\Models\MyPage;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Mail;
 
+
 class General
 {
     const SEPARATE = '|||';
+
+    static public function sharePosts($from, $to){
+        $myPages = MyPage::where('status', MyPage::ENABLED)
+            ->where('id', '>=', $from)
+            ->where('id', '<=', $to)
+            ->get();
+        foreach($myPages as $myPage){
+            $result = Facebook::checkToken($myPage->token);
+            if(isset($result['id']))
+                $myPage->sharePosts();
+            else{
+                $editor = $myPage->editor();
+                if($editor){
+                    $editor->status = Account::INACTIVE;
+                    $editor->save();
+                    $editor->error_message = Arr::get($result, 'error.message');
+                    self::sendMail($editor);
+                }
+            }
+        }
+    }
 
     static public function sendMail($account){
         Mail::send('emails.reminder', ['account' => $account], function ($mail) use ($account) {

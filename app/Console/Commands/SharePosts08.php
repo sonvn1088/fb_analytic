@@ -4,14 +4,14 @@ namespace App\Console\Commands;
 
 use App\Helps\General;
 
-class SharePosts extends Command
+class SharePosts08 extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'share:posts';
+    protected $signature = 'share:posts08';
 
     /**
      * The console command description.
@@ -37,6 +37,6 @@ class SharePosts extends Command
      */
     public function handle()
     {
-        General::sharePosts(0, 0);
+        General::sharePosts(71, 80);
     }
 }
