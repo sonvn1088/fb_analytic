@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 
 use App\Helps\Facebook;
+use App\Helps\General;
 use App\Models\Account;
 use App\Models\Group;
 use App\Models\MyPage;
@@ -142,7 +143,7 @@ class MyPageController extends Controller
 
         $myPage->save();
 
-        return redirect()->intended(route('admin.my_pages.show', $id));
+        return redirect()->intended(route('admin.my_pages.show', $myPage->id));
     }
 
     public function check(){
@@ -156,6 +157,12 @@ class MyPageController extends Controller
 
     }
 
+    public function openPage($id){
+        $myPage = MyPage::find($id);
+        $editor = $myPage->editor();
+        if($editor)
+            General::openProfile($editor->profile, $myPage->getManageScheduledPostUrl());
+    }
 
 
 

@@ -46,7 +46,7 @@ class MyPage extends Model
 
     public function sites(){
         return Site::whereIn('id', $this->site_ids)
-            ->where('status', 1)
+            ->where('status', Site::ENABLED)
             ->get();
     }
 
@@ -55,6 +55,10 @@ class MyPage extends Model
             ->where('role', Account::EDITOR)
             ->where('status', Account::ACTIVE)
             ->first();
+    }
+
+    public function getManageScheduledPostUrl(){
+        return 'https://www.facebook.com/'.$this->fb_id.'/publishing_tools/?section=SCHEDULED_POSTS';
     }
 
     public function sharePosts(){

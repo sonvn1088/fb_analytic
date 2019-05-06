@@ -37,7 +37,7 @@ class Account extends Model
      * @var array
      */
     protected $fillable = ['first_name', 'last_name', 'username', 'email', 'birthday', 'fb_id', 'gender', 'token',
-        'password', 'group_id', 'role', 'status', 'on_server', 'profile', 'app_id', 'app_token', 'friend_with', 'browser_id'];
+        'password', 'group_id', 'role', 'status', 'on_server', 'profile', 'app_id', 'app_token', 'friend_with', 'browser_id', 'friends'];
 
 
     public $roles = [1 => 'Admin', 2 => 'Editor', 3 => 'BM'];
@@ -100,6 +100,8 @@ class Account extends Model
         foreach($myPages as $myPage){
             $myPage->token = Arr::get($pages, $myPage->fb_id.'.access_token');
             $myPage->save();
+
+            echo $myPage->name.': '.$myPage->token. '<br>';
         }
         return;
     }

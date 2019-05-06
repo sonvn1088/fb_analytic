@@ -58,7 +58,7 @@
                     {
                         data: 'name', name: 'name', orderable: false,
                         render: function ( data, type, row, meta ) {
-                            return '<a href="https://www.facebook.com/'+row.fb_id+'" target="_bank" title="View on Facebook">'
+                            return '<a href="javascript:$.ajax(\'{{route('admin.my_pages.open')}}/'+row.id+'\')" title="View">'
                                     + data + ' (' + (row.username == 'null'?'':row.username) + ')'+'</a>';
                         }
                     },
@@ -99,7 +99,7 @@
                     {
                         data: 'action', name: 'action', orderable: false, searchable: false,
                         render: function ( data, type, row, meta ) {
-                            return '<a href="{{ route('admin.my_pages') }}/'+row.id+ '" class="btn btn-xs btn-primary">' +
+                            return '<a href="{{ route('admin.my_pages') }}/'+row.id+ '" class="btn btn-xs btn-primary" target="_blank">' +
                                     '<i class="glyphicon glyphicon-edit"></i> Edit</a>';
                         }
                     },

@@ -37,7 +37,6 @@ class AccountController extends Controller
         }catch(Exception $e){
             $result = ['error' => ['message' => $e->getMessage(), 'code' => $e->getCode()]];
         }
-        print_r($result);
     }
 
 }

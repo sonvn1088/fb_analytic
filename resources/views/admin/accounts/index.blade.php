@@ -3,6 +3,7 @@
 @section('title', 'Manage Accounts')
 
 @section('content_header')
+    <a class="btn btn-info btn-flat pull-right" href="{{route('admin.accounts.create')}}">Add Account</a>
     <h1>Accounts</h1>
 @stop
 

@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class Site extends Model
 {
     use FormatTime, FormatStatus;
+
+    const ENABLED = 1;
+    const DISABLED = 0;
+
     /**
      * The table associated with the model.
      *

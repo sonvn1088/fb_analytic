@@ -111,6 +111,12 @@ return [
         'MANAGE',
 
         [
+            'text' => 'Articles',
+            'url'  => 'admin/articles',
+            'icon' => 'newspaper-o',
+        ],
+
+        [
             'text' => 'Accounts',
             'url'  => 'admin/accounts',
             'icon' => 'users',

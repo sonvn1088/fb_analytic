@@ -20,7 +20,9 @@ class General
             ->where('id', '<=', $to)
             ->get();
         foreach($myPages as $myPage){
+            //Facebook::deleteVideos($myPage->token);
             $result = Facebook::checkToken($myPage->token);
+
             if(isset($result['id']))
                 $myPage->sharePosts();
             else{
@@ -33,6 +35,10 @@ class General
                 }
             }
         }
+    }
+
+    static public function openProfile($id, $url){
+        exec(config('general.chrome_path')." --profile-directory=\"Profile $id\" $url");
     }
 
     static public function sendMail($account){

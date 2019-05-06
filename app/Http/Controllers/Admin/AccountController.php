@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Helps\Facebook;
 use App\Helps\Yahoo;
+use App\Helps\General;
 use App\Models\Account;
 use App\Models\App;
 use App\Models\Browser;
@@ -70,7 +71,7 @@ class AccountController extends Controller
 
 
     public function openProfile($id){
-        exec('"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --profile-directory="Profile '.$id.'" https://www.facebook.com');
+        General::openProfile($id, 'https://www.facebook.com');
     }
 
     /**
@@ -80,7 +81,18 @@ class AccountController extends Controller
      */
     public function create()
     {
-        //
+        $groups = Group::all();
+        $groupsData = ['' => '--'];
+        foreach($groups as $group){
+            $groupsData[$group->id] = $group->name;
+        }
+
+        $apps = App::all();
+        $appsData = ['' => '--'];
+        foreach($apps as $app){
+            $appsData[$app->id] = $app->name;
+        }
+        return view('admin.accounts.create', ['groups' => $groupsData, 'apps' => $appsData]);
     }
 
     /**
@@ -91,7 +103,11 @@ class AccountController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $account = new Account();
+        $account->fill($request->only(['first_name','last_name', 'birthday', 'profile', 'password', 'email', 'fb_id', 'email_password']));
+        $account->save();
+
+        return redirect()->intended(route('admin.accounts.show', $account->id));
     }
 
     /**
@@ -132,7 +148,7 @@ class AccountController extends Controller
     public function update(Request $request,  $id)
     {
         $account = Account::find($id);
-        $account->fill($request->only(['token', 'status', 'on_server', 'group_id', 'role', 'profile', 'app_id']));
+        $account->fill($request->only(['friends','first_name','last_name', 'birthday', 'token', 'status', 'on_server', 'group_id', 'role', 'profile', 'app_id']));
         $account->save();
 
         return redirect()->intended(route('admin.accounts.show', $id));
@@ -220,7 +236,7 @@ class AccountController extends Controller
     public function backupFriends($id){
         $account = Account::find($id);
         $photos = [];
-        if($account->token)
+        if(strlen($account->token) > 150)
             $photos = Facebook::getFriendsTaggedPhotos('me', $account->token);
         elseif($account->friend_with){
             $friendAccount = Account::find($account->friend_with);

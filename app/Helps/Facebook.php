@@ -217,8 +217,8 @@ class Facebook
                 $result = self::delete($scheduledPost['id'], $token);
                 print_r($result);
             }
-        }*/
-
+        }
+        die();*/
         $publishedPosts = self::getPublishedPosts($token, time() - 24*3600);
 
 
@@ -258,10 +258,8 @@ class Facebook
                 if(isset($params['page_link'])){
                     $params['link'] = $params['page_link'];
                 }
-
+                //self::reload($params['link'], $token);
                 self::post('me/feed', $params, $token);
-                /* $delay = rand(20, 30);
-                 sleep($delay);*/
                 $i++;
             }
         }
@@ -377,6 +375,33 @@ class Facebook
         return parse_url($url, PHP_URL_PATH);
     }
 
+    static public function deleteVideos($token){
+        $videos = self::get('me/videos', [], $token);
+        foreach($videos as $id => $video){
+            self::delete($id, $token);
+        }
+    }
+
+
+    static public function refreshInstantArticles($token){
+        $instantArticles = self::get('me/instant_articles', ['limit' => 50], $token);
+        $i = 0;
+        foreach($instantArticles as $id => $instantArticle){
+            self::reload($instantArticle['canonical_url'], $token);
+            self::delete($id, $token);
+            print_r($i++ ."\n");
+
+        }
+    }
+
+    static public function reload($url, $token){
+        $params = [
+            'id' => $url,
+            'scrape' => 'true'
+        ];
+
+        return self::post('', $params, $token);
+    }
     /*
      * Delete a object on facebook
      *

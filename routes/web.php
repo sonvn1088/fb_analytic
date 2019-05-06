@@ -21,8 +21,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::get('/', 'DashboardController@index')->name('dashboard');
 
     //Accounts
-
     Route::get('accounts', 'AccountController@index')->name('accounts');
+    Route::get('accounts/create', 'AccountController@create')->name('accounts.create');
+    Route::post('accounts/store', 'AccountController@store')->name('accounts.store');
     Route::get('accounts/open_profile/{profile?}', 'AccountController@openProfile')->name('accounts.profile');
     Route::get('accounts/list', 'AccountController@all')->name('accounts.list');
     Route::get('accounts/{account?}', 'AccountController@show')->name('accounts.show');
@@ -51,6 +52,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::get('my_pages', 'MyPageController@index')->name('my_pages');
     Route::get('my_pages/list', 'MyPageController@all')->name('my_pages.list');
     Route::get('my_pages/{page?}', 'MyPageController@show')->name('my_pages.show');
+    Route::get('my_pages/open/{page?}', 'MyPageController@openPage')->name('my_pages.open');
 
     //Group
     Route::get('groups/create', 'GroupController@create')->name('groups.create');
@@ -84,6 +86,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::get('apps', 'AppController@index')->name('apps');
     Route::get('apps/list', 'AppController@all')->name('apps.list');
     Route::get('apps/{app?}', 'AppController@show')->name('apps.show');
+
+    //Articles
+    Route::get('articles', 'ArticleController@index')->name('articles');
+    Route::get('articles/list', 'ArticleController@all')->name('articles.list');
 });
 
 Auth::routes();

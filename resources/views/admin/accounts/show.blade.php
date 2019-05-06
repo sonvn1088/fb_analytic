@@ -15,6 +15,20 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
+                                <label for="first_name">First name</label>
+                                <input type="text" name="first_name" class="form-control" value="{{ $account->first_name }}">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="last_name">Last name</label>
+                                <input type="text" name="last_name" class="form-control" value="{{ $account->last_name }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
                                 <label for="password">Password</label>
                                 <div class="input-group">
                                     <input type="text" name="password" class="form-control" value="{{ $account->password }}|{{ $account->old_password }}" readonly>
@@ -139,7 +153,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="birthday">Birthday</label>
-                                <input type="text" name="birthday" class="form-control" value="{{ $account->birthday }}" readonly>
+                                <input type="text" name="birthday" class="form-control" value="{{ $account->birthday }}">
                             </div>
                         </div>
 
@@ -149,7 +163,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="friends">Friends</label>
-                                <input type="text" name="friends" class="form-control" value="{{ $account->friends }}" readonly>
+                                <input type="text" name="friends" class="form-control" value="{{ $account->friends }}">
                             </div>
                         </div>
                         <div class="col-sm-6">
