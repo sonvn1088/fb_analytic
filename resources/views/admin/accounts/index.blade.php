@@ -25,6 +25,7 @@
                                 <th>Status</th>
                                 <th>Server</th>
                                 <th>Backup</th>
+                                <th>Friend</th>
                                 <th>View</th>
                             </tr>
                         </thead>
@@ -90,6 +91,13 @@
                             return data.label;
                         }},
                     {data: 'backup', name:'backup',  searchable : false},
+                    {
+                        data: 'friend_with', name:'friend_with',  searchable : false,
+                        render: function ( data, type, row, meta ) {
+                           if(data != null)
+                                return '<a href="{{ route('admin.accounts') }}/'+data.id+'">'+data.first_name + ' ' + data.last_name+'</a>';
+                        }
+                    },
                     {
                         data: 'action', name: 'action', orderable: false, searchable: false,
                         render: function ( data, type, row, meta ) {

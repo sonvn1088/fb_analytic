@@ -145,7 +145,8 @@
                                 <div class="input-group">
                                     <input type="text" name="email" class="form-control" value="{{ $account->email .'|'. $account->email_password}}" readonly>
                                     <span class="input-group-btn">
-                                        <a class="btn btn-info" href="{{route('admin.accounts.change_email_password', $account->id)}}" type="button">Generate Password</a>
+                                        <!--<a class="btn btn-info" href="{{route('admin.accounts.change_email_password', $account->id)}}-->
+                                        <a class="btn btn-info" href="javascript:$.ajax('{{route('admin.accounts.open_profile_create_yahoo', $account->id)}}')" type="button">Create Yahoo Account</a>
                                     </span>
                                 </div>
                             </div>

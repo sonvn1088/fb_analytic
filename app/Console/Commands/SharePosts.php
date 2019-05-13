@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Helps\General;
 use App\Helps\Facebook;
+use App\Helps\Simthue;
 use Illuminate\Console\Command;
 
 class SharePosts extends Command
@@ -39,7 +40,7 @@ class SharePosts extends Command
      */
     public function handle()
     {
-        //General::sharePosts(35, 35);
+        //General::sharePosts(94, 94);
         //Facebook::refreshInstantArticles('EAADLtAvpCMIBADZCZAr15E09q6CKKYosVXttZAZBHSyVoBm94eZA8J7bZA8Mt5kMGbpUhzrqcopIZAvh35D5y3HNaByaKCTNxpZC7X0bjq4V9lrD99itZC9J0Rjf9hZCcHSmNBFjYRv7NnYGIopsOs1ZBtmAXAcUfaogA8c9dZBVnfoMb5iJNnLZBK5RHFc76BkRUMmPClkarKRYL8gZDZD');
     }
 }

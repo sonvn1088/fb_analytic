@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Helps\Simthue;
+use App\Helps\Yahoo;
 use App\Models\Account;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
@@ -39,5 +41,21 @@ class AccountController extends Controller
         }
     }
 
+    public function getInfo($id){
+        $account = Account::find($id);
+        return $account->only(['first_name', 'last_name', 'email', 'email_password', 'birthday', 'gender']);
+    }
+
+    public function checkSms($id){
+        return Simthue::checkRequest($id);
+    }
+
+    public function createYahooAccount($id){
+        $account = Account::find($id);
+        $data = $account->only(['first_name', 'last_name', 'email', 'email_password', 'birthday', 'gender']);
+        $data['request_id'] = Simthue::createRequest();
+        $url = 'https://login.yahoo.com/account/create?intl=vn&data='.base64_encode(json_encode($data));
+        return redirect()->intended($url);
+    }
 }
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 
 use App\Helps\Facebook;
+use App\Helps\Simthue;
 use App\Helps\Yahoo;
 use App\Helps\General;
 use App\Models\Account;
@@ -63,6 +64,9 @@ class AccountController extends Controller
             ->editColumn('group_id', function ($account){
                 return $account->group?$account->group->name:'';
             })
+            ->editColumn('friend_with', function ($account){
+                return $account->friend?$account->friend->only(['first_name', 'last_name', 'id']):'';
+            })
             ->make(true);
 
         return $data;
@@ -120,6 +124,10 @@ class AccountController extends Controller
     {
         $account = Account::find($id);
         if($account){
+           /* if(!$account->profile){
+                $lastProfile = Account::orderBy('profile', 'desc')->first()->profile;
+                $account
+            }*/
             $groups = Group::all();
             $groupsData = ['' => '--'];
             foreach($groups as $group){
@@ -267,8 +275,7 @@ class AccountController extends Controller
 
         $data = base64_encode(http_build_query($params));
 
-        exec('"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --profile-directory="Profile '.$account->profile.
-            '" '.config('facebook.app_token_url').'?data='.$data);
+        General::openProfile($account->profile, config('facebook.app_token_url').'?data='.$data);
     }
 
     public function scanAccounts($id){
@@ -276,7 +283,9 @@ class AccountController extends Controller
         $friends = Facebook::getFriends('me', $account->token);
 
         foreach($friends as $friend) {
-            if (isset($friend['email']) && strpos($friend['email'], 'yahoo') && !strpos($friend['email'], 'yahoo.com.vn')) {
+            if (isset($friend['email']) && strpos($friend['email'], 'yahoo') && !strpos($friend['email'], 'yahoo.com.vn')
+            && !strpos($friend['email'], 'xinhxinh1997') ){
+
                 $notExits = Yahoo::checkEmail($friend['email']);
                 if($notExits) {
                     $birthday = Arr::get($friend, 'birthday', '01/01/1970');
@@ -305,5 +314,14 @@ class AccountController extends Controller
         $account = Account::find($id);
         $account->delete();
         return redirect()->intended(route('admin.accounts'));
+    }
+
+    public function openProfileToCreateYahooAccount($id){
+        $account = Account::find($id);
+        if(!$account->email_password){
+            $account->email_password = str_random(10);
+            $account->save();
+        }
+        General::openProfile($account->profile, route('accounts.create_yahoo', $id));
     }
 }

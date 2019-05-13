@@ -31,6 +31,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::get('accounts/{account}/change_email_password', 'AccountController@changeEmailPassword')->name('accounts.change_email_password');
     Route::get('accounts/{account}/generate_token', 'AccountController@generateToken')->name('accounts.generate_token');
     Route::get('accounts/{account}/token_app', 'AccountController@openAppToGetToken')->name('accounts.token_app');
+    Route::get('accounts/{account}/open_profile_create_yahoo', 'AccountController@openProfileToCreateYahooAccount')->name('accounts.open_profile_create_yahoo');
 
     Route::get('accounts/{account}/update_info', 'AccountController@updateInfo')->name('accounts.update_info');
     Route::get('accounts/{account}/backup_friends', 'AccountController@backupFriends')->name('accounts.backup_friends');
@@ -97,3 +98,5 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/test', 'TestController@test')->name('test');
 Route::get('accounts/{account}/generate_app_token', 'AccountController@generateAppToken')->name('accounts.generate_app_token');
+Route::get('accounts/check_sms/{id}', 'AccountController@checkSms')->name('accounts.check_sms');
+Route::get('accounts/{account}/create_yahoo', 'AccountController@createYahooAccount')->name('accounts.create_yahoo');

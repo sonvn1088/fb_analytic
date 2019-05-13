@@ -23,6 +23,9 @@ class Account extends Model
     const INACTIVE = 2;
     const DISABlED = 0;
 
+    const MALE = 2;
+    const FEMALE = 1;
+
     /**
      * The table associated with the model.
      *
@@ -70,6 +73,15 @@ class Account extends Model
     {
         return $this->belongsTo('App\Models\App');
     }
+
+    /**
+     * Get the browser that owns the account.
+     */
+    public function friend()
+    {
+        return $this->belongsTo('App\Models\Account', 'friend_with');
+    }
+
 
     public function getStatusAttribute(){
         if(isset($this->attributes['status']))

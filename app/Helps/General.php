@@ -38,7 +38,7 @@ class General
     }
 
     static public function openProfile($id, $url){
-        exec(config('general.chrome_path')." --profile-directory=\"Profile $id\" $url");
+        exec(config('general.chrome_path').' --disable-web-security --disable-gpu --profile-directory="Profile '.$id.'" '.$url);
     }
 
     static public function sendMail($account){
