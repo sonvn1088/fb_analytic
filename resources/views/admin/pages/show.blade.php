@@ -3,6 +3,7 @@
 @section('title', 'Page # '.$page->name)
 
 @section('content_header')
+    <a class="btn btn-info btn-flat pull-right" href="{{route('admin.pages.create')}}">Add Page</a>
     <h1>@if ($page->id) {{'Page #'.$page->name}} @else New page @endif</h1>
 @stop
 
@@ -29,14 +30,22 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label for="likes">Like</label>
-                                <input type="text" name="likes" class="form-control" value="{{ $page->likes?:0 }}">
+                                <label for="like">Like</label>
+                                <input type="text" name="like" class="form-control" value="{{ $page->like?:0 }}">
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="follow">Follow</label>
                                 <input type="text" name="follow" class="form-control" value="{{ $page->follow?:0 }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input type="text" name="name" class="form-control" value="{{ $page->name?:'' }}">
                             </div>
                         </div>
                     </div>

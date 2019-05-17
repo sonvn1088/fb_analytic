@@ -21,5 +21,5 @@ class Page extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'username', 'fb_id', 'likes', 'follow'];
+    protected $fillable = ['name', 'username', 'fb_id', 'like', 'follow'];
 }

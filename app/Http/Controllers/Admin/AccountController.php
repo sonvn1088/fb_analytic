@@ -156,7 +156,7 @@ class AccountController extends Controller
     public function update(Request $request,  $id)
     {
         $account = Account::find($id);
-        $account->fill($request->only(['friends','first_name','last_name', 'birthday', 'token', 'status', 'on_server', 'group_id', 'role', 'profile', 'app_id']));
+        $account->fill($request->only(['friends','first_name','last_name', 'birthday', 'token', 'app_token','status', 'on_server', 'group_id', 'role', 'profile', 'app_id']));
         $account->save();
 
         return redirect()->intended(route('admin.accounts.show', $id));

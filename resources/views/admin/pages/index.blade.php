@@ -57,7 +57,7 @@
                         data: 'username', name: 'username',
                     },
                     {
-                        data: 'likes', name: 'likes', className: "text-center",
+                        data: 'like', name: 'like', className: "text-center",
                         render: $.fn.dataTable.render.number(',')
                     },
                     {
