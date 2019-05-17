@@ -7,6 +7,7 @@ use App\Models\Browser;
 use App\Models\Token;
 use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
 use Illuminate\Support\Arr;
@@ -472,6 +473,8 @@ class Facebook
         try {
             $response = $client->get(config('facebook.graph') . $uri, ['query' => $query]);
             $result = \GuzzleHttp\json_decode($response->getBody()->getContents(), true);
+        }catch (ServerException $e){
+            return ['error' => ['message' => $e->getMessage(), 'code' => $e->getCode()]];
         }catch (RequestException $e){
             return ['error' => ['message' => $e->getMessage(), 'code' => $e->getCode()]];
         }catch (BadResponseException $e){
