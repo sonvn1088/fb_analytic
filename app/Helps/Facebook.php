@@ -475,9 +475,9 @@ class Facebook
             $result = \GuzzleHttp\json_decode($response->getBody()->getContents(), true);
         }catch (ServerException $e){
             return ['error' => ['message' => $e->getMessage(), 'code' => $e->getCode()]];
-        }catch (RequestException $e){
-            return ['error' => ['message' => $e->getMessage(), 'code' => $e->getCode()]];
         }catch (BadResponseException $e){
+            return ['error' => ['message' => $e->getMessage(), 'code' => $e->getCode()]];
+        }catch (RequestException $e) {
             return ['error' => ['message' => $e->getMessage(), 'code' => $e->getCode()]];
         }catch(Exception $e){
             return ['error' => ['message' => $e->getMessage(), 'code' => $e->getCode()]];

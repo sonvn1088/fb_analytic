@@ -7,6 +7,9 @@ return [
     'exchange_token_url' => 'https://graph.facebook.com/oauth/access_token',
     'app_token_url' => 'http://cuocsong.site/get_app_token.php',
     'step_time' => 10,
+    'ignored_domains' => [
+        'tintuctrongngay.info',
+    ],
     'token' => env('TOKEN'),
     'pages' => [],
     'api' => [

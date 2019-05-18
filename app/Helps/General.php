@@ -76,11 +76,11 @@ class General
     }
 
     static private function _getImage($p){
-        $regexPattern = "/<img.*?src=\"(.*?)\"/";
+        $regexPattern = "/<img.*?src=\"http(.*?)\"/";
         preg_match($regexPattern, $p, $match);
         if(isset($match[1])){
             $caption = strip_tags($p);
-            return '<p class="image"><img src="'.$match[1].'"><span class="caption">'.$caption.'</span></p>';
+            return '<p class="image"><img src="http'.$match[1].'"><span class="caption">'.$caption.'</span></p>';
         }
     }
 
@@ -170,7 +170,7 @@ class General
         $regexPattern = "/<ins(.*?)<\/ins>/";
         $body = preg_replace($regexPattern, ' ', $body);
 
-        $regexPattern = "/<script(.*?)<\/script>/";
+        $regexPattern = "/<(no)?script(.*?)<\/(no)?script>/";
         $body = preg_replace($regexPattern, ' ', $body);
 
         //print_r($body);die();

@@ -34,20 +34,28 @@ class Links
         $links = Link::whereIn('id', $link_ids)->get();
 
         foreach($links as $link){
-            if(!$link->content){
-                $article = General::parseArticle($link->url);
-                $link->excerpt = Arr::get($article, 'excerpt');
-                $link->content = Arr::get($article, 'content');
-                $link->save();
+            $ignored = false;
+            foreach(config('facebook.ignored_domains') as $ignoredDomain){
+                if(strpos($link->url, $ignoredDomain))
+                    $ignored = true;
             }
 
-            $result[$link->url] = [
-                'title' => $link->title,
-                'thumbnail' => $link->thumbnail,
-                'excerpt' => $link->excerpt,
-                'content' => $link->content,
-                'message' => $messages[$link->id]
-            ];
+            if(!$ignored){
+                if(!$link->content){
+                    $article = General::parseArticle($link->url);
+                    $link->excerpt = Arr::get($article, 'excerpt');
+                    $link->content = Arr::get($article, 'content');
+                    $link->save();
+                }
+
+                $result[$link->url] = [
+                    'title' => $link->title,
+                    'thumbnail' => $link->thumbnail,
+                    'excerpt' => $link->excerpt,
+                    'content' => $link->content,
+                    'message' => $messages[$link->id]
+                ];
+            }
         }
 
         return $result;
