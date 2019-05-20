@@ -8,6 +8,7 @@ use App\Models\Token;
 use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\ServerException;
+use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
 use Illuminate\Support\Arr;
@@ -466,23 +467,18 @@ class Facebook
      */
     static public function get($uri, $params, $token){
         $limit = $params['limit']??100;
-        $client = new Client();
+        $client = new Client(['http_errors' => false]);
         $query = $params;
         $query['limit'] = $limit < 100?$limit:100;
         $query['access_token'] = $token;
         try {
             $response = $client->get(config('facebook.graph') . $uri, ['query' => $query]);
-            $result = \GuzzleHttp\json_decode($response->getBody()->getContents(), true);
-        }catch (ServerException $e){
-            return ['error' => ['message' => $e->getMessage(), 'code' => $e->getCode()]];
-        }catch (BadResponseException $e){
-            return ['error' => ['message' => $e->getMessage(), 'code' => $e->getCode()]];
+            $result = json_decode($response->getBody()->getContents(), true);
         }catch (RequestException $e) {
             return ['error' => ['message' => $e->getMessage(), 'code' => $e->getCode()]];
         }catch(Exception $e){
             return ['error' => ['message' => $e->getMessage(), 'code' => $e->getCode()]];
         }
-
 
         if(isset($result['data'])){
             $items = [];
@@ -494,9 +490,10 @@ class Facebook
                 $response = $client->get($result['paging']['next']);
                 $result = \GuzzleHttp\json_decode($response->getBody()->getContents(), true);
 
-                foreach ($result['data'] as $item) {
-                    $items[$item['id']] = $item;
-                }
+                if(isset($result['data']))
+                    foreach ($result['data'] as $item) {
+                        $items[$item['id']] = $item;
+                    }
             }
             return $items;
         }elseif(isset($result['error'])){
