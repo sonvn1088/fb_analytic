@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Helps\Links;
+use App\Models\Page;
 use Illuminate\Support\Facades\Storage;
 
 class ExportTopLinks extends Command
@@ -39,7 +40,10 @@ class ExportTopLinks extends Command
      */
     public function handle()
     {
-        $links = Links::getTopLinks();
+        $links = Links::getTopLinks(Page::VN);
         Storage::put('public/links.txt', json_encode($links));
+
+        $links = Links::getTopLinks(Page::TH);
+        Storage::put('public/th_links.txt', json_encode($links));
     }
 }

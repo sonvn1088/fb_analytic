@@ -48,6 +48,12 @@
                                 <input type="text" name="name" class="form-control" value="{{ $page->name?:'' }}">
                             </div>
                         </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="name">Type</label>
+                                {!! Form::select('type', [1 => 'VN', 2 => 'TH'], $page->type, ['class' => 'form-control']) !!}
+                            </div>
+                        </div>
                     </div>
                     <button type="submit" class="btn btn-primary btn-flat ">Save</button>
                 </div>

@@ -68,7 +68,7 @@ class PageController extends Controller
     public function save(Request $request,  $id)
     {
         $page = $id?Page::find($id):new Page();
-        $data = $request->only(['fb_id', 'name', 'like', 'follow', 'username']);
+        $data = $request->only(['fb_id', 'name', 'like', 'follow', 'username', 'type']);
         $page->fill($data);
 
         if(!$id){

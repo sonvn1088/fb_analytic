@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class Links
 {
-    static public function getTopLinks(){
+    static public function getTopLinks($type){
         $posts = DB::table('posts')
             ->leftJoin('pages', 'pages.fb_id', '=', 'posts.page_id')
             ->leftJoin('links', 'links.id', '=', 'posts.link_id')
@@ -21,6 +21,7 @@ class Links
             ->havingRaw(DB::raw("sum(follow) > 1000000 AND  sum(after_15)/sum(follow)*1000000 > 5".
                 " AND sum(after_45)/sum(follow)*1000000 > 15"))
             ->where('posts.created_at', '>', date('Y-m-d H:i:s', time()-24*3600))
+            ->where('pages.type', $type)
             ->get();
 
 

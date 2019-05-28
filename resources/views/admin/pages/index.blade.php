@@ -20,6 +20,8 @@
                                 <th>Username</th>
                                 <th>Like</th>
                                 <th>Follow</th>
+                                <th>Type</th>
+                                <th>View</th>
                             </tr>
                         </thead>
                     </table>
@@ -63,6 +65,19 @@
                     {
                         data: 'follow', name: 'follow', className: "text-center",
                         render: $.fn.dataTable.render.number(',')
+                    },
+                    {
+                        data: 'type', name: 'type',
+                        render: function ( data, type, row, meta ) {
+                            return data == 1?'VN':'TH';
+                        }
+                    },
+                    {
+                        data: 'action', name: 'action', orderable: false, searchable: false,
+                        render: function ( data, type, row, meta ) {
+                            return '<a href="{{ route('admin.pages') }}/'+row.id+ '" class="btn btn-xs btn-primary" target="_blank">' +
+                                    '<i class="glyphicon glyphicon-edit"></i> Edit</a>';
+                        }
                     },
                 ]
             });
