@@ -47,7 +47,7 @@
                     {
                         data: 'url', name: 'url',
                         render: function ( data, type, row, meta ) {
-                            return '<a href="'+data+'" target="_bank" title="View">' + data+'</a>';
+                            return '<a href="'+data+'" target="_bank" title="View">' + decodeURI(data)+'</a>';
                         }
                     },
                     {data: 'created_at', name: 'created_at'},

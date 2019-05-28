@@ -124,8 +124,15 @@ class General
         preg_match($regexPattern, $content, $match);
         $body = $match[2]??'';
 
+
         if(!$body){
-            $regexPattern = "/<article id=\"the-post-content\".{0,30}>(.*?)<\/article>/";
+            $regexPattern = "/<div itemprop=\"articleBody\".{0,100}>(.*?)<\/nav/";
+            preg_match($regexPattern, $content, $match);
+            $body = $match[1]??'';
+        }
+
+        if(!$body){
+            $regexPattern = "/<article.{0,50}>(.*?)<\/article>/";
             preg_match($regexPattern, $content, $match);
             $body = $match[1]??'';
         }

@@ -71,10 +71,10 @@ class PageController extends Controller
         $data = $request->only(['fb_id', 'name', 'like', 'follow', 'username']);
         $page->fill($data);
 
-       /* if(!$id){
+        if(!$id){
             $info = Facebook::getPageInfos($page->fb_id?:$page->username);
             $page->fill($info);
-        }*/
+        }
 
         $page->save();
 
