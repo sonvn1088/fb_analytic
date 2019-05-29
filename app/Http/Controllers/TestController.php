@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class TestController extends Controller
 {
     public function test(Request $request){
-        return General::parseArticle($request->get('url'));
+        return General::parseArticle($request->get('url'), 2);
     }
 
 

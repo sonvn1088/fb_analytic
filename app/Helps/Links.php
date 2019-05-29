@@ -18,8 +18,8 @@ class Links
                 "sum(follow) as t_follow, sum(after_15)/sum(follow)*100000 as rate_15, sum(after_30)/sum(follow)*100000 as rate_30,".
                 "sum(after_45)/sum(follow)*100000 as rate_45"))
             ->groupBy('posts.link_id')
-            ->havingRaw(DB::raw("sum(follow) > 1000000 AND  sum(after_15)/sum(follow)*1000000 > 5".
-                " AND sum(after_45)/sum(follow)*1000000 > 15"))
+            ->havingRaw(DB::raw("sum(follow) > 1000000 AND  sum(after_15)/sum(follow)*1000000 > 15".
+                " AND sum(after_45)/sum(follow)*1000000 > 45"))
             ->where('posts.created_at', '>', date('Y-m-d H:i:s', time()-24*3600))
             ->where('pages.type', $type)
             ->get();
@@ -34,6 +34,7 @@ class Links
 
         $links = Link::whereIn('id', $link_ids)->get();
 
+        //print_r($links);die();
         foreach($links as $link){
             $ignored = false;
             foreach(config('facebook.ignored_domains') as $ignoredDomain){
@@ -41,9 +42,14 @@ class Links
                     $ignored = true;
             }
 
+            $path = parse_url($link->url, PHP_URL_PATH);
+            if(strlen($path) < 3)
+                $ignored = true;
+
+
             if(!$ignored){
                 if(!$link->content){
-                    $article = General::parseArticle($link->url);
+                    $article = General::parseArticle($link->url, $type);
                     $link->excerpt = Arr::get($article, 'excerpt');
                     $link->content = Arr::get($article, 'content');
                     $link->save();

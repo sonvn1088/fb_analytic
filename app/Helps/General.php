@@ -75,10 +75,12 @@ class General
         return '[video src="'.$fileUrl.'"]';
     }
 
-    static private function _getImage($p){
+    static private function _getImage($p, $thumbnail = null){
         $regexPattern = "/<img.*?src=\"http(.*?)\"/";
         preg_match($regexPattern, $p, $match);
         if(isset($match[1])){
+            if($thumbnail && $thumbnail == 'http'.$match[1])
+                return;
             $caption = strip_tags($p);
             return '<p class="image"><img src="http'.$match[1].'"><span class="caption">'.$caption.'</span></p>';
         }
@@ -90,6 +92,10 @@ class General
         $iframeUrl = $match[1]??'';
         if(strpos($iframeUrl, 'youtube')){
             $html = '<p class="text">'.$iframeUrl.'</p>';
+        }elseif(strpos($iframeUrl, 'facebook.com')) {
+            $tmp = explode('?href=', $iframeUrl);
+            $facebookUrl = urldecode($tmp[1]);
+            $html = '<p class="text">'.$facebookUrl.'</p>';
         }elseif($iframeUrl){
             $client = new Client();
             $response = $client->get($iframeUrl);
@@ -100,9 +106,19 @@ class General
     }
 
     static private function _getMeta($content){
+        $content = str_replace(self::SEPARATE, '', $content);
         $regexPattern = "/<title>(.*?)<\/title>/";
         preg_match($regexPattern, $content, $match);
         $title = Arr::get($match, 1);
+
+        foreach(['-', '|'] as $sep){
+            $tmp = explode(" $sep ", $title);
+            $last = Arr::last($tmp);
+            if(count($tmp) > 1 && count($last) < 3)
+                array_pop($tmp);
+            $title = implode(" $sep ", $tmp);
+        }
+
 
         $regexPattern = "/<meta property=\"og:description\" content=\"(.*?)\" ?\/>/";
         preg_match($regexPattern, $content, $match);
@@ -111,19 +127,23 @@ class General
         $regexPattern = "/<meta property=\"og:image\" content=\"(.*?)\" ?\/>/";
         preg_match($regexPattern, $content, $match);
         $thumbnail = Arr::get($match, 1);
+        if(!$thumbnail){
+            $regexPattern = "/<meta content='https(.{50,200})' name='twitter:image' ?\/>/";
+            preg_match($regexPattern, $content, $match);
+            $thumbnail = 'https'.Arr::get($match, 1);
+        }
 
         return [
             'title' => $title,
             'excerpt' => $excerpt,
-            //'thumbnail' => $thumbnail
+            'thumbnail' => $thumbnail
         ];
     }
 
     static private function _getBody($content){
-        $regexPattern = "/<div class=\"(td-post-content|entry-content)\">(.*?)<(footer|div class=\"entry-meta\")/";
+        $regexPattern = "/<div class=\"(td-post-content|entry-content)\".{0,100}>(.*?)<(nav|footer|div class=\"entry-meta|clear\")/";
         preg_match($regexPattern, $content, $match);
-        $body = $match[2]??'';
-
+        $body = $match[0]??'';
 
         if(!$body){
             $regexPattern = "/<div itemprop=\"articleBody\".{0,100}>(.*?)<\/nav/";
@@ -131,8 +151,30 @@ class General
             $body = $match[1]??'';
         }
 
+        //print_r($content);die();
+        if(!$body){ //reportdays.com
+            $regexPattern = "/<section class=\"rd-post-content\">(.*?)<\/section>/";
+            preg_match($regexPattern, $content, $match);
+            $body = $match[1]??'';
+        }
+
         if(!$body){
-            $regexPattern = "/<article.{0,50}>(.*?)<\/article>/";
+            $regexPattern = "/<div class=\"entry.{0,20}\".{0,50}>(.*?)<!-- \.entry \/-->/";
+            preg_match($regexPattern, $content, $match);
+            $body = $match[1]??'';
+        }
+
+
+        if(!$body){ //kchivit.com
+            $regexPattern = "/<div class=\"entry-content.{0,40}\".{0,50}>(.*?)<div class=\"post-share/";
+            preg_match($regexPattern, $content, $match);
+            $body = $match[1]??'';
+        }
+        //print_r($body);die();
+
+
+        if(!$body){ //siamtimes.live
+            $regexPattern = "/<div id='MyPostBody'>(.*?)<div class='clear'><\/div>/";
             preg_match($regexPattern, $content, $match);
             $body = $match[1]??'';
         }
@@ -144,17 +186,34 @@ class General
             $body = $match[1]??'';
         }
 
+
+        //siamtoptic
+        if(!$body){
+            $regexPattern = "/<div class=\"data_detail\".{0,50}>(.*?)<div class=\"ads_ViewBottom\"/";
+            preg_match($regexPattern, $content, $match);
+            $body = $match[1]??'';
+        }
+
+        if(!$body){
+            $regexPattern = "/<article.{0,50}>(.*?)<\/article>/";
+            preg_match($regexPattern, $content, $match);
+            $body = $match[1]??'';
+        }
+
+        //print_r($body);die();
         //replace featured image
         $regexPattern = "/<div class=\"td-post-featured-image\">.*?<\/div>/";
         $body = preg_replace($regexPattern, '', $body);
 
+        //print_r($body);die();
         return $body;
     }
 
-    static  public function parseArticle($url){
+    static  public function parseArticle($url, $type = 1){
         try {
+            $userAgent = 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36';
             $client = new Client();
-            $response = $client->get($url);
+            $response = $client->get($url, ['headers' => ['User-Agent' => $userAgent]]);
             $content = $response->getBody()->getContents();
 
         }catch (BadResponseException $e){
@@ -164,7 +223,7 @@ class General
         }
 
         $content = str_replace(["\t"], '', $content);
-        $content = str_replace(["\n"], self::SEPARATE, $content);
+        $content = str_replace(["\n", '</p>'], self::SEPARATE, $content);
 
         $meta = self::_getMeta($content);
         $body = self::_getBody($content);
@@ -180,7 +239,20 @@ class General
         $regexPattern = "/<(no)?script(.*?)<\/(no)?script>/";
         $body = preg_replace($regexPattern, ' ', $body);
 
+        //mgid
+        $regexPattern = "/<\!-- Composite Start -->(.*?)<\!-- Composite End -->/";
+        $body = preg_replace($regexPattern, ' ', $body);
+
+        //comment
+        $regexPattern = "/<\!--.*?-->/";
+        $body = preg_replace($regexPattern, ' ', $body);
+
+        $regexPattern = "/<aside(.*?)<\/aside>/"; //taibann
+        $body = preg_replace($regexPattern, ' ', $body);
         //print_r($body);die();
+        $regexPattern = "/<div.{0,150}><\/div>/"; //taibann
+        $body = preg_replace($regexPattern, ' ', $body);
+
         $ps = explode(self::SEPARATE, $body);
         //print_r($ps);die();
 
@@ -206,10 +278,12 @@ class General
         }
 
         $ps = array_values($ps);
-        $total = count($ps);
         //print_r($ps);die();
+        $total = count($ps);
+
         $html = '';
         foreach($ps as $i => $p){
+
             if(self::_isEndArticles($p)) {
                 break;
             }elseif(strpos($p, '.mp4') !== false || strpos($p, '.m3u8') !== false){
@@ -222,14 +296,14 @@ class General
                 $images = explode('<img', $p);
                 foreach($images as $image){
                     $image = '<img'.$image;
-                    $html .= self::_getImage($image);
+                    $html .= self::_getImage($image, $meta['thumbnail']);
                 }
-
-
             }elseif(strlen($p) > 8){
                 $tmp = strip_tags($p);
-                if(str_word_count($tmp) < 4 && $i > $total - 4)
-                    break;
+
+                if($type == 1) //vietnam
+                    if(str_word_count($tmp) < 4 && $i > $total - 4)
+                        break;
 
                 $b = false;
                 if(strpos($p, '<h2>') !== false || strpos($p, '<h3>') !== false || strpos($p, '<h4>') !== false)
@@ -238,6 +312,7 @@ class General
                 $p = strip_tags($p, '<i><strong><b><em>');
 
                 if(strlen($p) > 8){
+
                     if($b)
                         $p = '<b>'.$p.'</b>';
                     $html .= '<p class="text">'.$p.'</p>';
