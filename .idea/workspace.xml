@@ -4,7 +4,8 @@
     <bookmark url="file://$USER_HOME$/Desktop/extensions/yahoo/create_account.js" line="60" mnemonic="9" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d8024b66-6e1f-4c4d-985f-b1692a60915d" name="Default" comment="">
+    <list default="true" id="d8024b66-6e1f-4c4d-985f-b1692a60915d" name="Default" comment="manage accounts &amp; pages">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Helps/General.php" afterPath="$PROJECT_DIR$/app/Helps/General.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/facebook.php" afterPath="$PROJECT_DIR$/config/facebook.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -41,21 +42,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="General.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="General.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Helps/General.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-10.615385">
-              <caret line="107" column="28" selection-start-line="107" selection-start-column="28" selection-end-line="107" selection-end-column="28" />
+            <state vertical-scroll-proportion="0.5982609">
+              <caret line="116" column="33" selection-start-line="116" selection-start-column="33" selection-end-line="116" selection-end-column="33" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="facebook.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="facebook.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/config/facebook.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.23130435">
-              <caret line="17" column="22" selection-start-line="17" selection-start-column="22" selection-end-line="17" selection-end-column="22" />
+            <state vertical-scroll-proportion="-5.769231">
+              <caret line="18" column="22" selection-start-line="18" selection-start-column="22" selection-end-line="18" selection-end-column="22" />
               <folding />
             </state>
           </provider>
@@ -153,9 +154,9 @@
         <option value="$PROJECT_DIR$/app/Models/MyPage.php" />
         <option value="$PROJECT_DIR$/resources/views/admin/my_pages/show.blade.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/MyPageController.php" />
-        <option value="$PROJECT_DIR$/app/Helps/General.php" />
         <option value="$PROJECT_DIR$/app/Helps/Links.php" />
         <option value="$PROJECT_DIR$/config/facebook.php" />
+        <option value="$PROJECT_DIR$/app/Helps/General.php" />
       </list>
     </option>
   </component>
@@ -763,12 +764,6 @@
       <option name="number" value="Default" />
       <updated>1551887823630</updated>
     </task>
-    <task id="LOCAL-00006" summary="manage accounts &amp; pages">
-      <created>1554974429454</created>
-      <option name="number" value="00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1554974429454</updated>
-    </task>
     <task id="LOCAL-00007" summary="manage accounts &amp; pages">
       <created>1554975140788</created>
       <option name="number" value="00007" />
@@ -1057,7 +1052,13 @@
       <option name="project" value="LOCAL" />
       <updated>1559141415853</updated>
     </task>
-    <option name="localTasksCounter" value="55" />
+    <task id="LOCAL-00055" summary="manage accounts &amp; pages">
+      <created>1559141594887</created>
+      <option name="number" value="00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1559141594887</updated>
+    </task>
+    <option name="localTasksCounter" value="56" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -1484,18 +1485,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Helps/General.php">
+    <entry file="file://$PROJECT_DIR$/config/facebook.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-10.615385">
-          <caret line="107" column="28" selection-start-line="107" selection-start-column="28" selection-end-line="107" selection-end-column="28" />
+        <state vertical-scroll-proportion="-5.769231">
+          <caret line="18" column="22" selection-start-line="18" selection-start-column="22" selection-end-line="18" selection-end-column="22" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/config/facebook.php">
+    <entry file="file://$PROJECT_DIR$/app/Helps/General.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.23130435">
-          <caret line="17" column="22" selection-start-line="17" selection-start-column="22" selection-end-line="17" selection-end-column="22" />
+        <state vertical-scroll-proportion="0.5982609">
+          <caret line="116" column="33" selection-start-line="116" selection-start-column="33" selection-end-line="116" selection-end-column="33" />
           <folding />
         </state>
       </provider>

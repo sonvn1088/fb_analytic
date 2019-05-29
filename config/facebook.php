@@ -16,6 +16,7 @@ return [
         'khaosod.co.th',
         'dekwat999.com',
         'bectero.com',
+        'lumyaii.com',
 
     ],
     'token' => env('TOKEN'),

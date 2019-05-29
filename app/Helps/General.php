@@ -114,7 +114,7 @@ class General
         foreach(['-', '|'] as $sep){
             $tmp = explode(" $sep ", $title);
             $last = Arr::last($tmp);
-            if(count($tmp) > 1 && count($last) < 3)
+            if(is_array($tmp) && count($tmp) > 1 && count($last) < 3)
                 array_pop($tmp);
             $title = implode(" $sep ", $tmp);
         }
