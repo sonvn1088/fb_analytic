@@ -111,12 +111,12 @@ class General
         preg_match($regexPattern, $content, $match);
         $title = Arr::get($match, 1);
 
-        foreach(['-', '|'] as $sep){
-            $tmp = explode(" $sep ", $title);
+        foreach([' - ', ' | '] as $sep){
+            $tmp = explode($sep, $title);
             $last = Arr::last($tmp);
-            if(is_array($tmp) && count($tmp) > 1 && count($last) < 3)
+            if(count($tmp) > 1 && str_word_count($last) < 3)
                 array_pop($tmp);
-            $title = implode(" $sep ", $tmp);
+            $title = implode($sep, $tmp);
         }
 
 
