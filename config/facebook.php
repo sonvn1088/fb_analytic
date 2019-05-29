@@ -14,7 +14,6 @@ return [
         'smartlive.info',
         'khaosod.co.th',
         'dekwat999.com',
-        ''
     ],
     'token' => env('TOKEN'),
     'pages' => [],
