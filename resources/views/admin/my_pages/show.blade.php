@@ -100,8 +100,8 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label for="site_ids">Sites</label>
-                                {!! Form::select('site_ids[]', $sites, $myPage->site_ids, ['multiple'=>'multiple', 'class' => 'form-control']) !!}
+                                <label for="step_time">Step time</label>
+                                <input type="step_time" name="step_time" class="form-control" value="{{ $myPage->step_time }}">
                             </div>
                         </div>
                         <div class="col-sm-6">
@@ -116,6 +116,12 @@
                             <div class="form-group">
                                 <label for="country">Country</label>
                                 {!! Form::select('country', ['vn' => 'Vietnam', 'th' => 'Thailand', 'tw' => 'Taiwan', 'id' => 'Indonesia', 'ot' => 'Other'], $myPage->country, ['class' => 'form-control']) !!}
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="site_ids">Sites</label>
+                                {!! Form::select('site_ids[]', $sites, $myPage->site_ids, ['multiple'=>'multiple', 'class' => 'form-control']) !!}
                             </div>
                         </div>
                     </div>

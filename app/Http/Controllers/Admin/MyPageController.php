@@ -131,7 +131,7 @@ class MyPageController extends Controller
         else
             $blockedAt = null;
 
-        $data = $request->only(['fb_id', 'name', 'like', 'follow', 'username', 'status', 'group_id', 'site_ids', 'query_track']);
+        $data = $request->only(['fb_id', 'name', 'like', 'follow', 'username', 'status', 'group_id', 'site_ids', 'query_track', 'step_time']);
         $data['blocked_at'] = $blockedAt;
         $myPage->fill($data);
 

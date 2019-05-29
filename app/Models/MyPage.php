@@ -27,7 +27,7 @@ class MyPage extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'fb_id', 'like', 'follow', 'status', 'group_id', 'site_ids', 'username', 'blocked_at', 'query_track'];
+    protected $fillable = ['name', 'fb_id', 'like', 'follow', 'status', 'group_id', 'site_ids', 'username', 'blocked_at', 'query_track', 'step_time'];
 
 
     protected $casts = [
@@ -63,7 +63,7 @@ class MyPage extends Model
 
     public function sharePosts(){
         if($this->status['value'] == 1){
-            Facebook::sharePosts($this->_getPosts(), $this->token, config('facebook.step_time'));
+            Facebook::sharePosts($this->_getPosts(), $this->token, $this->step_time);
         }
     }
 
