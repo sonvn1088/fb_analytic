@@ -137,7 +137,7 @@ class MyPageController extends Controller
 
 
         if(!$id){
-            $info = Facebook::getPageInfos($myPage->fb_id);
+            $info = Facebook::getPageInfos($myPage->fb_id?:$myPage->username);
             $myPage->fill($info);
         }
 

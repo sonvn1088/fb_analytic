@@ -50,6 +50,7 @@ class Links
             if(!$ignored){
                 if(!$link->content){
                     $article = General::parseArticle($link->url, $type);
+                    $link->title = Arr::get($article, 'title');
                     $link->excerpt = Arr::get($article, 'excerpt');
                     $link->content = Arr::get($article, 'content');
                     $link->save();

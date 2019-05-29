@@ -141,7 +141,7 @@ class General
     }
 
     static private function _getBody($content){
-        $regexPattern = "/<div class=\"(td-post-content|entry-content)\".{0,100}>(.*?)<(nav|footer|div class=\"entry-meta|clear\")/";
+        $regexPattern = "/<div class=\"(.{0,10}-post-content|entry-content)\".{0,100}>(.*?)<(nav|footer|div class=\"entry-meta|clear\")/";
         preg_match($regexPattern, $content, $match);
         $body = $match[0]??'';
 
