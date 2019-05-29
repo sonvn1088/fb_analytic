@@ -9,11 +9,13 @@ return [
     'step_time' => 10,
     'ignored_domains' => [
         'tintuctrongngay.info',
+        'xem.vn',
         'thailocallife.com',
         'nationtv.tv',
         'smartlive.info',
         'khaosod.co.th',
         'dekwat999.com',
+
     ],
     'token' => env('TOKEN'),
     'pages' => [],

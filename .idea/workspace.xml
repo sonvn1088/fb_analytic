@@ -44,8 +44,8 @@
       <file leaf-file-name="General.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Helps/General.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-134.6923">
-              <caret line="211" column="28" selection-start-line="211" selection-start-column="28" selection-end-line="211" selection-end-column="28" />
+            <state vertical-scroll-proportion="-10.615385">
+              <caret line="107" column="28" selection-start-line="107" selection-start-column="28" selection-end-line="107" selection-end-column="28" />
               <folding />
             </state>
           </provider>
@@ -54,8 +54,8 @@
       <file leaf-file-name="facebook.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/config/facebook.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.17217392">
-              <caret line="15" column="24" selection-start-line="15" selection-start-column="24" selection-end-line="15" selection-end-column="24" />
+            <state vertical-scroll-proportion="0.053913042">
+              <caret line="11" column="17" selection-start-line="11" selection-start-column="17" selection-end-line="11" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -763,12 +763,6 @@
       <option name="number" value="Default" />
       <updated>1551887823630</updated>
     </task>
-    <task id="LOCAL-00004" summary="manage accounts &amp; pages">
-      <created>1554969325833</created>
-      <option name="number" value="00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1554969325833</updated>
-    </task>
     <task id="LOCAL-00005" summary="manage accounts &amp; pages">
       <created>1554972765119</created>
       <option name="number" value="00005" />
@@ -1057,7 +1051,13 @@
       <option name="project" value="LOCAL" />
       <updated>1559136325599</updated>
     </task>
-    <option name="localTasksCounter" value="53" />
+    <task id="LOCAL-00053" summary="manage accounts &amp; pages">
+      <created>1559136458703</created>
+      <option name="number" value="00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1559136458703</updated>
+    </task>
+    <option name="localTasksCounter" value="54" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -1456,14 +1456,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Helps/General.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-134.6923">
-          <caret line="211" column="28" selection-start-line="211" selection-start-column="28" selection-end-line="211" selection-end-column="28" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Helps/Links.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-5.8846154">
@@ -1492,10 +1484,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/Helps/General.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-10.615385">
+          <caret line="107" column="28" selection-start-line="107" selection-start-column="28" selection-end-line="107" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/config/facebook.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.17217392">
-          <caret line="15" column="24" selection-start-line="15" selection-start-column="24" selection-end-line="15" selection-end-column="24" />
+        <state vertical-scroll-proportion="0.053913042">
+          <caret line="11" column="17" selection-start-line="11" selection-start-column="17" selection-end-line="11" selection-end-column="17" />
           <folding />
         </state>
       </provider>
