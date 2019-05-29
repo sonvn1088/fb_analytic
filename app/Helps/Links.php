@@ -18,8 +18,8 @@ class Links
                 "sum(follow) as t_follow, sum(after_15)/sum(follow)*100000 as rate_15, sum(after_30)/sum(follow)*100000 as rate_30,".
                 "sum(after_45)/sum(follow)*100000 as rate_45"))
             ->groupBy('posts.link_id')
-            ->havingRaw(DB::raw("sum(follow) > 1000000 AND  sum(after_15)/sum(follow)*1000000 > 15".
-                " AND sum(after_45)/sum(follow)*1000000 > 45"))
+            ->havingRaw(DB::raw("sum(follow) > 1000000 AND  sum(after_15)/sum(follow)*1000000 > 30".
+                " AND sum(after_45)/sum(follow)*1000000 > 90"))
             ->where('posts.created_at', '>', date('Y-m-d H:i:s', time()-24*3600))
             ->where('pages.type', $type)
             ->get();
