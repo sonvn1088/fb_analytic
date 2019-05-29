@@ -15,6 +15,7 @@ return [
         'smartlive.info',
         'khaosod.co.th',
         'dekwat999.com',
+        'bectero.com',
 
     ],
     'token' => env('TOKEN'),
