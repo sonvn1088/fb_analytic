@@ -5,7 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d8024b66-6e1f-4c4d-985f-b1692a60915d" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Helps/Links.php" afterPath="$PROJECT_DIR$/app/Helps/Links.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="fb_analytic.iws" />
@@ -751,12 +750,6 @@
       <option name="number" value="Default" />
       <updated>1551887823630</updated>
     </task>
-    <task id="LOCAL-00009" summary="manage accounts &amp; pages">
-      <created>1555041748829</created>
-      <option name="number" value="00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1555041748829</updated>
-    </task>
     <task id="LOCAL-00010" summary="manage accounts &amp; pages">
       <created>1555042170558</created>
       <option name="number" value="00010" />
@@ -1045,7 +1038,13 @@
       <option name="project" value="LOCAL" />
       <updated>1559142419912</updated>
     </task>
-    <option name="localTasksCounter" value="58" />
+    <task id="LOCAL-00058" summary="manage accounts &amp; pages">
+      <created>1559142759319</created>
+      <option name="number" value="00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1559142759319</updated>
+    </task>
+    <option name="localTasksCounter" value="59" />
     <servers />
   </component>
   <component name="ToolWindowManager">
