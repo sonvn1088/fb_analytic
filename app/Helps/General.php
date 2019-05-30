@@ -71,7 +71,7 @@ class General
     static private function _getMediaFile($p){
         $regexPattern = "/(\"|')http(.*?)\.(m3u8|mp4)(\?_=1)?(\"|')/";
         preg_match($regexPattern, $p, $match);
-        $fileUrl = $match[2]?'http'.$match[2].'.'.$match[3]:'';
+        $fileUrl = (isset($match[2])&&$match[2])?'http'.$match[2].'.'.$match[3]:'';
         return '[video src="'.$fileUrl.'"]';
     }
 
