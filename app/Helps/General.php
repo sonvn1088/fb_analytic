@@ -87,7 +87,7 @@ class General
     }
 
     static private function _getIframe($p){
-        $regexPattern = "/<iframe.*?src=\"(.*?)\"/";
+        $regexPattern = "/<iframe.*?src=\"|'(.*?)\"|'/";
         preg_match($regexPattern, $p, $match);
         $iframeUrl = $match[1]??'';
         if(strpos($iframeUrl, 'youtube')){
